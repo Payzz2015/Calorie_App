@@ -1,4 +1,3 @@
-import 'package:calories_counter_project/home.dart';
 import 'package:calories_counter_project/models/User.dart';
 import 'package:calories_counter_project/screens/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
