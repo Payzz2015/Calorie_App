@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1072941703540",
+    "project_id": "calorie-per-day-flutter",
+    "storage_bucket": "calorie-per-day-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072941703540:android:3fac81557c1928327e8c21",
+        "android_client_info": {
+          "package_name": "com.calories_counter_project.calories_counter_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072941703540-6b9edqlor7a2uf5094f51aihr0j68fvi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1Fzos4_7cpIFFokOhjk2q4cgzyLXo8Pg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1072941703540-6b9edqlor7a2uf5094f51aihr0j68fvi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

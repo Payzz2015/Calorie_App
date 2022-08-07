@@ -1,3 +1,4 @@
+import 'package:calories_counter_project/widget/tabbar.dart';
 import 'package:flutter/material.dart';
 
 class Food extends StatefulWidget {
@@ -10,13 +11,13 @@ class Food extends StatefulWidget {
 class _FoodState extends State<Food> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Center(
-            child: Text("Food"),
-          ),
-        ),
-        body: Center(child: Text("Food"),)
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: TabBarWidget(),
     );
   }
 }
