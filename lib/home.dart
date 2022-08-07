@@ -14,38 +14,59 @@ class Home extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(70, 50, 70, 0),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                  icon: Icon(Icons.login),
-                  label: Text(
-                    "เข้าสู่ระบบ",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                      return LoginScreen();
-                    }));
-                  }
-              ),
+            Column(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                ),
+                Image.asset(
+                  "assets/logos/example2.png",
+                  height: 200,
+                  width: 200,
+                ),
+                Text(
+                  "Calories",
+                  style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                  icon: Icon(Icons.add),
-                  label: Text(
-                    "สร้างบัญชี",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                      return RegisterScreen();
-                    }));
-                  }
-              ),
+            Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                      icon: Icon(Icons.login),
+                      label: Text(
+                        "เข้าสู่ระบบ",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return LoginScreen();
+                        }));
+                      }),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                      icon: Icon(Icons.add),
+                      label: Text(
+                        "สร้างบัญชี",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return RegisterScreen();
+                        }));
+                      }),
+                ),
+              ],
             ),
           ],
         ),
