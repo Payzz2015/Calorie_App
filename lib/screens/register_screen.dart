@@ -1,5 +1,5 @@
 import 'package:calories_counter_project/models/User.dart';
-import 'package:calories_counter_project/widget/bottombar.dart';
+import 'package:calories_counter_project/widgets/bottombar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

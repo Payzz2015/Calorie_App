@@ -1,4 +1,4 @@
-import 'package:calories_counter_project/widget/tabbar.dart';
+import 'package:calories_counter_project/widgets/tabbar.dart';
 import 'package:flutter/material.dart';
 
 class Food extends StatefulWidget {
