@@ -1,5 +1,6 @@
 import 'package:calories_counter_project/models/User.dart';
-import 'package:calories_counter_project/widgets/bottombar.dart';
+import 'package:calories_counter_project/profiles/gender.dart';
+import 'package:calories_counter_project/widgets/multiPageProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -148,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Material(
                       elevation: 5,
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.green,
+                      color: Color(0xFF5fb27c),
                       child: MaterialButton(
                         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                         minWidth: MediaQuery.of(context).size.width,
@@ -204,7 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Fluttertoast.showToast(msg: "สร้างบัญชีผู้ใช้สำเร็จ");
 
     Navigator.pushAndRemoveUntil((context), MaterialPageRoute(builder: (context){
-      return BottomBar();
+      return genderSelector();
     }), (route) => false);
 
   }

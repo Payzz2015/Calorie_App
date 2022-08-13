@@ -6,8 +6,12 @@ class FoodPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("Food Photo"),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text("Food Photo"),
+          ],
+        ),
       ),
     );
   }

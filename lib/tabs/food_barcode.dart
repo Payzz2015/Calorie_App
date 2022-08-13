@@ -6,8 +6,12 @@ class FoodBarcode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("Food Barcode"),
+      body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text("Food Barcode"),
+            ],
+          ),
       ),
     );
   }

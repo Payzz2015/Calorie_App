@@ -6,8 +6,12 @@ class FoodSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("เลือกอาหาร"),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text("Add"),
+          ],
+        ),
       ),
     );
   }

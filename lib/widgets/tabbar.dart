@@ -17,7 +17,7 @@ with SingleTickerProviderStateMixin {
 
   @override
   void initState(){
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -31,70 +31,77 @@ with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF5fb27c),
+        foregroundColor: Colors.white,
         centerTitle: true,
         title: Text("Food"),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  // height: 50,
-                  width: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: TabBar(
-                          indicator: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          indicatorWeight: 2,
-                          indicatorColor: Colors.white,
-                          unselectedLabelColor: Colors.white,
-                          labelColor: Colors.green,
-                          controller: tabController,
-                          tabs: [
-                            Tab(
-                              text: "Record",
-                            ),
-                            Tab(
-                              text: "Camera",
-                            ),
-                            Tab(
-                              text: "Barcode",
-                            ),
-                          ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 7,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                    color: Color(0xFF5fb27c),
+                    borderRadius: BorderRadius.circular(5)),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: TabBar(
+                        indicator: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
                         ),
+                        indicatorWeight: 2,
+                        indicatorColor: Colors.white,
+                        unselectedLabelColor: Colors.white,
+                        labelColor: Color(0xFF5fb27c),
+                        controller: tabController,
+                        tabs: const [
+                          Tab(
+                            icon: Icon(Icons.history),
+                            text: "Recent",
+                          ),
+                          Tab(
+                            icon: Icon(Icons.add),
+                            text: "Record",
+                          ),
+                          Tab(
+                            icon: Icon(Icons.camera_alt_rounded),
+                            text: "Camera",
+                          ),
+                          Tab(
+                            icon: Icon(Icons.qr_code_scanner_rounded),
+                            text: "Barcode",
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: TabBarView(
-                    controller: tabController,
-                    children: [
-                      FoodSelect(),
-                      FoodPhoto(),
-                      FoodBarcode()
-                    ],
-                  ),
-                )
-              ],
-            ),
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: tabController,
+                  children: const [
+                    FoodSelect(),
+                    FoodSelect(),
+                    FoodPhoto(),
+                    FoodBarcode()
+                  ],
+                ),
+              )
+            ],
           ),
-
         ),
+
       ),
     );
   }

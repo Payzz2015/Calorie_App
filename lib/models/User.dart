@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Users{
   String? uid;
   String? email; //อีเมล
@@ -6,6 +8,9 @@ class Users{
   String? age; //อายุ
   String? weight; //น้ำหนัก
   String? height; //ส่วนสูง
+  String? bmi;
+  String? bmr;
+
 
   Users({
     this.uid,
@@ -14,7 +19,9 @@ class Users{
     this.gender,
     this.age,
     this.weight,
-    this.height
+    this.height,
+    this.bmi,
+    this.bmr,
   });
 
   factory Users.fromMap(map){
@@ -26,6 +33,8 @@ class Users{
       age: map['age'],
       weight: map['weight'],
       height: map['height'],
+      bmi: map['bmi'],
+      bmr: map['bmr'],
     );
   }
 
@@ -38,8 +47,11 @@ class Users{
       'age': age,
       'weight': weight,
       'height': height,
+      'bmi': bmi,
+      'bmr': bmr,
     };
   }
+
 
 
 }

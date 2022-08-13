@@ -1,5 +1,9 @@
+import 'package:calories_counter_project/profiles/age.dart';
+import 'package:calories_counter_project/profiles/gender.dart';
+import 'package:calories_counter_project/screens/home_screen.dart';
 import 'package:calories_counter_project/screens/register_screen.dart';
 import 'package:calories_counter_project/widgets/bottombar.dart';
+import 'package:calories_counter_project/widgets/multiPageProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,14 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
-                      height: 250,
-                      width: 250,
-                      child: Image.asset(
-                        "assets/logos/example2.png",
-                        fit: BoxFit.contain,
-                      ),
-                    ),
                     TextFormField(
                       autofocus: false,
                       controller: emailController,
@@ -116,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Material(
                       elevation: 5,
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.green,
+                      color: Color(0xFF5fb27c),
                       child: MaterialButton(
                         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                         minWidth: MediaQuery.of(context).size.width,
@@ -150,13 +146,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             "สมัครสมาชิก",
                             style: TextStyle(
-                                color: Colors.green,
+                                color: Color(0xFF5fb27c),
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15),
                           ),
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

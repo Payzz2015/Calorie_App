@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:calories_counter_project/screens/history_screen.dart';
 import 'package:calories_counter_project/screens/home_screen.dart';
 import 'package:calories_counter_project/screens/profile_user.dart';
 import 'package:calories_counter_project/screens/record_food.dart';
@@ -35,6 +34,8 @@ class _BottomBarState extends State<BottomBar> {
       floatingActionButton: Visibility(
         visible: !useKeyboard,
         child: FloatingActionButton(
+          backgroundColor: Color(0xFF5fb27c),
+          foregroundColor: Colors.white,
           child: Icon(Icons.add),
           onPressed: (){
             setState(() {
@@ -47,10 +48,10 @@ class _BottomBarState extends State<BottomBar> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
-        notchMargin: 5,
+        notchMargin: 2,
 
         child: Container(
-          height: 60,
+          height: 53,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -61,7 +62,7 @@ class _BottomBarState extends State<BottomBar> {
                     minWidth: 40,
                     onPressed: (){
                       setState(() {
-                        currentScreen = HomeScreen();
+                        currentScreen = const HomeScreen();
                         currentTab = 0;
                       });
                     },
@@ -70,12 +71,12 @@ class _BottomBarState extends State<BottomBar> {
                       children: [
                         Icon(
                           Icons.home,
-                          color: currentTab == 0 ? Colors.green : Colors.grey,
+                          color: currentTab == 0 ? Color(0xFF5fb27c) : Colors.grey,
                         ),
                         Text(
                           "Home",
                           style: TextStyle(
-                              color: currentTab == 0 ? Colors.green : Colors.grey
+                              color: currentTab == 0 ? Color(0xFF5fb27c) : Colors.grey
                           ),
                         )
                       ],
@@ -99,12 +100,12 @@ class _BottomBarState extends State<BottomBar> {
                       children: [
                         Icon(
                           Icons.account_circle,
-                          color: currentTab == 1 ? Colors.green : Colors.grey,
+                          color: currentTab == 1 ? Color(0xFF5fb27c) : Colors.grey,
                         ),
                         Text(
                           "Profile",
                           style: TextStyle(
-                              color: currentTab == 1 ? Colors.green : Colors.grey
+                              color: currentTab == 1 ? Color(0xFF5fb27c) : Colors.grey
                           ),
                         )
                       ],
