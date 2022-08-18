@@ -34,14 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // int ageUser = int.parse(users.age!);
-    //int heightUser = int.parse(users.height!);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF5fb27c),
           foregroundColor: Colors.white,
           centerTitle: true,
-          title: Text("หน้าหลัก",
+          title: Text("วันนี้",
             style:
             TextStyle(
                 fontWeight: FontWeight.bold,

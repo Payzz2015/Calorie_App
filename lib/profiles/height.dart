@@ -72,129 +72,168 @@ class _heightFormState extends State<heightForm> {
         foregroundColor: Colors.green,
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          "กรอกข้อมูลส่วนสูง",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-            color: Colors.green,
-          ),
-        ),
       ),
       body: Form(
         key: formKey,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 110, 0, 0),
-          child: Container(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 150,
-                      width: 280,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        elevation: 5,
-                        color: Color(0xFF5fb27c),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "ส่วนสูง",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "กรุณาป้อนส่วนสูง";
-                                }
-                                if (int.parse(value) <= 0) {
-                                  return "กรุณาป้อนส่วนสูงมากกว่า 0";
-                                }
-                                if (int.parse(value) >= 221) {
-                                  return "กรุณาป้อนส่วนสูงต่ำกว่า 220";
-                                }
-                                return null;
-                              },
-                              keyboardType: TextInputType.number,
-                              controller: heightController,
-                              textAlign: TextAlign.center,
-                              //initialValue: weightController.text,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 50,
-                                  fontWeight: FontWeight.bold),
-                              onSaved: (value) {
-                                heightController.text = value!;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: MaterialButton(
-                                  shape: CircleBorder(),
-                                  color: Colors.white,
-                                  padding: EdgeInsets.all(5),
-                                  onPressed: _onPressMin,
-                                  child: const Icon(
-                                    Icons.arrow_back_ios_rounded,
-                                    size: 25,
-                                    color: Color(0xFF5fb27c),
-                                  ),
+        child: SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                "กรอกข้อมูลส่วนสูง",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                  color: Colors.green,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 150,
+                    width: 280,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      elevation: 5,
+                      color: Color(0xFF5fb27c),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "ส่วนสูง",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          TextFormField(
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "กรุณาป้อนส่วนสูง";
+                              }
+                              if (int.parse(value) <= 0) {
+                                return "กรุณาป้อนส่วนสูงมากกว่า 0";
+                              }
+                              if (int.parse(value) >= 221) {
+                                return "กรุณาป้อนส่วนสูงต่ำกว่า 220";
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                            controller: heightController,
+                            textAlign: TextAlign.center,
+                            //initialValue: weightController.text,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold),
+                            onSaved: (value) {
+                              heightController.text = value!;
+                            },
+                            decoration: InputDecoration(
+                              prefixIcon: MaterialButton(
+                                shape: CircleBorder(),
+                                color: Colors.white,
+                                padding: EdgeInsets.all(5),
+                                onPressed: _onPressMin,
+                                child: const Icon(
+                                  Icons.arrow_back_ios_rounded,
+                                  size: 25,
+                                  color: Color(0xFF5fb27c),
                                 ),
-                                suffixIcon: MaterialButton(
-                                  shape: CircleBorder(),
-                                  color: Colors.white,
-                                  padding: EdgeInsets.all(5),
-                                  onPressed: _onPressMax,
-                                  child: const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 25,
-                                    color: Color(0xFF5fb27c),
-                                  ),
-                                ),
-                                border: InputBorder.none,
                               ),
+                              suffixIcon: MaterialButton(
+                                shape: CircleBorder(),
+                                color: Colors.white,
+                                padding: EdgeInsets.all(5),
+                                onPressed: _onPressMax,
+                                child: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 25,
+                                  color: Color(0xFF5fb27c),
+                                ),
+                              ),
+                              border: InputBorder.none,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 190,),
-                    Row(
-                      children: [
-                        Visibility(
-                          visible: !useKeyboard,
-                          child: FloatingActionButton(
-                            heroTag: null,
-                            backgroundColor: Color(0xFF2f7246),
-                            child: Icon(
-                              Icons.check,
-                              size: 35,
-                            ),
-                            onPressed: () {
-                              navigationData(context);
-                            },
-                          ),
-                        )
-                      ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 10.0,
+                    height: 10.0,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                  SizedBox(width: 25,),
+                  Container(
+                    width: 10.0,
+                    height: 10.0,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  SizedBox(width: 25,),
+                  Container(
+                    width: 10.0,
+                    height: 10.0,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  SizedBox(width: 25,),
+                  Container(
+                    width: 15.0,
+                    height: 15.0,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF5fb27c),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Visibility(
+                        visible: !useKeyboard,
+                        child: FloatingActionButton(
+                          heroTag: null,
+                          backgroundColor: Color(0xFF2f7246),
+                          child: Icon(
+                            Icons.check,
+                            size: 35,
+                          ),
+                          onPressed: () {
+                            navigationData(context);
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

@@ -27,7 +27,6 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
   Widget build(BuildContext context) {
     bool useKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
-      backgroundColor: Color(0XFFF3F0E9),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.green,

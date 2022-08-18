@@ -66,7 +66,7 @@ class _UserProfileState extends State<UserProfile> {
         builder: (context,AsyncSnapshot snapshot) {
           if (!snapshot.hasData || !snapshot.data.exists) {
             return Center(
-              child: CircularProgressIndicator(),
+              // child: CircularProgressIndicator(),
             );
           }
             return SingleChildScrollView(
@@ -325,7 +325,7 @@ class _UserProfileState extends State<UserProfile> {
                               .size
                               .width,
                           onPressed: () {
-                            newDataGender();
+                            showAlertDialog();
                           },
                           child: Text(
                             "ต้องการตั้งข้อมูลผู้ใช้ใหม่",
@@ -351,6 +351,33 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
+  void showAlertDialog(){
+    showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("ต้องการตั้งข้อมูลใหม่ใช่หรือไม่"),
+          actions: [
+            MaterialButton(
+              child: Text("ตกลง"),
+              onPressed: (){
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                  return newDataGender();
+                }));
+              }
+            ),
+            MaterialButton(
+                child: Text("ยกเลิก"),
+                onPressed: (){
+                  Navigator.of(context).pop();
+                }
+            ),
+          ],
+        );
+      }
+    );
+  }
+
   Future<String?> openEditName() => showDialog<String>(
       context: context,
       builder: (context){
@@ -365,7 +392,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
           ),
           actions: [
-            TextButton(
+            MaterialButton(
               onPressed: (){
                 Navigator.of(context).pop(nameController.text);
 
@@ -373,7 +400,7 @@ class _UserProfileState extends State<UserProfile> {
               },
               child: Text("ยืนยัน"),
             ),
-            TextButton(
+            MaterialButton(
               onPressed: (){
                 Navigator.of(context).pop();
 

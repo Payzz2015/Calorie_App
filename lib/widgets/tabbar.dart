@@ -1,6 +1,10 @@
+import 'package:calories_counter_project/forms/FormBarcode.dart';
+import 'package:calories_counter_project/forms/FormFood.dart';
+import 'package:calories_counter_project/forms/FormPhoto.dart';
 import 'package:calories_counter_project/tabs/food_barcode.dart';
 import 'package:calories_counter_project/tabs/food_photo.dart';
 import 'package:calories_counter_project/tabs/food_select.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class TabBarWidget extends StatefulWidget {
@@ -11,13 +15,14 @@ class TabBarWidget extends StatefulWidget {
 }
 
 class _TabBarWidgetState extends State<TabBarWidget>
-with SingleTickerProviderStateMixin {
+with SingleTickerProviderStateMixin
+{
 
   late TabController tabController;
 
   @override
   void initState(){
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
     super.initState();
   }
 
@@ -34,7 +39,34 @@ with SingleTickerProviderStateMixin {
         backgroundColor: Color(0xFF5fb27c),
         foregroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Food"),
+        title: Text("อาหาร",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              if(tabController.index == 0){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return FormFood();
+                }));
+              }
+              if(tabController.index == 1){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return FormPhoto();
+                }));
+              }
+              if(tabController.index == 2){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return FormBarcode();
+                }));
+              }
+            },
+            icon: Icon(
+              Icons.add,
+              size: 28,
+            ),
+          )
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -43,7 +75,7 @@ with SingleTickerProviderStateMixin {
           child: Column(
             children: [
               SizedBox(
-                height: 7,
+                height: 5,
               ),
               Container(
                 width: MediaQuery.of(context).size.height,
@@ -66,20 +98,16 @@ with SingleTickerProviderStateMixin {
                         controller: tabController,
                         tabs: const [
                           Tab(
-                            icon: Icon(Icons.history),
-                            text: "Recent",
-                          ),
-                          Tab(
                             icon: Icon(Icons.add),
-                            text: "Record",
+                            text: "เพิ่มอาหาร",
                           ),
                           Tab(
                             icon: Icon(Icons.camera_alt_rounded),
-                            text: "Camera",
+                            text: "ถ่ายรูป",
                           ),
                           Tab(
                             icon: Icon(Icons.qr_code_scanner_rounded),
-                            text: "Barcode",
+                            text: "บาร์โค้ด",
                           ),
                         ],
                       ),
@@ -91,7 +119,6 @@ with SingleTickerProviderStateMixin {
                 child: TabBarView(
                   controller: tabController,
                   children: const [
-                    FoodSelect(),
                     FoodSelect(),
                     FoodPhoto(),
                     FoodBarcode()
