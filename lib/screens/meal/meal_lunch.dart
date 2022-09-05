@@ -1,4 +1,6 @@
 import 'package:calories_counter_project/forms/updateForm/UpdateFood.dart';
+import 'package:calories_counter_project/screens/meal/meal_breakfast.dart';
+import 'package:calories_counter_project/screens/meal/meal_dinner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +25,33 @@ class _mealLunchState extends State<mealLunch> {
         backgroundColor: const Color(0xFF5fb27c),
         foregroundColor: Colors.white,
         centerTitle: true,
-        title: const Text(
-          "มื้อกลางวัน",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        title: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                      return mealBreakfast(date: date,);
+                    }));
+                  },
+                  icon: Icon(Icons.arrow_back_ios_new_rounded)
+              ),
+              Text(
+                "มื้อกลางวัน",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+              IconButton(
+                  onPressed: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                      return mealDinner(date: date,);
+                    }));
+                  },
+                  icon: Icon(Icons.arrow_forward_ios_rounded)
+              ),
+              SizedBox(width: 40,),
+            ],
+          ),
         ),
       ),
       body: StreamBuilder(
@@ -86,15 +112,6 @@ class _mealLunchState extends State<mealLunch> {
                           radius: 30,
                           backgroundImage: NetworkImage(
                               "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
-                          /*child: FittedBox(
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Food",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              )
-                          ),*/
                         ),
                         title: Padding(
                           padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),

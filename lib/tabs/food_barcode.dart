@@ -59,67 +59,69 @@ class FoodBarcode extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: snapshot.data!.docs.map((document) {
-                      return ListTile(
-                        leading: const CircleAvatar(
-                          backgroundColor: Color(0xFF5fb27c),
-                          foregroundColor: Colors.white,
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              "https://cdn.icon-icons.com/icons2/1526/PNG/512/barcodescanning_106580.png"),
-                        ),
-                        title: Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
-                          child: Text(
-                            document["name"],
-                            style: const TextStyle(
-                                color: Colors.blue,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold),
+                      return Card(
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            backgroundColor: Color(0xFF5fb27c),
+                            foregroundColor: Colors.white,
+                            radius: 30,
+                            backgroundImage: NetworkImage(
+                                "https://cdn.icon-icons.com/icons2/1526/PNG/512/barcodescanning_106580.png"),
                           ),
-                        ),
-                        subtitle: Column(
-                          children: <Widget>[
-                            Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    TextButton(
-                                      child: const Text("แก้ไข"),
-                                      onPressed: () {
-                                        var userFood = document["name"].toString();
-                                        var userBarcode = document["barcode"].toString();
-                                        var userCalories = document["calories"].toString();
-                                        var userFat = document["fat"].toString();
-                                        var userCarb = document["carbohydrate"].toString();
-                                        var userProtein = document["protein"].toString();
-                                        var userSodium = document["sodium"].toString();
-                                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                                          return UpdateBarcode(name: userFood,barcode: userBarcode, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
-                                        }));
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: const Text(
-                                        "ลบ",
-                                        style: TextStyle(color: Colors.redAccent),
+                          title: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                            child: Text(
+                              document["name"],
+                              style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          subtitle: Column(
+                            children: <Widget>[
+                              Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      TextButton(
+                                        child: const Text("แก้ไข"),
+                                        onPressed: () {
+                                          var userFood = document["name"].toString();
+                                          var userBarcode = document["barcode"].toString();
+                                          var userCalories = document["calories"].toString();
+                                          var userFat = document["fat"].toString();
+                                          var userCarb = document["carbohydrate"].toString();
+                                          var userProtein = document["protein"].toString();
+                                          var userSodium = document["sodium"].toString();
+                                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                                            return UpdateBarcode(name: userFood,barcode: userBarcode, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                          }));
+                                        },
                                       ),
-                                      onPressed: () {
-                                        FirebaseFirestore.instance
-                                            .collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}")
-                                            .doc(document.id)
-                                            .delete();
-                                      },
-                                    ),
-                                  ],
-                                ))
-                          ],
-                        ),
-                        trailing: Text(
-                          "${document["calories"]} kcal",
-                          style: const TextStyle(
-                              color: Colors.blueGrey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20
+                                      TextButton(
+                                        child: const Text(
+                                          "ลบ",
+                                          style: TextStyle(color: Colors.redAccent),
+                                        ),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}")
+                                              .doc(document.id)
+                                              .delete();
+                                        },
+                                      ),
+                                    ],
+                                  ))
+                            ],
+                          ),
+                          trailing: Text(
+                            "${document["calories"]} kcal",
+                            style: const TextStyle(
+                                color: Colors.blueGrey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20
+                            ),
                           ),
                         ),
                       );
