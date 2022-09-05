@@ -15,28 +15,29 @@ class _BottomBarState extends State<BottomBar> {
 
   int currentTab = 0;
   final List<Widget> screens = [
-    HomeScreen(),
-    Food(),
-    UserProfile(),
+    const HomeScreen(),
+    const Food(),
+    const UserProfile(),
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = HomeScreen();
+  Widget currentScreen = const HomeScreen();
 
   @override
   Widget build(BuildContext context) {
     bool useKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
+
       body: PageStorage(
-        child: currentScreen,
         bucket: bucket,
+        child: currentScreen,
       ),
       floatingActionButton: Visibility(
         visible: !useKeyboard,
         child: FloatingActionButton(
-          backgroundColor: Color(0xFF5fb27c),
+          backgroundColor: const Color(0xFF5fb27c),
           foregroundColor: Colors.white,
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: (){
             setState(() {
               currentScreen = const Food();
@@ -47,11 +48,12 @@ class _BottomBarState extends State<BottomBar> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 2,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 3,
+        color: const Color(0xFF5fb27c),
 
-        child: Container(
-          height: 53,
+        child: SizedBox(
+          height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -71,12 +73,13 @@ class _BottomBarState extends State<BottomBar> {
                       children: [
                         Icon(
                           Icons.home,
-                          color: currentTab == 0 ? Color(0xFF5fb27c) : Colors.grey,
+                          color: currentTab == 0 ? Colors.white : const Color(0xFFc3fff5),
                         ),
                         Text(
                           "Home",
                           style: TextStyle(
-                              color: currentTab == 0 ? Color(0xFF5fb27c) : Colors.grey
+                              fontWeight: currentTab == 0 ? FontWeight.bold : FontWeight.normal,
+                            color: currentTab == 0 ? Colors.white : const Color(0xFFc3fff5)
                           ),
                         )
                       ],
@@ -91,7 +94,7 @@ class _BottomBarState extends State<BottomBar> {
                     minWidth: 40,
                     onPressed: (){
                       setState(() {
-                        currentScreen = UserProfile();
+                        currentScreen = const UserProfile();
                         currentTab = 1;
                       });
                     },
@@ -100,12 +103,13 @@ class _BottomBarState extends State<BottomBar> {
                       children: [
                         Icon(
                           Icons.account_circle,
-                          color: currentTab == 1 ? Color(0xFF5fb27c) : Colors.grey,
+                          color: currentTab == 1 ? Colors.white : const Color(0xFFc3fff5),
                         ),
                         Text(
                           "Profile",
                           style: TextStyle(
-                              color: currentTab == 1 ? Color(0xFF5fb27c) : Colors.grey
+                              fontWeight: currentTab == 1 ? FontWeight.bold : FontWeight.normal,
+                              color: currentTab == 1 ? Colors.white : const Color(0xFFc3fff5)
                           ),
                         )
                       ],

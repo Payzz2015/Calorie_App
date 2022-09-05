@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Users{
   String? uid;
   String? email; //อีเมล

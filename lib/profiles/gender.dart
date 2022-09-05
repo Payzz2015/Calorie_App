@@ -1,6 +1,5 @@
 import 'package:calories_counter_project/models/User.dart';
 import 'package:calories_counter_project/profiles/age.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class genderSelector extends StatefulWidget {
@@ -19,7 +18,7 @@ class _genderSelectorState extends State<genderSelector> {
   );
 
   dataNavigation(BuildContext context) {
-    Users users = new Users(
+    Users users = Users(
         gender: userData.gender
     );
     if (formKey.currentState != null && formKey.currentState!.validate() && selectorGender != 0) {
@@ -206,4 +205,3 @@ class _genderSelectorState extends State<genderSelector> {
   }
 
 }
-

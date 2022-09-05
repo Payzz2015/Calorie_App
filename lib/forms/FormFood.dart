@@ -1,5 +1,6 @@
 import 'package:calories_counter_project/models/Food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,14 +18,7 @@ class _FormFoodState extends State<FormFood> {
   final formKey = GlobalKey<FormState>();
   Food myFood = Food(name: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  CollectionReference _foodCollection = FirebaseFirestore.instance.collection("foods");
-
-  // final nameEditingController = new TextEditingController();
-  // final caloriesEditingController = new TextEditingController();
-  // final fatEditingController = new TextEditingController();
-  // final proteinEditingController = new TextEditingController();
-  // final carbEditingController = new TextEditingController();
-  // final sodiumEditingController = new TextEditingController();
+  final CollectionReference _foodCollection = FirebaseFirestore.instance.collection("FOODS_UID_${FirebaseAuth.instance.currentUser!.uid}");
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +30,10 @@ class _FormFoodState extends State<FormFood> {
               backgroundColor: Colors.white,
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
-                foregroundColor: Color(0xFF5fb27c),
+                foregroundColor: const Color(0xFF5fb27c),
                 elevation: 0,
                 centerTitle: true,
-                title: Text(
+                title: const Text(
                   "Error",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -55,13 +49,14 @@ class _FormFoodState extends State<FormFood> {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
+              resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
-                foregroundColor: Color(0xFF5fb27c),
+                foregroundColor: const Color(0xFF5fb27c),
                 elevation: 0,
                 centerTitle: true,
-                title: Text(
+                title: const Text(
                   "บันทึกข้อมูลอาหาร",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -81,7 +76,6 @@ class _FormFoodState extends State<FormFood> {
                         children: <Widget>[
                           TextFormField(
                             autofocus: false,
-                            // controller: nameEditingController,
                             keyboardType: TextInputType.name,
                             validator:
                             RequiredValidator(errorText: "กรุณาป้อนชื่ออาหาร"),
@@ -90,15 +84,15 @@ class _FormFoodState extends State<FormFood> {
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              prefixIcon: Icon(Icons.fastfood),
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              prefixIcon: const Icon(Icons.fastfood),
                               hintText: "ชื่อ*",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           TextFormField(
@@ -106,23 +100,31 @@ class _FormFoodState extends State<FormFood> {
                               FilteringTextInputFormatter.digitsOnly,
                             ],
                             autofocus: false,
-                            // controller: caloriesEditingController,
                             keyboardType: TextInputType.number,
-                            validator:
-                            RequiredValidator(errorText: "กรุณาป้อนแคลอรี่"),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "กรุณาป้อนแคลอรี่";
+                              } else if (int.parse(value) < 1) {
+                                return "กรุณาป้อนแคลอรี่มากกว่ากว่า 1";
+                              }
+                              else if (int.parse(value) > 99999) {
+                                return "กรุณาป้อนแคลอรี่ได้ไม่เกิน 99999";
+                              }
+                              return null;
+                            },
                             onSaved: (String? calories) {
                               myFood.calories = calories!;
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "แคลอรี่*",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           TextFormField(
@@ -131,21 +133,19 @@ class _FormFoodState extends State<FormFood> {
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,
-                            /*validator:
-                            RequiredValidator(errorText: "กรุณาป้อนไขมัน"),*/
                             onSaved: (String? fat) {
                               myFood.fat = fat!;
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "ไขมัน",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           TextFormField(
@@ -154,21 +154,19 @@ class _FormFoodState extends State<FormFood> {
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,
-                            /*validator:
-                            RequiredValidator(errorText: "กรุณาป้อนโปรตีน"),*/
                             onSaved: (String? protein) {
                               myFood.protein = protein!;
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "โปรตีน",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           TextFormField(
@@ -177,21 +175,19 @@ class _FormFoodState extends State<FormFood> {
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,
-                            /*validator:
-                            RequiredValidator(errorText: "กรุณาป้อนคาร์โบไฮเดรต"),*/
                             onSaved: (String? carbohydrate) {
                               myFood.carbohydrate = carbohydrate!;
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "คาร์โบไฮเดรต",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           TextFormField(
@@ -199,14 +195,13 @@ class _FormFoodState extends State<FormFood> {
                               FilteringTextInputFormatter.digitsOnly,
                             ],
                             autofocus: false,
-                            // controller: fatEditingController,
                             keyboardType: TextInputType.number,
                             onSaved: (String? sodium) {
                               myFood.sodium = sodium!;
                             },
                             textInputAction: TextInputAction.done,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "โซเดียม",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -219,14 +214,14 @@ class _FormFoodState extends State<FormFood> {
                           Material(
                             elevation: 5,
                             borderRadius: BorderRadius.circular(10),
-                            color: Color(0xFF5fb27c),
+                            color: const Color(0xFF5fb27c),
                             child: MaterialButton(
-                              padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               minWidth: MediaQuery.of(context).size.width,
                               onPressed: () async{
                                 if (formKey.currentState!.validate()) {
                                   formKey.currentState!.save();
-                                  await _foodCollection.add({
+                                  await _foodCollection.doc(myFood.name).set({
                                     "name": myFood.name,
                                     "calories": myFood.calories,
                                     "fat": myFood.fat,
@@ -238,7 +233,7 @@ class _FormFoodState extends State<FormFood> {
                                   Navigator.of(context).pop();
                                 }
                               },
-                              child: Text(
+                              child: const Text(
                                 "บันทึก",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -248,7 +243,7 @@ class _FormFoodState extends State<FormFood> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 20,)
+                          const SizedBox(height: 20,)
                         ],
                       ),
                     ),

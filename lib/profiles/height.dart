@@ -81,7 +81,7 @@ class _heightFormState extends State<heightForm> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
+              const Text(
                 "กรอกข้อมูลส่วนสูง",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class _heightFormState extends State<heightForm> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 150,
                     width: 280,
                     child: Card(
@@ -100,11 +100,11 @@ class _heightFormState extends State<heightForm> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       elevation: 5,
-                      color: Color(0xFF5fb27c),
+                      color: const Color(0xFF5fb27c),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             "ส่วนสูง",
                             style: TextStyle(
                                 color: Colors.white,
@@ -131,7 +131,7 @@ class _heightFormState extends State<heightForm> {
                             controller: heightController,
                             textAlign: TextAlign.center,
                             //initialValue: weightController.text,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 50,
                                 fontWeight: FontWeight.bold),
@@ -140,9 +140,9 @@ class _heightFormState extends State<heightForm> {
                             },
                             decoration: InputDecoration(
                               prefixIcon: MaterialButton(
-                                shape: CircleBorder(),
+                                shape: const CircleBorder(),
                                 color: Colors.white,
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 onPressed: _onPressMin,
                                 child: const Icon(
                                   Icons.arrow_back_ios_rounded,
@@ -151,9 +151,9 @@ class _heightFormState extends State<heightForm> {
                                 ),
                               ),
                               suffixIcon: MaterialButton(
-                                shape: CircleBorder(),
+                                shape: const CircleBorder(),
                                 color: Colors.white,
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 onPressed: _onPressMax,
                                 child: const Icon(
                                   Icons.arrow_forward_ios_rounded,
@@ -176,34 +176,34 @@ class _heightFormState extends State<heightForm> {
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 15.0,
                     height: 15.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFF5fb27c),
                       shape: BoxShape.circle,
                     ),
@@ -219,8 +219,8 @@ class _heightFormState extends State<heightForm> {
                         visible: !useKeyboard,
                         child: FloatingActionButton(
                           heroTag: null,
-                          backgroundColor: Color(0xFF2f7246),
-                          child: Icon(
+                          backgroundColor: const Color(0xFF2f7246),
+                          child: const Icon(
                             Icons.check,
                             size: 35,
                           ),

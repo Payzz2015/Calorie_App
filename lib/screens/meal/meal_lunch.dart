@@ -3,20 +3,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class FoodSelect extends StatelessWidget {
-  const FoodSelect({Key? key}) : super(key: key);
+class mealLunch extends StatefulWidget {
+  final DateTime date;
+  const mealLunch({Key? key,required this.date}) : super(key: key);
+
+  @override
+  State<mealLunch> createState() => _mealLunchState(date);
+}
+
+class _mealLunchState extends State<mealLunch> {
+
+  final DateTime date;
+  _mealLunchState(this.date);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF5fb27c),
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        title: const Text(
+          "มื้อกลางวัน",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        ),
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("FOODS_UID_${FirebaseAuth.instance.currentUser!.uid}").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Color(0xFF5fb27c),
-            ));
+                  backgroundColor: Color(0xFF5fb27c),
+                ));
           }
           if (snapshot.data!.docs.isEmpty) {
             return const Center(
@@ -94,7 +113,7 @@ class FoodSelect extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   TextButton(
-                                    child: const Text("แก้ไข"),
+                                    child: const Text("เลือก"),
                                     onPressed: () {
                                       var userFood = document["name"].toString();
                                       var userCalories = document["calories"].toString();
@@ -106,18 +125,6 @@ class FoodSelect extends StatelessWidget {
                                         return UpdateFood(name: userFood, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
                                       }));
 
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: const Text(
-                                      "ลบ",
-                                      style: TextStyle(color: Colors.redAccent),
-                                    ),
-                                    onPressed: () {
-                                      FirebaseFirestore.instance
-                                          .collection("FOODS_UID_${FirebaseAuth.instance.currentUser!.uid}")
-                                          .doc(document.id)
-                                          .delete();
                                     },
                                   ),
                                 ],
@@ -147,6 +154,4 @@ class FoodSelect extends StatelessWidget {
       ),
     );
   }
-
 }
-

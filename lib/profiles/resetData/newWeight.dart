@@ -1,7 +1,5 @@
 import 'package:calories_counter_project/models/User.dart';
 import 'package:calories_counter_project/profiles/resetData/newHeight.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -83,7 +81,7 @@ class _newDataWeightState extends State<newDataWeight> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
+              const Text(
                 "กรอกข้อมูลน้ำหนัก",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -94,7 +92,7 @@ class _newDataWeightState extends State<newDataWeight> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     height: 150,
                     width: 280,
                     child: Card(
@@ -102,11 +100,11 @@ class _newDataWeightState extends State<newDataWeight> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       elevation: 5,
-                      color: Color(0xFF5fb27c),
+                      color: const Color(0xFF5fb27c),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             "น้ำหนัก",
                             style: TextStyle(
                                 color: Colors.white,
@@ -136,16 +134,16 @@ class _newDataWeightState extends State<newDataWeight> {
                             controller: weightController,
                             textAlign: TextAlign.center,
                             //initialValue: weightController.text,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 50,
                                 fontWeight: FontWeight.bold
                             ),
                             decoration: InputDecoration(
                               prefixIcon: MaterialButton(
-                                shape: CircleBorder(),
+                                shape: const CircleBorder(),
                                 color: Colors.white,
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 onPressed: _onPressMin,
                                 child: const Icon(
                                   Icons.arrow_back_ios_rounded,
@@ -154,9 +152,9 @@ class _newDataWeightState extends State<newDataWeight> {
                                 ),
                               ),
                               suffixIcon: MaterialButton(
-                                shape: CircleBorder(),
+                                shape: const CircleBorder(),
                                 color: Colors.white,
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 onPressed: _onPressMax,
                                 child: const Icon(
                                   Icons.arrow_forward_ios_rounded,
@@ -179,34 +177,34 @@ class _newDataWeightState extends State<newDataWeight> {
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 15.0,
                     height: 15.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFF5fb27c),
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
@@ -222,8 +220,8 @@ class _newDataWeightState extends State<newDataWeight> {
                         visible: !useKeyboard,
                         child: FloatingActionButton(
                           heroTag: null,
-                          backgroundColor: Color(0xFF2f7246),
-                          child: Icon(Icons.arrow_forward_ios_rounded,size: 35,),
+                          backgroundColor: const Color(0xFF2f7246),
+                          child: const Icon(Icons.arrow_forward_ios_rounded,size: 35,),
                           onPressed: (){
                             navigationData(context);
                           },

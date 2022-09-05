@@ -1,8 +1,8 @@
 import 'package:calories_counter_project/models/User.dart';
 import 'package:calories_counter_project/profiles/gender.dart';
-import 'package:calories_counter_project/widgets/multiPageProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -15,6 +15,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
 
+  final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final formKey = GlobalKey<FormState>();
 
   final emailEditingController = new TextEditingController();
@@ -24,8 +25,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final firebaseAuth = FirebaseAuth.instance;
 
   @override
+  void dispose() {
+    emailEditingController.dispose();
+    passwordEditingController.dispose();
+    confirmPasswordEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,

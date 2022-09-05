@@ -1,5 +1,4 @@
 import 'package:calories_counter_project/models/User.dart';
-import 'package:calories_counter_project/screens/home_screen.dart';
 import 'package:calories_counter_project/widgets/bottombar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +31,7 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
         foregroundColor: Colors.green,
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "ยืนยันข้อมูลของคุณ",
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -49,16 +48,16 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
           child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Color(0xFF5fb27c),
+                    color: const Color(0xFF5fb27c),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 5,
                         blurRadius: 7,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -67,14 +66,14 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("เพศ ",
+                          const Text("เพศ ",
                             style: TextStyle(
                               fontSize: 30,
                               color: Colors.white,
                             ),
                           ),
                           Text("${user.gender}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 30,
                               color: Colors.white,
@@ -85,20 +84,20 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("อายุ ",
+                          const Text("อายุ ",
                             style: TextStyle(
                               fontSize: 30,
                               color: Colors.white,
                             ),
                           ),
                           Text("${user.age} ",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 30,
                               color: Colors.white,
                             ),
                           ),
-                          Text("ปี",
+                          const Text("ปี",
                             style: TextStyle(
                               fontSize: 30,
                               color: Colors.white,
@@ -109,20 +108,20 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("น้ำหนัก ",
+                          const Text("น้ำหนัก ",
                             style: TextStyle(
                               fontSize: 30,
                               color: Colors.white,
                             ),
                           ),
                           Text("${user.weight} ",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 30,
                               color: Colors.white,
                             ),
                           ),
-                          Text("kg",
+                          const Text("kg",
                             style: TextStyle(
                               fontSize: 30,
                               color:Colors.white,
@@ -133,20 +132,20 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("ส่วนสูง ",
+                          const Text("ส่วนสูง ",
                             style: TextStyle(
                               fontSize: 30,
                               color: Colors.white,
                             ),
                           ),
                           Text("${user.height} ",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 30,
                               color: Colors.white,
                             ),
                           ),
-                          Text("cm",
+                          const Text("cm",
                             style: TextStyle(
                               fontSize: 30,
                               color: Colors.white,
@@ -157,13 +156,13 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 50,),
+                const SizedBox(height: 50,),
                 Material(
                   elevation: 5,
                   borderRadius: BorderRadius.circular(10),
-                  color: Color(0xFF2f7246),
+                  color: const Color(0xFF2f7246),
                   child: MaterialButton(
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
@@ -173,7 +172,7 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
                       }
                     },
                       //signIn(emailController.text, passwordController.text);
-                    child: Text(
+                    child: const Text(
                       "ยืนยัน",
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -224,7 +223,7 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
     Fluttertoast.showToast(msg: "บันทึกข้อมูลของผู้ใช้สำเร็จ");
 
     Navigator.pushAndRemoveUntil((context), MaterialPageRoute(builder: (context){
-      return BottomBar();
+      return const BottomBar();
     }), (route) => false);
   }
 }

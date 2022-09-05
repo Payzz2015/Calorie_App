@@ -1,7 +1,5 @@
 import 'package:calories_counter_project/models/User.dart';
 import 'package:calories_counter_project/profiles/resetData/newAge.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class newDataGender extends StatefulWidget {
@@ -57,7 +55,7 @@ class _newDataGenderState extends State<newDataGender> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
+              const Text(
                 "เลือกเพศของคุณ",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -79,7 +77,7 @@ class _newDataGenderState extends State<newDataGender> {
                     child: Container(
                       height: 150,
                       width: 150,
-                      color: selectorGender == 1 ? Color(0xFF5fb27c) : Color(0xFFE4E6EA),
+                      color: selectorGender == 1 ? const Color(0xFF5fb27c) : const Color(0xFFE4E6EA),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -102,7 +100,7 @@ class _newDataGenderState extends State<newDataGender> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 24),
+                  const SizedBox(width: 24),
                   GestureDetector(
                     onTap: () =>
                         setState(() {
@@ -115,7 +113,7 @@ class _newDataGenderState extends State<newDataGender> {
                       height: 150,
                       width: 150,
                       alignment: Alignment.center,
-                      color: selectorGender == 2 ? Color(0xFF5fb27c) : Color(0xFFE4E6EA),
+                      color: selectorGender == 2 ? const Color(0xFF5fb27c) : const Color(0xFFE4E6EA),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -146,34 +144,34 @@ class _newDataGenderState extends State<newDataGender> {
                   Container(
                     width: 15.0,
                     height: 15.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFF5fb27c),
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
@@ -189,8 +187,8 @@ class _newDataGenderState extends State<newDataGender> {
                         visible: !useKeyboard,
                         child: FloatingActionButton(
                           heroTag: null,
-                          backgroundColor: Color(0xFF2f7246),
-                          child: Icon(
+                          backgroundColor: const Color(0xFF2f7246),
+                          child: const Icon(
                             Icons.arrow_forward_ios_outlined, size: 35,),
                           onPressed: () {
                             dataNavigation(context);

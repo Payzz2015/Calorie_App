@@ -17,7 +17,7 @@ class _FoodState extends State<Food> {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: TabBarWidget(),
+      home: const TabBarWidget(),
     );
   }
 }

@@ -35,10 +35,13 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   form_field_validator: ^1.1.0
-  firebase_core: ^1.20.0
-  firebase_auth: ^3.6.2
+  firebase_core: ^1.21.1
+  firebase_auth: ^3.7.0
   fluttertoast: ^8.0.9
-  cloud_firestore: ^3.4.3
+  cloud_firestore: ^3.4.6
+  syncfusion_flutter_calendar: ^20.2.45
+  intl: ^0.17.0
+  buddhist_datetime_dateformat_sns: ^1.0.7
 
 dev_dependencies:
   flutter_test:

@@ -2,7 +2,6 @@ import 'package:calories_counter_project/models/User.dart';
 import 'package:calories_counter_project/screens/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:calories_counter_project/profiles/resetData/newGender.dart';
 
@@ -21,7 +20,6 @@ class _UserProfileState extends State<UserProfile> {
   User? user = FirebaseAuth.instance.currentUser;
   Users users = Users();
 
-
   @override
   void initState() {
     super.initState();
@@ -30,7 +28,7 @@ class _UserProfileState extends State<UserProfile> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.users = Users.fromMap(value.data());
+      users = Users.fromMap(value.data());
       setState(() {
       });
     });
@@ -38,14 +36,14 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    Stream documentStream = FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots();
+    // Stream documentStream = FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots();
     //final Stream<QuerySnapshot> _usersStream = firebaseFirestore.collection('users').snapshots(includeMetadataChanges: true);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF5fb27c),
+        backgroundColor: const Color(0xFF5fb27c),
         foregroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "โปรไฟล์ของคุณ",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
@@ -54,7 +52,7 @@ class _UserProfileState extends State<UserProfile> {
             onPressed: () {
               signOut(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.exit_to_app,
               size: 28,
             ),
@@ -65,7 +63,7 @@ class _UserProfileState extends State<UserProfile> {
         stream: FirebaseFirestore.instance.collection("users").doc(users.uid).snapshots(),
         builder: (context,AsyncSnapshot snapshot) {
           if (!snapshot.hasData || !snapshot.data.exists) {
-            return Center(
+            return const Center(
               // child: CircularProgressIndicator(),
             );
           }
@@ -75,7 +73,7 @@ class _UserProfileState extends State<UserProfile> {
                 child: Center(
                   child: Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
                       Row(
@@ -84,8 +82,8 @@ class _UserProfileState extends State<UserProfile> {
                           Text(
                             snapshot.data['name'],
                             //users.name?.toString() ?? "",
-                            style: TextStyle(
-                                color: Color(0xFF2f7246),
+                            style: const TextStyle(
+                                color: Color(0xff02b194),
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -98,12 +96,12 @@ class _UserProfileState extends State<UserProfile> {
                                 editName(nameUser: name);
                               });
                             },
-                            icon: Icon(Icons.edit),
-                            color: Color(0xFF2f7246),
+                            icon: const Icon(Icons.edit),
+                            color: const Color(0xff000000),
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Column(
@@ -124,14 +122,14 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                           Text(
                             snapshot.data['email'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 25,
-                              color: Color(0xFF2f7246),
+                              color: Color(0xff43ccba),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Column(
@@ -152,14 +150,14 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                           Text(
                             snapshot.data['gender'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 25,
-                              color: Color(0xFF2f7246),
+                              color: Color(0xff43ccba),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Column(
@@ -180,14 +178,14 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                           Text(
                             "${snapshot.data['age']} ปี",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 25,
-                              color: Color(0xFF2f7246),
+                              color: Color(0xff43ccba),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -211,15 +209,15 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                               Text(
                                 "${snapshot.data['weight']} kg",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 25,
-                                  color: Color(0xFF2f7246),
+                                  color: Color(0xff43ccba),
                                 ),
                               ),
                             ],
                           ),
 
-                          SizedBox(
+                          const SizedBox(
                             width: 55,
                           ),
                           Column(
@@ -240,16 +238,16 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                               Text(
                                 "${snapshot.data['height']} cm",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 25,
-                                  color: Color(0xFF2f7246),
+                                  color: Color(0xff43ccba),
                                 ),
                               ),
                             ],
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -274,14 +272,14 @@ class _UserProfileState extends State<UserProfile> {
                               Text(
                                 "${snapshot.data['bmi']}",
                                 // bmi.toStringAsFixed(2),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 25,
-                                  color: Color(0xFF2f7246),
+                                  color: Color(0xff43ccba),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 55,
                           ),
                           Column(
@@ -302,24 +300,24 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                               Text(
                                 "${snapshot.data['bmr']}",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 25,
-                                  color: Color(0xFF2f7246),
+                                  color: Color(0xff43ccba),
                                 ),
                               ),
                             ],
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 35,
                       ),
                       Material(
                         elevation: 5,
                         borderRadius: BorderRadius.circular(10),
-                        color: Color(0xFF5fb27c),
+                        color: const Color(0xFF00aca0),
                         child: MaterialButton(
-                          padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                          padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
                           minWidth: MediaQuery
                               .of(context)
                               .size
@@ -327,7 +325,7 @@ class _UserProfileState extends State<UserProfile> {
                           onPressed: () {
                             showAlertDialog();
                           },
-                          child: Text(
+                          child: const Text(
                             "ต้องการตั้งข้อมูลผู้ใช้ใหม่",
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
@@ -338,7 +336,7 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                     ],
@@ -356,18 +354,18 @@ class _UserProfileState extends State<UserProfile> {
       context: context,
       builder: (context){
         return AlertDialog(
-          title: Text("ต้องการตั้งข้อมูลใหม่ใช่หรือไม่"),
+          title: const Text("ต้องการตั้งข้อมูลใหม่ใช่หรือไม่"),
           actions: [
             MaterialButton(
-              child: Text("ตกลง"),
+              child: const Text("ตกลง"),
               onPressed: (){
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                  return newDataGender();
+                  return const newDataGender();
                 }));
               }
             ),
             MaterialButton(
-                child: Text("ยกเลิก"),
+                child: const Text("ยกเลิก"),
                 onPressed: (){
                   Navigator.of(context).pop();
                 }
@@ -382,12 +380,12 @@ class _UserProfileState extends State<UserProfile> {
       context: context,
       builder: (context){
         return AlertDialog(
-          title: Text("เปลี่ยนชื่อโปรไฟล์ของคุณ"),
+          title: const Text("เปลี่ยนชื่อโปรไฟล์ของคุณ"),
           content: TextField(
             controller: nameController,
             keyboardType: TextInputType.name,
             autofocus: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "ใส่ชื่อของคุณ",
             ),
           ),
@@ -398,7 +396,7 @@ class _UserProfileState extends State<UserProfile> {
 
                 nameController.clear();
               },
-              child: Text("ยืนยัน"),
+              child: const Text("ยืนยัน"),
             ),
             MaterialButton(
               onPressed: (){
@@ -406,7 +404,7 @@ class _UserProfileState extends State<UserProfile> {
 
                 nameController.clear();
               },
-              child: Text("ยกเลิก"),
+              child: const Text("ยกเลิก"),
             )
           ],
         );
@@ -414,22 +412,16 @@ class _UserProfileState extends State<UserProfile> {
   );
 
   Future editName({required String nameUser}) async{
-    DocumentReference _documentReference = FirebaseFirestore.instance.collection("users").doc(user!.uid);
+    DocumentReference documentReference = FirebaseFirestore.instance.collection("users").doc(user!.uid);
 
-    await _documentReference.update({'name': nameUser});
-  }
-
-  Future editData({required String dataUser}) async{
-    DocumentReference _documentReference = FirebaseFirestore.instance.collection("users").doc(user!.uid);
-
-    await _documentReference.update({'name': dataUser});
+    await documentReference.update({'name': nameUser});
   }
 
 
   Future<void> signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-      return LoginScreen();
+      return const LoginScreen();
     }));
   }
 }

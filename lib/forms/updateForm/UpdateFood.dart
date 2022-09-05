@@ -1,4 +1,4 @@
-import 'package:calories_counter_project/models/Barcode.dart';
+import 'package:calories_counter_project/models/Food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,19 +6,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-class FormBarcode extends StatefulWidget {
-  const FormBarcode({Key? key}) : super(key: key);
+class UpdateFood extends StatefulWidget {
+  final String name;
+  final String calories;
+  final String fat;
+  final String carbohydrate;
+  final String protein;
+  final String sodium;
+  const UpdateFood({Key? key,required this.name,required this.calories, required this.fat, required this.carbohydrate, required this.protein, required this.sodium}) : super(key: key);
 
   @override
-  State<FormBarcode> createState() => _FormBarcodeState();
+  State<UpdateFood> createState() => _UpdateFoodState();
 }
 
-class _FormBarcodeState extends State<FormBarcode> {
-  final formKey = GlobalKey<FormState>();
-  Barcode myBarcode = Barcode(name: "",barcode: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
-  final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  final CollectionReference _barcodeCollection = FirebaseFirestore.instance.collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}");
+class _UpdateFoodState extends State<UpdateFood> {
 
+  final formKey = GlobalKey<FormState>();
+  Food myFood = Food(name: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
+  final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  final CollectionReference _foodCollection = FirebaseFirestore.instance.collection("FOODS_UID_${FirebaseAuth.instance.currentUser!.uid}");
+
+
+  final TextEditingController nameEditingController = TextEditingController();
+  final TextEditingController caloriesEditingController = TextEditingController();
+  final TextEditingController fatEditingController = TextEditingController();
+  final TextEditingController proteinEditingController = TextEditingController();
+  final TextEditingController carbEditingController = TextEditingController();
+  final TextEditingController sodiumEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      nameEditingController.text = widget.name;
+      caloriesEditingController.text = widget.calories;
+      fatEditingController.text = widget.fat;
+      proteinEditingController.text = widget.protein;
+      carbEditingController.text = widget.carbohydrate;
+      sodiumEditingController.text = widget.sodium;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +85,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                 elevation: 0,
                 centerTitle: true,
                 title: const Text(
-                  "บันทึกข้อมูลอาหาร",
+                  "แก้ไขข้อมูลอาหาร",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
@@ -75,12 +103,12 @@ class _FormBarcodeState extends State<FormBarcode> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           TextFormField(
-                            autofocus: false,
+                            controller: nameEditingController,
                             keyboardType: TextInputType.name,
                             validator:
                             RequiredValidator(errorText: "กรุณาป้อนชื่ออาหาร"),
                             onSaved: (String? name) {
-                              myBarcode.name = name!;
+                              myFood.name = name!;
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
@@ -99,40 +127,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            autofocus: false,
-                            maxLength: 13,
-                            keyboardType: TextInputType.number,
-                            validator: (value){
-                              RegExp regexp = RegExp(r'\d{13}$');
-                              if(value!.isEmpty){
-                                return ("กรุณาป้อนบาร์โค้ด");
-                              }
-                              if(!regexp.hasMatch(value)){
-                                return ("กรุณากรอกบาร์โค้ดให้ครบ 13 ตัว");
-                              }
-                              return null;
-                            },
-                            onSaved: (String? barcode) {
-                              myBarcode.barcode = barcode!;
-                            },
-                            textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              prefixIcon: const Icon(Icons.qr_code_scanner_rounded),
-                              hintText: "บาร์โค้ด*",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            autofocus: false,
+                            controller: caloriesEditingController,
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -146,7 +141,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                               return null;
                             },
                             onSaved: (String? calories) {
-                              myBarcode.calories = calories!;
+                              myFood.calories = calories!;
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
@@ -161,13 +156,13 @@ class _FormBarcodeState extends State<FormBarcode> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: fatEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            autofocus: false,
                             keyboardType: TextInputType.number,
                             onSaved: (String? fat) {
-                              myBarcode.fat = fat!;
+                              myFood.fat = fat!;
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
@@ -182,13 +177,13 @@ class _FormBarcodeState extends State<FormBarcode> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: proteinEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            autofocus: false,
                             keyboardType: TextInputType.number,
                             onSaved: (String? protein) {
-                              myBarcode.protein = protein!;
+                              myFood.protein = protein!;
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
@@ -203,13 +198,13 @@ class _FormBarcodeState extends State<FormBarcode> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: carbEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            autofocus: false,
                             keyboardType: TextInputType.number,
                             onSaved: (String? carbohydrate) {
-                              myBarcode.carbohydrate = carbohydrate!;
+                              myFood.carbohydrate = carbohydrate!;
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
@@ -224,13 +219,13 @@ class _FormBarcodeState extends State<FormBarcode> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: sodiumEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            autofocus: false,
                             keyboardType: TextInputType.number,
                             onSaved: (String? sodium) {
-                              myBarcode.sodium = sodium!;
+                              myFood.sodium = sodium!;
                             },
                             textInputAction: TextInputAction.done,
                             decoration: InputDecoration(
@@ -254,15 +249,26 @@ class _FormBarcodeState extends State<FormBarcode> {
                               onPressed: () async{
                                 if (formKey.currentState!.validate()) {
                                   formKey.currentState!.save();
-                                  await _barcodeCollection.doc(myBarcode.name).set({
-                                    "name": myBarcode.name,
-                                    "barcode": myBarcode.barcode,
-                                    "calories": myBarcode.calories,
-                                    "fat": myBarcode.fat,
-                                    "protein": myBarcode.protein,
-                                    "carbohydrate": myBarcode.carbohydrate,
-                                    "sodium": myBarcode.sodium
-                                  });
+                                  if(nameEditingController.text != widget.name){
+                                    await _foodCollection.doc(myFood.name).set({
+                                      "name": nameEditingController.text,
+                                      "calories": caloriesEditingController.text,
+                                      "fat": fatEditingController.text,
+                                      "protein": proteinEditingController.text,
+                                      "carbohydrate": carbEditingController.text,
+                                      "sodium": sodiumEditingController.text
+                                    }).then((value) => deleteData());
+                                  }
+                                  else{
+                                    await _foodCollection.doc(myFood.name).set({
+                                      "name": nameEditingController.text,
+                                      "calories": caloriesEditingController.text,
+                                      "fat": fatEditingController.text,
+                                      "protein": proteinEditingController.text,
+                                      "carbohydrate": carbEditingController.text,
+                                      "sodium": sodiumEditingController.text
+                                    });
+                                  }
                                   formKey.currentState!.reset();
                                   Navigator.of(context).pop();
                                 }
@@ -292,5 +298,8 @@ class _FormBarcodeState extends State<FormBarcode> {
             ),
           );
         });
+  }
+  Future<void> deleteData() async{
+    return await _foodCollection.doc(widget.name).delete();
   }
 }

@@ -1,4 +1,6 @@
+import 'package:calories_counter_project/forms/updateForm/UpdateBarcode.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FoodBarcode extends StatelessWidget {
@@ -8,7 +10,7 @@ class FoodBarcode extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("barcodes").snapshots(),
+        stream: FirebaseFirestore.instance.collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -17,7 +19,7 @@ class FoodBarcode extends StatelessWidget {
                 ));
           }
           if (snapshot.data!.docs.isEmpty) {
-            return Center(
+            return const Center(
               child: Text(
                 'ไม่มีรายการบาร์โค้ด',
                 style: TextStyle(
@@ -32,18 +34,18 @@ class FoodBarcode extends StatelessWidget {
               child: Column(
                 children: [
                   ListView.builder(
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: 1,
                       itemBuilder: (context, index) {
-                        return Container(
+                        return SizedBox(
                           height: 50,
                           child: Card(
-                            color: Color(0xFF5fb27c),
+                            color: const Color(0xFF5fb27c),
                             child: Center(
                               child: Text(
                                 "${snapshot.data!.docs.length} รายการ",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: Colors.white
@@ -54,11 +56,11 @@ class FoodBarcode extends StatelessWidget {
                         );
                       }),
                   ListView(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: snapshot.data!.docs.map((document) {
                       return ListTile(
-                        leading: CircleAvatar(
+                        leading: const CircleAvatar(
                           backgroundColor: Color(0xFF5fb27c),
                           foregroundColor: Colors.white,
                           radius: 30,
@@ -69,7 +71,7 @@ class FoodBarcode extends StatelessWidget {
                           padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
                           child: Text(
                             document["name"],
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.blue,
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold),
@@ -82,17 +84,28 @@ class FoodBarcode extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     TextButton(
-                                      child: Text("แก้ไข"),
-                                      onPressed: () {},
+                                      child: const Text("แก้ไข"),
+                                      onPressed: () {
+                                        var userFood = document["name"].toString();
+                                        var userBarcode = document["barcode"].toString();
+                                        var userCalories = document["calories"].toString();
+                                        var userFat = document["fat"].toString();
+                                        var userCarb = document["carbohydrate"].toString();
+                                        var userProtein = document["protein"].toString();
+                                        var userSodium = document["sodium"].toString();
+                                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                                          return UpdateBarcode(name: userFood,barcode: userBarcode, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                        }));
+                                      },
                                     ),
                                     TextButton(
-                                      child: Text(
+                                      child: const Text(
                                         "ลบ",
                                         style: TextStyle(color: Colors.redAccent),
                                       ),
                                       onPressed: () {
                                         FirebaseFirestore.instance
-                                            .collection("barcodes")
+                                            .collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}")
                                             .doc(document.id)
                                             .delete();
                                       },
@@ -103,15 +116,16 @@ class FoodBarcode extends StatelessWidget {
                         ),
                         trailing: Text(
                           "${document["calories"]} kcal",
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.blueGrey,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                              fontSize: 20
+                          ),
                         ),
                       );
                     }).toList(),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   )
                 ],

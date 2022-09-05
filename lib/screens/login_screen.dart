@@ -1,11 +1,6 @@
-import 'package:calories_counter_project/profiles/age.dart';
-import 'package:calories_counter_project/profiles/gender.dart';
-import 'package:calories_counter_project/screens/home_screen.dart';
 import 'package:calories_counter_project/screens/register_screen.dart';
 import 'package:calories_counter_project/widgets/bottombar.dart';
-import 'package:calories_counter_project/widgets/multiPageProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -140,8 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return RegisterScreen();
-                            }));
+                                  return RegisterScreen();
+                                }));
                           },
                           child: Text(
                             "สมัครสมาชิก",
@@ -150,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],
@@ -165,16 +160,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void signIn(String email, String password) async{
     if(formKey.currentState!.validate()){
+
       await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
-            Fluttertoast.showToast(msg: "เข้าสู่ระบบสำเร็จ"),
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
-              return BottomBar();
-            }))
-          }).catchError((e){
-            Fluttertoast.showToast(msg: e!.message);
+        Fluttertoast.showToast(msg: "เข้าสู่ระบบสำเร็จ"),
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+          return BottomBar();
+        }))
+      }).catchError((e){
+        Fluttertoast.showToast(msg: e!.message);
       });
     }
   }
+
 }
