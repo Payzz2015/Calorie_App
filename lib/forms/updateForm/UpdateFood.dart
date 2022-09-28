@@ -48,6 +48,17 @@ class _UpdateFoodState extends State<UpdateFood> {
   }
 
   @override
+  void dispose() {
+    nameEditingController.dispose();
+    caloriesEditingController.dispose();
+    fatEditingController.dispose();
+    proteinEditingController.dispose();
+    carbEditingController.dispose();
+    sodiumEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: firebase,

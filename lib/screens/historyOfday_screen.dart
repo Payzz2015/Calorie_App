@@ -620,6 +620,15 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                                trailing: Wrap(
+                                    spacing: 3,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 45,
+                                        color: isVisibleBreakfast ? Colors.white : Color(0xFF5fb27c),
+                                      ),]
+                                )
                             ),
                           ),
                         ),
@@ -677,6 +686,15 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                     fontSize: 30
                                 ),
                               ),
+                              trailing: Wrap(
+                                spacing: 3,
+                                children: <Widget>[
+                                  Icon(
+                                  Icons.arrow_drop_down,
+                                    size: 45,
+                                    color: isVisibleLunch ? Colors.white : Color(0xFF5fb27c),
+                                ),]
+                              )
                             ),
                           ),
                         ),
@@ -733,6 +751,15 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                     fontSize: 30
                                 ),
                               ),
+                                trailing: Wrap(
+                                    spacing: 3,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 45,
+                                        color: isVisibleDinner ? Colors.white : Color(0xFF5fb27c),
+                                      ),]
+                                )
                             ),
                           ),
                         ),
@@ -789,6 +816,15 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
+                                trailing: Wrap(
+                                    spacing: 3,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 45,
+                                        color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
+                                      ),]
+                                )
                             ),
                           ),
                         ),

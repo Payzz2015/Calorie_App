@@ -37,7 +37,6 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
   @override
   void initState() {
     super.initState();
-
     setState(() {
       nameEditingController.text = widget.name;
       barcodeEditingController.text = widget.barcode;
@@ -47,6 +46,18 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
       carbEditingController.text = widget.carbohydrate;
       sodiumEditingController.text = widget.sodium;
     });
+  }
+
+  @override
+  void dispose() {
+    nameEditingController.dispose();
+    caloriesEditingController.dispose();
+    barcodeEditingController.dispose();
+    fatEditingController.dispose();
+    proteinEditingController.dispose();
+    carbEditingController.dispose();
+    sodiumEditingController.dispose();
+    super.dispose();
   }
 
 
