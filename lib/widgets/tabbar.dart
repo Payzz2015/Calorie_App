@@ -32,9 +32,12 @@ with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF5fb27c),
-        foregroundColor: Colors.white,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Color(0xFF5fb27c),
         centerTitle: true,
         title: const Text("อาหาร",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25

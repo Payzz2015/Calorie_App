@@ -1,3 +1,5 @@
+import 'package:calories_counter_project/screens/listsfood_screen.dart';
+import 'package:calories_counter_project/screens/stats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:calories_counter_project/screens/home_screen.dart';
 import 'package:calories_counter_project/screens/profile_user.dart';
@@ -15,13 +17,15 @@ class _BottomBarState extends State<BottomBar> {
 
   int currentTab = 0;
   final List<Widget> screens = [
-    const HomeScreen(),
+    HomeScreen(),
     const Food(),
     const UserProfile(),
+    const FoodList(),
+    const StatsScreen()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = const HomeScreen();
+  Widget currentScreen = HomeScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -48,23 +52,22 @@ class _BottomBarState extends State<BottomBar> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 3,
-        color: const Color(0xFF5fb27c),
-
+        elevation: 5,
+        color: Colors.white,
         child: SizedBox(
           height: 60,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(width: 5,),
                   MaterialButton(
                     minWidth: 40,
                     onPressed: (){
                       setState(() {
-                        currentScreen = const HomeScreen();
+                        currentScreen = HomeScreen();
                         currentTab = 0;
                       });
                     },
@@ -73,13 +76,40 @@ class _BottomBarState extends State<BottomBar> {
                       children: [
                         Icon(
                           Icons.home,
-                          color: currentTab == 0 ? Colors.white : const Color(0xFFc3fff5),
+                          color: currentTab == 0 ? Color(0xFF5fb27c) : Colors.grey,
                         ),
                         Text(
-                          "Home",
+                          "หน้าหลัก",
                           style: TextStyle(
-                              fontWeight: currentTab == 0 ? FontWeight.bold : FontWeight.normal,
-                            color: currentTab == 0 ? Colors.white : const Color(0xFFc3fff5)
+                              fontWeight: FontWeight.bold,
+                            color: currentTab == 0 ? Color(0xFF5fb27c) : Colors.grey
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 5,),
+
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: (){
+                      setState(() {
+                        currentScreen = const FoodList();
+                        currentTab = 3;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.fastfood,
+                          color: currentTab == 3 ? Color(0xFF5fb27c) : Colors.grey,
+                        ),
+                        Text(
+                          "อาหาร",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: currentTab == 3 ? Color(0xFF5fb27c) : Colors.grey
                           ),
                         )
                       ],
@@ -88,9 +118,36 @@ class _BottomBarState extends State<BottomBar> {
                 ],
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MaterialButton(
+                    minWidth: 40,
+                    onPressed: (){
+                      setState(() {
+                        currentScreen = const StatsScreen();
+                        currentTab = 4;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.stacked_bar_chart,
+                          color: currentTab == 4 ?  Color(0xFF5fb27c) : Colors.grey,
+                        ),
+                        Text(
+                          "สถิติ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: currentTab == 4 ?  Color(0xFF5fb27c) : Colors.grey
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 15,),
+                  MaterialButton(
+
                     minWidth: 40,
                     onPressed: (){
                       setState(() {
@@ -103,18 +160,19 @@ class _BottomBarState extends State<BottomBar> {
                       children: [
                         Icon(
                           Icons.account_circle,
-                          color: currentTab == 1 ? Colors.white : const Color(0xFFc3fff5),
+                          color: currentTab == 1 ? Color(0xFF5fb27c) : Colors.grey,
                         ),
                         Text(
-                          "Profile",
+                          "ข้อมูล",
                           style: TextStyle(
-                              fontWeight: currentTab == 1 ? FontWeight.bold : FontWeight.normal,
-                              color: currentTab == 1 ? Colors.white : const Color(0xFFc3fff5)
+                              fontWeight: FontWeight.bold,
+                              color: currentTab == 1 ? Color(0xFF5fb27c) : Colors.grey
                           ),
                         )
                       ],
                     ),
                   ),
+                  SizedBox(width: 5,),
                 ],
               )
             ],

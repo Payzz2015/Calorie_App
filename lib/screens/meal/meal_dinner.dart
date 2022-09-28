@@ -1,3 +1,4 @@
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:calories_counter_project/forms/updateForm/UpdateFood.dart';
 import 'package:calories_counter_project/screens/meal/meal_lunch.dart';
 import 'package:calories_counter_project/screens/meal/meal_snack.dart';
@@ -18,6 +19,9 @@ class _mealDinnerState extends State<mealDinner> {
   final DateTime date;
   _mealDinnerState(this.date);
 
+  final CollectionReference trackCollection =
+  FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("food_track");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +39,9 @@ class _mealDinnerState extends State<mealDinner> {
                       return mealLunch(date: date,);
                     }));
                   },
-                  icon: Icon(Icons.arrow_back_ios_new_rounded)
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded)
               ),
-              Text(
+              const Text(
                 "มื้อเย็น",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
@@ -47,15 +51,15 @@ class _mealDinnerState extends State<mealDinner> {
                       return mealSnack(date: date,);
                     }));
                   },
-                  icon: Icon(Icons.arrow_forward_ios_rounded)
+                  icon: const Icon(Icons.arrow_forward_ios_rounded)
               ),
-              SizedBox(width: 40,),
+              const SizedBox(width: 40,),
             ],
           ),
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("FOODS_UID_${FirebaseAuth.instance.currentUser!.uid}").snapshots(),
+        stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("foods").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -78,6 +82,24 @@ class _mealDinnerState extends State<mealDinner> {
             return SingleChildScrollView(
               child: Column(
                 children: [
+                  Card(
+                    shadowColor: Colors.black,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: "Search....",
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                      ),
+
+                    ),
+                  ),
                   ListView.builder(
                       physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -132,17 +154,54 @@ class _mealDinnerState extends State<mealDinner> {
                                   children: <Widget>[
                                     TextButton(
                                       child: const Text("เลือก"),
-                                      onPressed: () {
-                                        var userFood = document["name"].toString();
-                                        var userCalories = document["calories"].toString();
-                                        var userFat = document["fat"].toString();
-                                        var userCarb = document["carbohydrate"].toString();
-                                        var userProtein = document["protein"].toString();
-                                        var userSodium = document["sodium"].toString();
-                                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                                          return UpdateFood(name: userFood, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
-                                        }));
+                                      onPressed: () async{
+                                        DocumentSnapshot trackSnapshot = await trackCollection.doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}").get();
+                                        var foodName = document["name"].toString();
+                                        var foodCalories = document["calories"].toString();
+                                        var foodFat = document["fat"].toString();
+                                        var foodCarb = document["carbohydrate"].toString();
+                                        var foodProtein = document["protein"].toString();
+                                        var foodSodium = document["sodium"].toString();
+                                        var eatenCalories = trackSnapshot["caloriesEaten"].toString();
+                                        int totalCalories = int.parse(eatenCalories) + int.parse(foodCalories);
+                                        int fat = int.parse("0");
+                                        int sodium = int.parse("0");
+                                        int protein = int.parse("0");
+                                        int carb = int.parse("0");
+                                        if(foodFat != ""){
+                                          fat = int.parse(trackSnapshot["fat"]) + int.parse(foodFat);
+                                        }
+                                        if(foodCarb != ""){
+                                          carb = int.parse(trackSnapshot["carb"]) + int.parse(foodCarb);
+                                        }
+                                        if(foodSodium != ""){
+                                          sodium = int.parse(trackSnapshot["sodium"]) + int.parse(foodSodium);
+                                        }
+                                        if(foodProtein != ""){
+                                          protein = int.parse(trackSnapshot["protein"]) + int.parse(foodProtein);
+                                        }
 
+                                        if(trackSnapshot.exists){
+                                          await trackCollection.doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}").set(
+                                              {
+                                                "dinner": FieldValue.arrayUnion([{
+                                                  "name": foodName,
+                                                  "calories": foodCalories,
+                                                  "fat": foodFat,
+                                                  "carbohydrate": foodCarb,
+                                                  "protein": foodProtein,
+                                                  "sodium": foodSodium,
+                                                  "datetime": DateTime.now(),
+                                                }]),
+                                                "caloriesEaten": totalCalories.toString(),
+                                                "fat": fat.toString(),
+                                                "carb": carb.toString(),
+                                                "protein": protein.toString(),
+                                                "sodium": sodium.toString(),
+                                              },SetOptions(merge: true)
+                                          );
+                                        }
+                                        Navigator.of(context).pop();
                                       },
                                     ),
                                   ],

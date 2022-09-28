@@ -1,6 +1,7 @@
+import 'package:calories_counter_project/models/User.dart';
 import 'package:calories_counter_project/screens/statsOfday_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,12 +11,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // User? user = FirebaseAuth.instance.currentUser!;
-  // Users users = Users();
+  User? user = FirebaseAuth.instance.currentUser!;
+  Users users = Users();
 
   @override
   Widget build(BuildContext context) {
-    bool useKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
-    return StatsScreen();
+    return const StatsScreen();
   }
 }

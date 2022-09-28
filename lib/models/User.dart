@@ -8,7 +8,8 @@ class Users{
   String? height; //ส่วนสูง
   String? bmi;
   String? bmr;
-
+  String? tdee;
+  String? active;
 
   Users({
     this.uid,
@@ -20,6 +21,8 @@ class Users{
     this.height,
     this.bmi,
     this.bmr,
+    this.tdee,
+    this.active
   });
 
   factory Users.fromMap(map){
@@ -33,6 +36,8 @@ class Users{
       height: map['height'],
       bmi: map['bmi'],
       bmr: map['bmr'],
+      tdee: map['tdee'],
+      active: map['active']
     );
   }
 
@@ -47,6 +52,8 @@ class Users{
       'height': height,
       'bmi': bmi,
       'bmr': bmr,
+      'tdee': tdee,
+      'active': active,
     };
   }
 

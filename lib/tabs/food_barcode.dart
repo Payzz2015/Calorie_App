@@ -9,8 +9,10 @@ class FoodBarcode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}").snapshots(),
+        stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("barcodes").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -31,8 +33,27 @@ class FoodBarcode extends StatelessWidget {
           }
           if (snapshot.hasData) {
             return SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
+                  Card(
+                    shadowColor: Colors.black,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: "Search....",
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                      ),
+
+                    ),
+                  ),
                   ListView.builder(
                       physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -106,7 +127,9 @@ class FoodBarcode extends StatelessWidget {
                                         ),
                                         onPressed: () {
                                           FirebaseFirestore.instance
-                                              .collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}")
+                                              .collection("users")
+                                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                                              .collection("barcodes")
                                               .doc(document.id)
                                               .delete();
                                         },

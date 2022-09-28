@@ -1,5 +1,5 @@
 import 'package:calories_counter_project/models/User.dart';
-import 'package:calories_counter_project/profiles/age.dart';
+import 'package:calories_counter_project/profiles/name.dart';
 import 'package:flutter/material.dart';
 
 class genderSelector extends StatefulWidget {
@@ -11,8 +11,14 @@ class genderSelector extends StatefulWidget {
 
 class _genderSelectorState extends State<genderSelector> {
 
-  final formKey = GlobalKey<FormState>();
+  late bool _isButtonDisabled;
+  @override
+  void initState() {
+    super.initState();
+    _isButtonDisabled = true;
+  }
 
+  final formKey = GlobalKey<FormState>();
   Users userData = Users(
     gender: "",
   );
@@ -22,10 +28,11 @@ class _genderSelectorState extends State<genderSelector> {
         gender: userData.gender
     );
     if (formKey.currentState != null && formKey.currentState!.validate() && selectorGender != 0) {
+      print(userData.gender);
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ageForm(user: users),
+          builder: (context) => nameForm(user: users),
         ),
       );
     } else {
@@ -35,12 +42,17 @@ class _genderSelectorState extends State<genderSelector> {
 
   int selectorGender = 0;
 
+
   @override
   Widget build(BuildContext context) {
-    bool useKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          "โปรไฟล์ของฉัน",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.green,
         elevation: 0,
         centerTitle: true,
       ),
@@ -53,8 +65,8 @@ class _genderSelectorState extends State<genderSelector> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                "เลือกเพศของคุณ",
+              const Text(
+                "เลือกเพศของฉัน",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 30,
@@ -65,17 +77,20 @@ class _genderSelectorState extends State<genderSelector> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () =>
-                        setState(() {
-                          userData = Users(
-                            gender: "ชาย",
-                          );
-                          selectorGender = 1;
-                        },),
+                    onTap: (){
+                      setState(() {
+                        userData = Users(
+                          gender: "ชาย",
+                        );
+                        selectorGender = 1;
+                        _isButtonDisabled = false;
+                      },
+                      );
+                    },
                     child: Container(
                       height: 150,
                       width: 150,
-                      color: selectorGender == 1 ? Color(0xFF5fb27c) : Color(0xFFE4E6EA),
+                      color: selectorGender == 1 ? const Color(0xFF5fb27c) : const Color(0xFFE4E6EA),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -86,7 +101,7 @@ class _genderSelectorState extends State<genderSelector> {
                             size: 50,
                           ),
                           Text(
-                            "ชาย",
+                            "ผู้ชาย",
                             style: TextStyle(
                                 color:
                                 selectorGender == 1 ? Colors.white : Colors
@@ -98,20 +113,25 @@ class _genderSelectorState extends State<genderSelector> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 24),
+                  const SizedBox(width: 24),
                   GestureDetector(
-                    onTap: () =>
-                        setState(() {
+                    onTap: (){
+                      setState(() {
                           userData = Users(
                             gender: "หญิง",
                           );
                           selectorGender = 2;
-                        },),
+                          _isButtonDisabled = false;
+                        },
+                      );
+                    },
+
+
                     child: Container(
                       height: 150,
                       width: 150,
                       alignment: Alignment.center,
-                      color: selectorGender == 2 ? Color(0xFF5fb27c) : Color(0xFFE4E6EA),
+                      color: selectorGender == 2 ? const Color(0xFF5fb27c) : const Color(0xFFE4E6EA),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -122,7 +142,7 @@ class _genderSelectorState extends State<genderSelector> {
                             size: 50,
                           ),
                           Text(
-                            "หญิง",
+                            "ผู้หญิง",
                             style: TextStyle(
                                 color:
                                 selectorGender == 2 ? Colors.white : Colors
@@ -142,34 +162,43 @@ class _genderSelectorState extends State<genderSelector> {
                   Container(
                     width: 15.0,
                     height: 15.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFF5fb27c),
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 25,),
+                  Container(
+                    width: 10.0,
+                    height: 10.0,
+                    decoration: const BoxDecoration(
                       color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
@@ -179,21 +208,44 @@ class _genderSelectorState extends State<genderSelector> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      Visibility(
-                        visible: !useKeyboard,
-                        child: FloatingActionButton(
-                          heroTag: null,
-                          backgroundColor: Color(0xFF2f7246),
-                          child: Icon(
-                            Icons.arrow_forward_ios_outlined, size: 35,),
-                          onPressed: () {
-                            dataNavigation(context);
-                          },
+                  Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xFF5fb27c),
+                    child: _isButtonDisabled
+                        ?MaterialButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      color: Colors.grey[400],
+                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                      minWidth: MediaQuery.of(context).size.width - 30,
+                      onPressed: () {
+                      },
+                      child: const Text(
+                        "ถัดไป",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold
                         ),
                       ),
-                    ],
+                    )
+                    :MaterialButton(
+                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                      minWidth: MediaQuery.of(context).size.width - 30,
+                      onPressed: () {
+                        dataNavigation(context);
+                      },
+                      child: const Text(
+                        "ถัดไป",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
                 ],
               )

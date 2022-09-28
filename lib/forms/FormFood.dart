@@ -18,7 +18,7 @@ class _FormFoodState extends State<FormFood> {
   final formKey = GlobalKey<FormState>();
   Food myFood = Food(name: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  final CollectionReference _foodCollection = FirebaseFirestore.instance.collection("FOODS_UID_${FirebaseAuth.instance.currentUser!.uid}");
+  final CollectionReference _foodCollection = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("foods");
 
   @override
   Widget build(BuildContext context) {

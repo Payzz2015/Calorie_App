@@ -24,7 +24,7 @@ class _UpdateFoodState extends State<UpdateFood> {
   final formKey = GlobalKey<FormState>();
   Food myFood = Food(name: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  final CollectionReference _foodCollection = FirebaseFirestore.instance.collection("FOODS_UID_${FirebaseAuth.instance.currentUser!.uid}");
+  final CollectionReference _foodCollection = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("foods");
 
 
   final TextEditingController nameEditingController = TextEditingController();
@@ -37,7 +37,6 @@ class _UpdateFoodState extends State<UpdateFood> {
   @override
   void initState() {
     super.initState();
-
     setState(() {
       nameEditingController.text = widget.name;
       caloriesEditingController.text = widget.calories;

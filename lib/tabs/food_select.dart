@@ -9,8 +9,10 @@ class FoodSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("FOODS_UID_${FirebaseAuth.instance.currentUser!.uid}").snapshots(),
+        stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("foods").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -31,8 +33,27 @@ class FoodSelect extends StatelessWidget {
           }
           if (snapshot.hasData) {
             return SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
+                  Card(
+                    shadowColor: Colors.black,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: "Search....",
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                      ),
+
+                    ),
+                  ),
                   ListView.builder(
                       physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -116,7 +137,9 @@ class FoodSelect extends StatelessWidget {
                                       ),
                                       onPressed: () {
                                         FirebaseFirestore.instance
-                                            .collection("FOODS_UID_${FirebaseAuth.instance.currentUser!.uid}")
+                                            .collection("users")
+                                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                                            .collection("foods")
                                             .doc(document.id)
                                             .delete();
                                       },

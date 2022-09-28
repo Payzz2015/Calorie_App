@@ -18,9 +18,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final formKey = GlobalKey<FormState>();
 
-  final emailEditingController = new TextEditingController();
-  final passwordEditingController = new TextEditingController();
-  final confirmPasswordEditingController = new TextEditingController();
+  final emailEditingController = TextEditingController();
+  final passwordEditingController = TextEditingController();
+  final confirmPasswordEditingController = TextEditingController();
 
   final firebaseAuth = FirebaseAuth.instance;
 
@@ -41,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.green,
           ),
@@ -50,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         ),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "สมัครสมาชิก",
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -88,15 +88,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                        prefixIcon: Icon(Icons.mail),
+                        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        prefixIcon: const Icon(Icons.mail),
                         hintText: "อีเมล",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
@@ -104,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: passwordEditingController,
                       obscureText: true,
                       validator: (value){
-                        RegExp regexp = new RegExp(r'^.{6,}$');
+                        RegExp regexp = RegExp(r'^.{6,}$');
                         if(value!.isEmpty){
                           return ("กรุณากรอกรหัสผ่าน");
                         }
@@ -118,15 +118,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                        prefixIcon: Icon(Icons.key),
+                        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        prefixIcon: const Icon(Icons.key),
                         hintText: "รหัสผ่าน",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
@@ -145,23 +145,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                        prefixIcon: Icon(Icons.key),
+                        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        prefixIcon: const Icon(Icons.key),
                         hintText: "ยืนยันรหัสผ่านอีกครั้ง",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Material(
                       elevation: 5,
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFF5fb27c),
+                      color: const Color(0xFF5fb27c),
                       child: MaterialButton(
-                        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                         minWidth: MediaQuery.of(context).size.width,
                         onPressed: () {
                           signUp(
@@ -169,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               passwordEditingController.text
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "สมัครสมาชิก",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -190,13 +190,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void signUp(String email, String password) async{
+    String errorMessage;
     if(formKey.currentState!.validate()){
       await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {
             collectToFirestore()
       }).catchError((e){
-        Fluttertoast.showToast(msg: e!.message);
+        print(e!.code);
+        switch (e!.code) {
+          case "invalid-email":
+            errorMessage = "กรุณากรอกรูปแบบอีเมลให้ถูกต้อง";
+            break;
+          case "email-already-in-use":
+            errorMessage = "อีเมลนี้มีผู้ใช้งานแล้ว";
+            break;
+          case "weak-password":
+            errorMessage = "พาสเวิร์ดนี้อ่อนแอเกินไป";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "การสมัครด้วยอีเมลและพาสเวิร์ดไม่เปิดใช้งาน";
+            break;
+          default:
+            errorMessage = "ไม่ทราบสาเหตุ";
+        }
+        Fluttertoast.showToast(
+          msg: errorMessage,
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 15,
+          textColor: Colors.white,
+          backgroundColor: Colors.redAccent,
+          gravity: ToastGravity.BOTTOM_LEFT,
+        );
       });
     }
   }
@@ -212,10 +237,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 
     await firebaseFirestore.collection("users").doc(user.uid).set(users.toMap());
-    Fluttertoast.showToast(msg: "สร้างบัญชีผู้ใช้สำเร็จ");
+    Fluttertoast.showToast(
+        msg: "สร้างบัญชีผู้ใช้สำเร็จ",
+        toastLength: Toast.LENGTH_LONG,
+        fontSize: 15,
+        textColor: Colors.white,
+        backgroundColor: Colors.indigoAccent,
+        gravity: ToastGravity.BOTTOM_LEFT,
+    );
 
     Navigator.pushAndRemoveUntil((context), MaterialPageRoute(builder: (context){
-      return genderSelector();
+      return const genderSelector();
     }), (route) => false);
 
   }

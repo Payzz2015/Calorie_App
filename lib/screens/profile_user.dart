@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:calories_counter_project/profiles/resetData/newGender.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -35,29 +36,25 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Stream documentStream = FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots();
     //final Stream<QuerySnapshot> _usersStream = firebaseFirestore.collection('users').snapshots(includeMetadataChanges: true);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF5fb27c),
-        foregroundColor: Colors.white,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Color(0xFF5fb27c),
         centerTitle: true,
         title: const Text(
-          "โปรไฟล์ของคุณ",
+          "ข้อมูลส่วนตัว",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              signOut(context);
-            },
-            icon: const Icon(
-              Icons.exit_to_app,
-              size: 28,
-            ),
-          )
-        ],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("users").doc(users.uid).snapshots(),
@@ -73,31 +70,41 @@ class _UserProfileState extends State<UserProfile> {
                 child: Center(
                   child: Column(
                     children: [
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
                         children: [
                           Text(
-                            snapshot.data['name'],
-                            //users.name?.toString() ?? "",
-                            style: const TextStyle(
-                                color: Color(0xff02b194),
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold),
+                            "ชื่อผู้ใช้งาน",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              color: Colors.grey[700],
+                            ),
                           ),
-                          IconButton(
-                            onPressed: () async {
-                              final name = await openEditName();
-                              if (name == null || name.isEmpty) return;
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 30,),
+                              Text(
+                                snapshot.data['name'],
+                                //users.name?.toString() ?? "",
+                                style: const TextStyle(
+                                    color: Color(0xff02b194),
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              IconButton(
+                                onPressed: () async {
+                                  final name = await openEditName();
+                                  if (name == null || name.isEmpty) return;
 
-                              setState(() {
-                                editName(nameUser: name);
-                              });
-                            },
-                            icon: const Icon(Icons.edit),
-                            color: const Color(0xff000000),
+                                  setState(() {
+                                    editName(nameUser: name);
+                                  });
+                                },
+                                icon: const Icon(Icons.edit),
+                                color: const Color(0xff000000),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -198,35 +205,6 @@ class _UserProfileState extends State<UserProfile> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "น้ำหนัก",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25,
-                                      color: Colors.grey[700],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                "${snapshot.data['weight']} kg",
-                                style: const TextStyle(
-                                  fontSize: 25,
-                                  color: Color(0xff43ccba),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(
-                            width: 55,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
                                     "ส่วนสูง",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -237,7 +215,35 @@ class _UserProfileState extends State<UserProfile> {
                                 ],
                               ),
                               Text(
-                                "${snapshot.data['height']} cm",
+                                "${snapshot.data['height']} ซม.",
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  color: Color(0xff43ccba),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 55,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "น้ำหนัก",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "${snapshot.data['weight']} กก.",
                                 style: const TextStyle(
                                   fontSize: 25,
                                   color: Color(0xff43ccba),
@@ -315,7 +321,7 @@ class _UserProfileState extends State<UserProfile> {
                       Material(
                         elevation: 5,
                         borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xFF00aca0),
+                        color: const Color(0xFF5fb27c),
                         child: MaterialButton(
                           padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
                           minWidth: MediaQuery
@@ -337,7 +343,42 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
+                      ),
+                      Material(
+                        elevation: 5,
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color(0xffd7163d),
+                        child: MaterialButton(
+                          padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                          minWidth: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          onPressed: () {
+                            signOut(context);
+                            Fluttertoast.showToast(
+                              msg: "ออกจากระบบเรียบร้อย",
+                              toastLength: Toast.LENGTH_LONG,
+                              fontSize: 15,
+                              textColor: Colors.white,
+                              backgroundColor: Colors.deepOrange,
+                              gravity: ToastGravity.BOTTOM_LEFT,
+                            );
+                          },
+                          child: const Text(
+                            "ออกจากระบบ",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 25,
                       ),
                     ],
                   ),
@@ -354,22 +395,44 @@ class _UserProfileState extends State<UserProfile> {
       context: context,
       builder: (context){
         return AlertDialog(
-          title: const Text("ต้องการตั้งข้อมูลใหม่ใช่หรือไม่"),
+          title: const Text(
+            "ต้องการตั้งข้อมูลใหม่ใช่หรือไม่",
+            style: TextStyle(
+              fontSize: 18,
+                fontWeight: FontWeight.bold
+            ),
+          ),
           actions: [
-            MaterialButton(
-              child: const Text("ตกลง"),
-              onPressed: (){
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                  return const newDataGender();
-                }));
-              }
-            ),
-            MaterialButton(
-                child: const Text("ยกเลิก"),
-                onPressed: (){
-                  Navigator.of(context).pop();
-                }
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MaterialButton(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.greenAccent,
+                    child: const Text("ตกลง",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    onPressed: (){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                        return const newDataGender();
+                      }));
+                    }
+                ),
+                SizedBox(width: 20,),
+                MaterialButton(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.redAccent,
+                    child: const Text("ยกเลิก",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    }
+                ),
+              ],
+            )
           ],
         );
       }
@@ -380,31 +443,56 @@ class _UserProfileState extends State<UserProfile> {
       context: context,
       builder: (context){
         return AlertDialog(
-          title: const Text("เปลี่ยนชื่อโปรไฟล์ของคุณ"),
-          content: TextField(
-            controller: nameController,
-            keyboardType: TextInputType.name,
-            autofocus: true,
-            decoration: const InputDecoration(
-              hintText: "ใส่ชื่อของคุณ",
+          title: const Text(
+            "เปลี่ยนชื่อโปรไฟล์ของคุณ",
+            style: TextStyle(
+                fontWeight: FontWeight.bold
+            ),
+          ),
+          content: Padding(
+            padding: const EdgeInsets.only(left: 30,right: 30),
+            child: TextField(
+              controller: nameController,
+              keyboardType: TextInputType.name,
+              textAlign: TextAlign.center,
+              autofocus: true,
+              decoration: const InputDecoration(
+                hintText: "ชื่อ",
+              ),
             ),
           ),
           actions: [
-            MaterialButton(
-              onPressed: (){
-                Navigator.of(context).pop(nameController.text);
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MaterialButton(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  color: Colors.greenAccent,
+                  onPressed: (){
+                    Navigator.of(context).pop(nameController.text);
 
-                nameController.clear();
-              },
-              child: const Text("ยืนยัน"),
-            ),
-            MaterialButton(
-              onPressed: (){
-                Navigator.of(context).pop();
+                    nameController.clear();
+                  },
+                  child: const Text("ยืนยัน",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                ),
+                SizedBox(width: 20,),
+                MaterialButton(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  color: Colors.redAccent,
+                  onPressed: (){
+                    Navigator.of(context).pop();
 
-                nameController.clear();
-              },
-              child: const Text("ยกเลิก"),
+                    nameController.clear();
+                  },
+                  child: const Text("ยกเลิก",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                )
+              ],
             )
           ],
         );
@@ -413,7 +501,6 @@ class _UserProfileState extends State<UserProfile> {
 
   Future editName({required String nameUser}) async{
     DocumentReference documentReference = FirebaseFirestore.instance.collection("users").doc(user!.uid);
-
     await documentReference.update({'name': nameUser});
   }
 

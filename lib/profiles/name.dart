@@ -1,20 +1,19 @@
 import 'package:calories_counter_project/models/User.dart';
-import 'package:calories_counter_project/profiles/height.dart';
+import 'package:calories_counter_project/profiles/age.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class ageForm extends StatefulWidget {
+class nameForm extends StatefulWidget {
   final Users user;
-  const ageForm({Key? key,required this.user}) : super(key: key);
+  const nameForm({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<ageForm> createState() => _ageFormState(user);
+  State<nameForm> createState() => _nameFormState(user);
 }
 
-class _ageFormState extends State<ageForm> {
+class _nameFormState extends State<nameForm> {
 
   final Users user;
-  _ageFormState(this.user);
+  _nameFormState(this.user);
 
   late bool _isButtonDisabled;
   @override
@@ -24,31 +23,26 @@ class _ageFormState extends State<ageForm> {
   }
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController ageController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
   dataNavigation(BuildContext context) {
     Users users = Users(
       gender: user.gender,
-      name: user.name,
-      age: ageController.text,
+      name: nameController.text,
     );
     if (formKey.currentState != null && formKey.currentState!.validate()) {
       print(users.gender);
       print(users.name);
-      print(users.age);
-
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => heightForm(user: users),
+          builder: (context) => ageForm(user: users),
         ),
       );
     } else {
       return;
     }
   }
-
-  String errorText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +59,13 @@ class _ageFormState extends State<ageForm> {
         centerTitle: true,
       ),
       body: //Text("${user.gender!}"),
-    Form(
+      Form(
         key: formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const Text(
-              "กรอกข้อมูลอายุ",
+              "ชื่อผู้ใช้งาน",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
@@ -85,53 +79,48 @@ class _ageFormState extends State<ageForm> {
                   height: 190,
                   width: 200,
                   child: TextFormField(
+                    cursorColor: Colors.green,
                     onChanged: (value){
                       setState(() {
-                        if(value.isNotEmpty){
+                        if(nameController.text.isNotEmpty){
                           _isButtonDisabled = false;
                         }
-                        if(value.isEmpty){
+                        if(nameController.text.isEmpty){
                           _isButtonDisabled = true;
                         }
-                        if(int.parse(value) <= 13){
-                          errorText = "กรุณาป้อนอายุมากกว่า 13";
-                          _isButtonDisabled = true;
-                        }
-
                       });
                     },
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
                     onSaved: (value) {
-                      ageController.text = value!;
+                      nameController.text = value!;
                     },
-                    keyboardType: TextInputType.number,
-                    controller: ageController,
+                    keyboardType: TextInputType.name,
+                    controller: nameController,
                     textAlign: TextAlign.center,
+                    //initialValue: weightController.text,
                     style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
                     ),
+                    textDirection: TextDirection.rtl,
                     decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      suffixText: "ปี",
+                      /*suffixText: "ปี",
                       suffixStyle: TextStyle(
                         color: Colors.black,
                         fontSize: 25,
-                      ),
+                        fontWeight: FontWeight.normal
+                      ),*/
                       border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 3,
-                              color: Colors.grey
-                          )
+                        borderSide: BorderSide(
+                            width: 3,
+                            color: Colors.grey
+                        )
                       ),
                       disabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 3,
-                              color: Colors.grey
-                          )
+                        borderSide: BorderSide(
+                          width: 3,
+                          color: Colors.grey
+                        )
                       ),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -145,30 +134,17 @@ class _ageFormState extends State<ageForm> {
                               color: Colors.grey
                           )
                       ),
-                      errorBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 3,
-                              color: Colors.red
-                          )
-                      ),
-                      errorText: _isButtonDisabled == false ? null : errorText,
+                      errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none
                       ),
                     ),
+                  ),
                 ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 10.0,
-                  height: 10.0,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                const SizedBox(width: 25,),
                 Container(
                   width: 10.0,
                   height: 10.0,
@@ -213,55 +189,59 @@ class _ageFormState extends State<ageForm> {
                     shape: BoxShape.circle,
                   ),
                 ),
+                const SizedBox(width: 25,),
+                Container(
+                  width: 10.0,
+                  height: 10.0,
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                    shape: BoxShape.circle,
+                  ),
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(10),
-                      color: const Color(0xFF5fb27c),
-                      child: _isButtonDisabled
-                          ?
-                      MaterialButton(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        color: Colors.grey[400],
-                        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                        minWidth: MediaQuery.of(context).size.width - 30,
-                        onPressed: () {
-                        },
-                        child: const Text(
-                          "ถัดไป",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      )
-                          :
-                      MaterialButton(
-                        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                        minWidth: MediaQuery.of(context).size.width - 30,
-                        onPressed: () {
-                          dataNavigation(context);
-                        },
-                        child: const Text(
-                          "ถัดไป",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
+                Material(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xFF5fb27c),
+                  child: _isButtonDisabled
+                      ?
+                  MaterialButton(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    color: Colors.grey[400],
+                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    minWidth: MediaQuery.of(context).size.width - 30,
+                    onPressed: () {
+                    },
+                    child: const Text(
+                      "ถัดไป",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
                       ),
                     ),
-                  ],
+                  )
+                      :
+                  MaterialButton(
+                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    minWidth: MediaQuery.of(context).size.width - 30,
+                    onPressed: () {
+                      dataNavigation(context);
+                    },
+                    child: const Text(
+                      "ถัดไป",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
               ],
             )

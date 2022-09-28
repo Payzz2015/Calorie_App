@@ -24,7 +24,7 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
   final formKey = GlobalKey<FormState>();
   Barcode myBarcode = Barcode(name: "",barcode: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  final CollectionReference _barcodeCollection = FirebaseFirestore.instance.collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}");
+  final CollectionReference _barcodeCollection = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("barcodes");
 
   final TextEditingController nameEditingController = TextEditingController();
   final TextEditingController barcodeEditingController = TextEditingController();

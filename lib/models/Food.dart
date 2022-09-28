@@ -13,6 +13,24 @@ class Food{
     //required this.createdOn,required this.mealTime
   });
 
+  factory Food.fromJson(Map<String, dynamic> json) => Food(
+    name: json["name"],
+    fat: json['fat'],
+    calories: json["calories"],
+    protein: json['protein'],
+    carbohydrate: json['carbohydrate'],
+    sodium: json['sodium'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'calories': calories,
+    'fat': fat,
+    'protein': protein,
+    'carbohydrate': carbohydrate,
+    'sodium': sodium,
+  };
+
 
  /* factory Food.fromMap(map){
     return Food(

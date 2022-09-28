@@ -1,3 +1,4 @@
+import 'package:calories_counter_project/profiles/tdee.dart';
 import 'package:calories_counter_project/screens/register_screen.dart';
 import 'package:calories_counter_project/widgets/bottombar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,8 +15,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
 
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   final firebaseAuth = FirebaseAuth.instance;
 
@@ -27,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Calories Calculator App",
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -65,14 +66,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.mail),
+                        prefixIcon: const Icon(Icons.mail),
                         hintText: "อีเมล",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
@@ -80,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: passwordController,
                       obscureText: true,
                       validator: (value){
-                        RegExp regexp = new RegExp(r'^.{6,}$');
+                        RegExp regexp = RegExp(r'^.{6,}$');
                         if(value!.isEmpty){
                           return ("กรุณากรอกรหัสผ่าน");
                         }
@@ -94,27 +95,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.key),
+                        prefixIcon: const Icon(Icons.key),
                         hintText: "รหัสผ่าน",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Material(
                       elevation: 5,
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFF5fb27c),
+                      color: const Color(0xFF5fb27c),
                       child: MaterialButton(
-                        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                         minWidth: MediaQuery.of(context).size.width,
                         onPressed: () {
                           signIn(emailController.text, passwordController.text);
                         },
-                        child: Text(
+                        child: const Text(
                           "เข้าสู่ระบบ",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -124,21 +125,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("ถ้าหากยังไม่มีบัญชี  "),
+                        const Text("ถ้าหากยังไม่มีบัญชี  "),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return RegisterScreen();
+                                  return const RegisterScreen();
                                 }));
                           },
-                          child: Text(
+                          child: const Text(
                             "สมัครสมาชิก",
                             style: TextStyle(
                                 color: Color(0xFF5fb27c),
@@ -159,17 +160,53 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void signIn(String email, String password) async{
+    String errorMessage;
     if(formKey.currentState!.validate()){
-
       await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
-        Fluttertoast.showToast(msg: "เข้าสู่ระบบสำเร็จ"),
+        Fluttertoast.showToast(
+          msg: "เข้าสู่ระบบสำเร็จ",
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 15,
+          textColor: Colors.white,
+          backgroundColor: Colors.indigoAccent,
+          gravity: ToastGravity.BOTTOM_LEFT,
+        ),
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
-          return BottomBar();
+          return const BottomBar();
         }))
       }).catchError((e){
-        Fluttertoast.showToast(msg: e!.message);
+        switch (e!.code) {
+          case "invalid-email":
+            errorMessage = "กรุณากรอกรูปแบบอีเมลให้ถูกต้อง";
+            break;
+          case "wrong-password":
+            errorMessage = "รหัสผ่านของคุณผิด";
+            break;
+          case "user-not-found":
+            errorMessage = "ไม่พบอีเมลของผู้ใช้งาน";
+            break;
+          case "user-disabled":
+            errorMessage = "อีเมลของคุณถูกปิดการใช้งาน";
+            break;
+          case "too-many-requests":
+            errorMessage = "คำขอมากเกินไป ลองใหม่อีกครั้งในภายหลัง";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "การล็อคอินด้วยอีเมลและพาสเวิร์ดไม่เปิดใช้งาน";
+            break;
+          default:
+            errorMessage = "ไม่ทราบสาเหตุ";
+        }
+          Fluttertoast.showToast(
+            msg: errorMessage,
+            toastLength: Toast.LENGTH_LONG,
+            fontSize: 15,
+            textColor: Colors.white,
+            backgroundColor: Colors.redAccent,
+            gravity: ToastGravity.BOTTOM_LEFT,
+          );
       });
     }
   }

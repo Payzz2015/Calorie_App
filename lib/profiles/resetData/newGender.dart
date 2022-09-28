@@ -11,19 +11,25 @@ class newDataGender extends StatefulWidget {
 
 class _newDataGenderState extends State<newDataGender> {
 
+  late bool _isButtonDisabled;
+  @override
+  void initState() {
+    super.initState();
+    _isButtonDisabled = true;
+  }
+
   final formKey = GlobalKey<FormState>();
-
-
-
   Users userData = Users(
     gender: "",
   );
 
   dataNavigation(BuildContext context) {
     Users users = Users(
-        gender: userData.gender
+        gender: userData.gender,
     );
+
     if (formKey.currentState != null && formKey.currentState!.validate() && selectorGender != 0) {
+      print(userData.gender);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -39,10 +45,14 @@ class _newDataGenderState extends State<newDataGender> {
 
   @override
   Widget build(BuildContext context) {
-    bool useKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          "โปรไฟล์ของฉัน",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.green,
         elevation: 0,
         centerTitle: true,
       ),
@@ -73,6 +83,7 @@ class _newDataGenderState extends State<newDataGender> {
                             gender: "ชาย",
                           );
                           selectorGender = 1;
+                          _isButtonDisabled = false;
                         },),
                     child: Container(
                       height: 150,
@@ -108,6 +119,7 @@ class _newDataGenderState extends State<newDataGender> {
                             gender: "หญิง",
                           );
                           selectorGender = 2;
+                          _isButtonDisabled = false;
                         },),
                     child: Container(
                       height: 150,
@@ -176,26 +188,58 @@ class _newDataGenderState extends State<newDataGender> {
                       shape: BoxShape.circle,
                     ),
                   ),
+                  const SizedBox(width: 25,),
+                  Container(
+                    width: 10.0,
+                    height: 10.0,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      Visibility(
-                        visible: !useKeyboard,
-                        child: FloatingActionButton(
-                          heroTag: null,
-                          backgroundColor: const Color(0xFF2f7246),
-                          child: const Icon(
-                            Icons.arrow_forward_ios_outlined, size: 35,),
-                          onPressed: () {
-                            dataNavigation(context);
-                          },
+                  Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xFF5fb27c),
+                    child: _isButtonDisabled
+                        ?MaterialButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      color: Colors.grey[400],
+                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                      minWidth: MediaQuery.of(context).size.width - 30,
+                      onPressed: () {
+                      },
+                      child: const Text(
+                        "ถัดไป",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold
                         ),
                       ),
-                    ],
+                    )
+                    :MaterialButton(
+                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                      minWidth: MediaQuery.of(context).size.width - 30,
+                      onPressed: () {
+                        dataNavigation(context);
+                      },
+                      child: const Text(
+                        "ถัดไป",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
                 ],
               )

@@ -3,42 +3,34 @@ import 'package:calories_counter_project/helpers/dayofWeek.dart';
 import 'package:calories_counter_project/models/Day.dart';
 import 'package:calories_counter_project/profiles/gender.dart';
 import 'package:calories_counter_project/screens/history_screen.dart';
-import 'package:calories_counter_project/screens/meal/manageMeal.dart';
-import 'package:calories_counter_project/screens/meal/meal_breakfast.dart';
-import 'package:calories_counter_project/screens/meal/meal_dinner.dart';
-import 'package:calories_counter_project/screens/meal/meal_lunch.dart';
-import 'package:calories_counter_project/screens/meal/meal_snack.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class StatsScreen extends StatefulWidget {
-  const StatsScreen({Key? key}) : super(key: key);
+class HistoryOfDay extends StatefulWidget {
+  final DateTime date;
+  const HistoryOfDay({Key? key,required this.date}) : super(key: key);
 
   @override
-  State<StatsScreen> createState() => _StatsScreenState();
+  State<HistoryOfDay> createState() => _HistoryOfDayState(date);
 }
 
-class _StatsScreenState extends State<StatsScreen> {
-
-  TextEditingController weightController = TextEditingController();
-
+class _HistoryOfDayState extends State<HistoryOfDay> {
+  final DateTime date;
+  _HistoryOfDayState(this.date);
   //date
   late DateTime datePicked;
-  DateTime _value = DateTime.now();
+  late DateTime _value = date;
   var now = DateTime.now();
   var onlyBuddhistYear = DateTime.now().yearInBuddhistCalendar;
   DateTime today = DateTime.now();
-  Color _rightArrowColor = const Color(0xFF5fb27c);
-  Color _leftArrowColor = Colors.white;
 
   bool dateCheck() {
     DateTime formatPicked =
-        DateTime(onlyBuddhistYear, datePicked.month, datePicked.day);
+    DateTime(onlyBuddhistYear, datePicked.month, datePicked.day);
     DateTime formatToday = DateTime(onlyBuddhistYear, today.month, today.day);
     if (formatPicked.compareTo(formatToday) == 0) {
       return true;
@@ -50,57 +42,23 @@ class _StatsScreenState extends State<StatsScreen> {
   Widget _showDatePicker() {
     return SizedBox(
       width: 360,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.arrow_left, size: 30.0),
-            color: _leftArrowColor,
-            onPressed: () {
-              setState(() {
-                _loadUserData();
-                _value = _value.subtract(const Duration(days: 1));
-                _rightArrowColor = Colors.white;
-                _leftArrowColor = Colors.white;
-              });
-            },
-          ),
-          Text(
-            _dateFormatter(_value),
-            style: const TextStyle(
-                fontFamily: 'Open Sans',
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Colors.white),
-          ),
-          IconButton(
-              icon: const Icon(Icons.arrow_right, size: 30.0),
-              color: _rightArrowColor,
-              onPressed: () {
-                if (today.difference(_value).compareTo(const Duration(days: 1)) ==
-                    -1) {
-                  setState(() {
-                    _loadUserData();
-                    _rightArrowColor = const Color(0xFF5fb27c);
-                  });
-                } else {
-                  setState(() {
-
-                    _loadUserData();
-                    _value = _value.add(const Duration(days: 1));
-                  });
-                  if (today.difference(_value).compareTo(const Duration(days: 1)) ==
-                      -1) {
-                    setState(() {
-                      _loadUserData();
-                      _rightArrowColor = const Color(0xFF5fb27c);
-                    });
-                  }
-                }
-              }),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              _dateFormatter(_value),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -193,22 +151,22 @@ class _StatsScreenState extends State<StatsScreen> {
     day.dinner = [];
     day.snack = [];
     if(!trackSnapshot.exists){
-        await trackCollection.doc("${_value.day}-${_value.month}-${_value.yearInBuddhistCalendar}").set(
-            {
-              "day": day.day,
-              "weight": day.weight,
-              "carb": day.carb,
-              "fat": day.fat,
-              "protein": day.protein,
-              "sodium": day.sodium,
-              "caloriesLeft": day.caloriesLeft,
-              "caloriesEaten": day.caloriesEaten,
-              "breakfast": day.breakfast,
-              "lunch": day.lunch,
-              "dinner": day.dinner,
-              "snack": day.snack,
-            },SetOptions(merge: true)
-        );
+      await trackCollection.doc("${_value.day}-${_value.month}-${_value.yearInBuddhistCalendar}").set(
+          {
+            "day": day.day,
+            "weight": day.weight,
+            "carb": day.carb,
+            "fat": day.fat,
+            "protein": day.protein,
+            "sodium": day.sodium,
+            "caloriesLeft": day.caloriesLeft,
+            "caloriesEaten": day.caloriesEaten,
+            "breakfast": day.breakfast,
+            "lunch": day.lunch,
+            "dinner": day.dinner,
+            "snack": day.snack,
+          },SetOptions(merge: true)
+      );
     }
   }
 
@@ -229,14 +187,6 @@ class _StatsScreenState extends State<StatsScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    weightController.dispose();
-    super.dispose();
-  }
-
-
-
   bool isVisibleBreakfast = false;
   bool isVisibleLunch = false;
   bool isVisibleDinner = false;
@@ -244,29 +194,22 @@ class _StatsScreenState extends State<StatsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool useKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: Color(0xFF5fb27c),
         centerTitle: true,
         title: const Text(
-          "หน้าหลัก",
+          "ประวัติ",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (conetext) {
-                  return const HistoryScreen();
-                }));
-              },
-              icon: const Icon(
-                Icons.calendar_month_rounded,
-                size: 25,
-              ))
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -499,7 +442,9 @@ class _StatsScreenState extends State<StatsScreen> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
                                                           Text(
-                                                            'โภชนาการวันนี้',
+                                                            snapshot.connectionState == ConnectionState.waiting
+                                                                ? ''
+                                                                : '${snapshot.data!['name']}',
                                                             style: TextStyle(
                                                               fontWeight: FontWeight.bold,
                                                               fontSize: 20,
@@ -653,68 +598,6 @@ class _StatsScreenState extends State<StatsScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context){
-                                  return ManageMeal(date: _value);
-                                }));
-                              },
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                elevation: 5,
-                                color: Colors.green,
-                                shadowColor: Colors.black,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      Icon(
-                                        Icons.restaurant,
-                                        size: 50,
-                                        color: Colors.white,
-                                      ),
-                                      Text("จัดการมื้ออาหาร",style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.bold),),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                final weight = await openUpdateWeight();
-                                if (weight == null || weight.isEmpty) return;
-
-                                setState(() {
-                                  updateWeight(weightUser: weight);
-                                });
-                              },
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                elevation: 5,
-                                color: Colors.green,
-                                shadowColor: Colors.black,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                        Icon(Icons.edit,size: 50,color: Colors.white),
-
-                                      Text("อัพเดทน้ำหนัก (${snapshot.data!['weight']} กก.)",style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.bold),),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10,),
                         Card(
                           color: isVisibleBreakfast? Color(0xFF5fb27c) : Colors.white,
                           shape: BeveledRectangleBorder(
@@ -737,31 +620,6 @@ class _StatsScreenState extends State<StatsScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              trailing:
-                              Wrap(
-                                  spacing: 2,
-                                  children: <Widget>[
-                                    IconButton(
-                                        onPressed: () {
-
-                                        },
-                                        icon: Icon(
-                                          Icons.camera_alt_rounded,
-                                          color: isVisibleBreakfast ? Colors.white : Color(0xFF5fb27c),
-                                        )),
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                                            return mealBreakfast(date: _value);
-                                          }));
-                                        },
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: isVisibleBreakfast ? Colors.white : Color(0xFF5fb27c),
-                                        )
-                                    ),
-                                  ]
-                              ),
                             ),
                           ),
                         ),
@@ -770,26 +628,26 @@ class _StatsScreenState extends State<StatsScreen> {
                           children: [
                             isVisibleBreakfast
                                 ? Column(
-                                  children: [
-                                    ListTile(
-                                      leading: Text(""),
-                                      title: Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                      trailing: Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                              children: [
+                                ListTile(
+                                  leading: Text(""),
+                                  title: Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  trailing: Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                ),
+                                for(var i in snapshot.data!["breakfast"])
+                                  ListTile(
+                                    leading: Icon(Icons.add),
+                                    title: Text(
+                                      '${i["name"]}',
+                                      textScaleFactor: 1.5,
                                     ),
-                                    for(var i in snapshot.data!["breakfast"])
-                                    ListTile(
-                                      leading: Icon(Icons.add),
-                                      title: Text(
-                                        '${i["name"]}',
-                                        textScaleFactor: 1.5,
-                                      ),
-                                      trailing: Text(
-                                        '${i["calories"]} kcal',
-                                        textScaleFactor: 1.2,
-                                      ),
+                                    trailing: Text(
+                                      '${i["calories"]} kcal',
+                                      textScaleFactor: 1.2,
                                     ),
-                                  ],
-                                )
+                                  ),
+                              ],
+                            )
                                 : Container(),
                           ],
                         ),
@@ -814,32 +672,11 @@ class _StatsScreenState extends State<StatsScreen> {
                               title: Text(
                                 "มื้อกลางวัน",
                                 style: TextStyle(
-                                  color: isVisibleLunch ? Colors.white : Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30
+                                    color: isVisibleLunch ? Colors.white : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30
                                 ),
                               ),
-                              trailing: Wrap(spacing: 3, children: <Widget>[
-                                IconButton(
-                                    onPressed: () {
-
-                                    },
-                                    icon: Icon(
-                                      Icons.camera_alt_rounded,
-                                      color: isVisibleLunch ? Colors.white : Color(0xFF5fb27c),
-                                    )),
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                                        return mealLunch(date: _value);
-                                      }));
-                                    },
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: isVisibleLunch ? Colors.white : Color(0xFF5fb27c),
-                                    )
-                                ),
-                              ]),
                             ),
                           ),
                         ),
@@ -891,31 +728,11 @@ class _StatsScreenState extends State<StatsScreen> {
                               title: Text(
                                 "มื้อเย็น",
                                 style: TextStyle(
-                                  color: isVisibleDinner ? Colors.white : Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30
+                                    color: isVisibleDinner ? Colors.white : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30
                                 ),
                               ),
-                              trailing: Wrap(spacing: 3, children: <Widget>[
-                                IconButton(
-                                    onPressed: () {
-
-                                    },
-                                    icon: Icon(
-                                      Icons.camera_alt_rounded,
-                                      color: isVisibleDinner ? Colors.white : Color(0xFF5fb27c),
-                                    )),
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                                        return mealDinner(date: _value);
-                                      }));
-                                    },
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: isVisibleDinner ? Colors.white : Color(0xFF5fb27c),
-                                    )),
-                              ]),
                             ),
                           ),
                         ),
@@ -967,31 +784,11 @@ class _StatsScreenState extends State<StatsScreen> {
                               title: Text(
                                 "มื้อว่าง",
                                 style: TextStyle(
-                                  color: isVisibleSnack ? Colors.white : Colors.black,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold
+                                    color: isVisibleSnack ? Colors.white : Colors.black,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold
                                 ),
                               ),
-                              trailing: Wrap(spacing: 3, children: <Widget>[
-                                IconButton(
-                                    onPressed: () {
-
-                                    },
-                                    icon: Icon(
-                                      Icons.camera_alt_rounded,
-                                      color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
-                                    )),
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                                        return mealSnack(date: _value);
-                                      }));
-                                    },
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
-                                    )),
-                              ]),
                             ),
                           ),
                         ),
@@ -1008,17 +805,17 @@ class _StatsScreenState extends State<StatsScreen> {
                                 ),
                                 for(var i in snapshot.data!["snack"])
                                   if (snapshot.hasData)
-                                  ListTile(
-                                    leading: Icon(Icons.add),
-                                    title: Text(
-                                      '${i["name"]}',
-                                      textScaleFactor: 1.5,
+                                    ListTile(
+                                      leading: Icon(Icons.add),
+                                      title: Text(
+                                        '${i["name"]}',
+                                        textScaleFactor: 1.5,
+                                      ),
+                                      trailing: Text(
+                                        '${i["calories"]} kcal',
+                                        textScaleFactor: 1.2,
+                                      ),
                                     ),
-                                    trailing: Text(
-                                      '${i["calories"]} kcal',
-                                      textScaleFactor: 1.2,
-                                    ),
-                                  ),
                               ],
                             )
                                 : Container(),
@@ -1036,134 +833,6 @@ class _StatsScreenState extends State<StatsScreen> {
           ],
         ),
       ),
-      floatingActionButton: Visibility(
-        visible: !useKeyboard,
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: FloatingActionButton(
-            heroTag: "camera",
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            backgroundColor: const Color(0xFF00aca0),
-            foregroundColor: Colors.white,
-            child: const Icon(Icons.camera_alt_rounded),
-            onPressed: () {
-              /*Navigator.push(context, MaterialPageRoute(builder: (context){
-                return TestScreen();
-              }));*/
-            },
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
     );
   }
-
-  Future<String?> openUpdateWeight() => showDialog<String>(
-      context: context,
-      builder: (context){
-        return AlertDialog(
-          title: const Text(
-            "อัพเดทน้ำหนักของฉัน",
-            style: TextStyle(
-                fontWeight: FontWeight.bold
-            ),
-          ),
-          content: Padding(
-            padding: const EdgeInsets.only(left: 30,right: 30),
-            child: TextField(
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              controller: weightController,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              autofocus: true,
-              decoration: const InputDecoration(
-                hintText: "น้ำหนัก",
-              ),
-            ),
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MaterialButton(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  color: Colors.greenAccent,
-                  onPressed: (){
-                    Navigator.of(context).pop(weightController.text);
-
-                    weightController.clear();
-                  },
-                  child: const Text("ยืนยัน",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                ),
-                SizedBox(width: 20,),
-                MaterialButton(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  color: Colors.redAccent,
-                  onPressed: (){
-                    Navigator.of(context).pop();
-
-                    weightController.clear();
-                  },
-                  child: const Text("ยกเลิก",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                )
-              ],
-            )
-          ],
-        );
-      }
-  );
-
-  updateWeight({required String weightUser}) async{
-    DocumentSnapshot snap = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
-    double heightM = ((double.parse(snap["height"])/100) * (double.parse(snap["height"])/100));
-    double bmi = double.parse(weightUser) / heightM;
-    String bmiData = bmi.toStringAsFixed(1);
-    String? bmrData;
-
-    if(snap["gender"] == "ชาย"){
-      double bmr = (10*(int.parse(weightUser)))+(6.25*(int.parse(snap["height"])))-(5*(int.parse(snap["age"])))+5;
-      bmrData = bmr.toStringAsFixed(0);
-    }
-    else if(snap["gender"] == "หญิง"){
-      double bmr = (10*(int.parse(weightUser)))+(6.25*(int.parse(snap["height"])))-(5*(int.parse(snap["age"])))-161;
-      bmrData = bmr.toStringAsFixed(0);
-    }
-
-    double tdee = double.parse(bmrData!)*double.parse(snap["active"]);
-    String? tdeeData = tdee.toStringAsFixed(0);
-
-    DocumentReference documentReference = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid);
-    await documentReference.update({
-      'weight': weightUser,
-      'bmr': bmrData,
-      'bmi': bmiData,
-      'tdee': tdeeData,
-    });
-
-    String tdeeDate = tdeeData;
-
-    DocumentReference dateReference = FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection("food_track").doc("${_value.day}-${_value.month}-${_value.yearInBuddhistCalendar}");
-    await dateReference.update({
-      "weight": weightUser,
-      "caloriesLeft": tdeeDate,
-    });
-  }
-
 }
-
-
-
-
-

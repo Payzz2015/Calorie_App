@@ -14,9 +14,7 @@ class confirmProfileScreen extends StatefulWidget {
 }
 
 class _confirmProfileScreenState extends State<confirmProfileScreen> {
-
   final formKey = GlobalKey<FormState>();
-
   final firebaseAuth = FirebaseAuth.instance;
 
   final Users user;
@@ -24,7 +22,6 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool useKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -42,161 +39,78 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
       ),
       body: Form(
       key: formKey,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(50, 100, 50, 0),
-        child: Container(
-          child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xFF5fb27c),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("เพศ ",
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text("${user.gender}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                      Text("คุณ ${user.name}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          color: Colors.green,
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("อายุ ",
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text("${user.age} ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Text("ปี",
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("น้ำหนัก ",
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text("${user.weight} ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Text("kg",
-                            style: TextStyle(
-                              fontSize: 30,
-                              color:Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("ส่วนสูง ",
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text("${user.height} ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Text("cm",
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                      SizedBox(height: 10,),
+                      const Text("เริ่มต้นใช้งาน",
+                        style: TextStyle(
+                          fontSize: 35,
+                          color: Colors.green,
+                        ),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 50,),
-                Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFF2f7246),
-                  child: MaterialButton(
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                    minWidth: MediaQuery.of(context).size.width,
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        collectDatatoFirestore();
-                      }else{
-                        Fluttertoast.showToast(msg: "Fail");
-                      }
-                    },
-                      //signIn(emailController.text, passwordController.text);
-                    child: const Text(
-                      "ยืนยัน",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Color(0xFFF3F0E9),
-                          fontWeight: FontWeight.bold),
-                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 50,),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Material(
+                elevation: 5,
+                borderRadius: BorderRadius.circular(10),
+                color: const Color(0xFF5fb27c),
+                child: MaterialButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                  minWidth: MediaQuery.of(context).size.width,
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      collectFirestore();
+                    }else{
+                      print("fail");
+                      Fluttertoast.showToast(msg: "Fail");
+                    }
+                  },
+                    //signIn(emailController.text, passwordController.text);
+                  child: const Text(
+                    "ยืนยัน",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xFFF3F0E9),
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 
-  collectDatatoFirestore() async{
+  collectFirestore() async{
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? userAuth = firebaseAuth.currentUser;
-    Users userData = Users();
+    Users? userData = Users();
 
     double heightM = ((double.parse(user.height!)/100) * (double.parse(user.height!)/100));
-    double bmi = double.parse(user.weight!) / heightM;
+    double? bmi = double.parse(user.weight!) / heightM;
     user.bmi = bmi.toStringAsFixed(1);
 
     if(user.gender! == "ชาย"){
@@ -208,16 +122,22 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
       user.bmr = bmr.toStringAsFixed(0);
     }
 
+    user.active = user.tdee!;
 
-    userData.name = "กรุณาตั้งชื่อ";
+    double tdee = double.parse(user.bmr!)*double.parse(user.tdee!);
+    user.tdee = tdee.toStringAsFixed(0);
+
     userData.email = userAuth!.email;
     userData.uid = userAuth.uid;
     userData.gender = user.gender;
+    userData.name = user.name;
     userData.age = user.age;
     userData.weight = user.weight;
     userData.height = user.height;
     userData.bmi = user.bmi;
     userData.bmr = user.bmr;
+    userData.tdee = user.tdee;
+    userData.active = user.active;
 
     await firebaseFirestore.collection("users").doc(userAuth.uid).set(userData.toMap());
     Fluttertoast.showToast(msg: "บันทึกข้อมูลของผู้ใช้สำเร็จ");

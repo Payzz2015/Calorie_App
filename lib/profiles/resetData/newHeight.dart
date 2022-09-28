@@ -1,5 +1,7 @@
 import 'package:calories_counter_project/models/User.dart';
 import 'package:calories_counter_project/profiles/resetData/confirmNewData.dart';
+import 'package:calories_counter_project/profiles/resetData/newTDEE.dart';
+import 'package:calories_counter_project/profiles/resetData/newWeight.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,43 +19,31 @@ class _newDataHeightState extends State<newDataHeight> {
   final Users user;
   _newDataHeightState(this.user);
 
-  final formKey = GlobalKey<FormState>();
-
-  int height = 150;
-  final TextEditingController heightController =
-  TextEditingController(text: "150");
-
-  User? userz = FirebaseAuth.instance.currentUser;
-  Users userData  = Users();
-
+  late bool _isButtonDisabled;
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(userz!.uid)
-        .get()
-        .then((value) {
-      userData = Users.fromMap(value.data());
-      setState(() {
-      });
-    });
+    _isButtonDisabled = true;
   }
 
-  navigationData(BuildContext context) {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController heightController =
+  TextEditingController();
+
+  dataNavigation(BuildContext context) {
     Users users = Users(
-      name: userData.name,
         gender: user.gender,
         age: user.age,
-        weight: user.weight,
         height: heightController.text
     );
     if (formKey.currentState != null && formKey.currentState!.validate()) {
-      print("Form Validated");
+      print(user.gender);
+      print(user.age);
+      print(users.height);
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => confirmNewData(user: users),
+          builder: (context) => newDataWeight(user: users),
         ),
       );
     } else {
@@ -62,25 +52,7 @@ class _newDataHeightState extends State<newDataHeight> {
     }
   }
 
-  void _onPressMax() {
-    if (height < 220) {
-      setState(() {
-        height = int.parse(heightController.text);
-        height = height + 1;
-        heightController.text = height.toString();
-      });
-    }
-  }
-
-  void _onPressMin() {
-    if (height > 120) {
-      setState(() {
-        height = int.parse(heightController.text);
-        height = height - 1;
-        heightController.text = height.toString();
-      });
-    }
-  }
+  String errorText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +60,10 @@ class _newDataHeightState extends State<newDataHeight> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        title: const Text(
+          "โปรไฟล์ของฉัน",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.green,
         elevation: 0,
@@ -113,78 +89,77 @@ class _newDataHeightState extends State<newDataHeight> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 150,
-                    width: 280,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                    height: 190,
+                    width: 200,
+                    child: TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      onChanged: (value){
+                        setState(() {
+                          if(value.isNotEmpty){
+                            _isButtonDisabled = false;
+                          }
+                          if(value.isEmpty){
+                            _isButtonDisabled = true;
+                          }
+                          if(int.parse(value) <= 0 || int.parse(value) >= 300){
+                            errorText = "กรุณาป้อนเป็นตัวเลขระหว่าง 1 ถึง 299";
+                            _isButtonDisabled = true;
+                          }
+
+                        });
+                      },
+                      keyboardType: TextInputType.number,
+                      controller: heightController,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
                       ),
-                      elevation: 5,
-                      color: const Color(0xFF5fb27c),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Text(
-                            "ส่วนสูง",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextFormField(
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "กรุณาป้อนส่วนสูง";
-                              }
-                              if (int.parse(value) <= 0) {
-                                return "กรุณาป้อนส่วนสูงมากกว่า 0";
-                              }
-                              if (int.parse(value) >= 221) {
-                                return "กรุณาป้อนส่วนสูงต่ำกว่า 220";
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.number,
-                            controller: heightController,
-                            textAlign: TextAlign.center,
-                            //initialValue: weightController.text,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 50,
-                                fontWeight: FontWeight.bold),
-                            onSaved: (value) {
-                              heightController.text = value!;
-                            },
-                            decoration: InputDecoration(
-                              prefixIcon: MaterialButton(
-                                shape: const CircleBorder(),
-                                color: Colors.white,
-                                padding: const EdgeInsets.all(5),
-                                onPressed: _onPressMin,
-                                child: const Icon(
-                                  Icons.arrow_back_ios_rounded,
-                                  size: 25,
-                                  color: Color(0xFF5fb27c),
-                                ),
-                              ),
-                              suffixIcon: MaterialButton(
-                                shape: const CircleBorder(),
-                                color: Colors.white,
-                                padding: const EdgeInsets.all(5),
-                                onPressed: _onPressMax,
-                                child: const Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 25,
-                                  color: Color(0xFF5fb27c),
-                                ),
-                              ),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ],
+                      onSaved: (value) {
+                        heightController.text = value!;
+                      },
+                      decoration: InputDecoration(
+                        focusColor: Colors.black,
+                        hoverColor: Colors.black,
+                        suffixText: "ซม.",
+                        suffixStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                        ),
+                        border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 3,
+                                color: Colors.grey
+                            )
+                        ),
+                        disabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 3,
+                                color: Colors.grey
+                            )
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 3,
+                                color: Colors.green
+                            )
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 3,
+                                color: Colors.grey
+                            )
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 3,
+                                color: Colors.red
+                            )
+                        ),
+                        errorText: _isButtonDisabled == false ? null : errorText,
                       ),
                     ),
                   ),
@@ -193,15 +168,6 @@ class _newDataHeightState extends State<newDataHeight> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 10.0,
-                    height: 10.0,
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 25,),
                   Container(
                     width: 10.0,
                     height: 10.0,
@@ -228,6 +194,24 @@ class _newDataHeightState extends State<newDataHeight> {
                       shape: BoxShape.circle,
                     ),
                   ),
+                  const SizedBox(width: 25,),
+                  Container(
+                    width: 10.0,
+                    height: 10.0,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 25,),
+                  Container(
+                    width: 10.0,
+                    height: 10.0,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
                 ],
               ),
               Row(
@@ -235,24 +219,51 @@ class _newDataHeightState extends State<newDataHeight> {
                 children: [
                   Row(
                     children: [
-                      Visibility(
-                        visible: !useKeyboard,
-                        child: FloatingActionButton(
-                          heroTag: null,
-                          backgroundColor: const Color(0xFF2f7246),
-                          child: const Icon(
-                            Icons.check,
-                            size: 35,
-                          ),
+                      Material(
+                        elevation: 5,
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color(0xFF5fb27c),
+                        child: _isButtonDisabled
+                            ?
+                        MaterialButton(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          color: Colors.grey[400],
+                          padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                          minWidth: MediaQuery.of(context).size.width - 30,
                           onPressed: () {
-                            navigationData(context);
                           },
+                          child: const Text(
+                            "ถัดไป",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        )
+                            :
+                        MaterialButton(
+                          padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                          minWidth: MediaQuery.of(context).size.width - 30,
+                          onPressed: () {
+                            dataNavigation(context);
+                          },
+                          child: const Text(
+                            "ถัดไป",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ],
-              ),
+              )
             ],
           ),
         ),
