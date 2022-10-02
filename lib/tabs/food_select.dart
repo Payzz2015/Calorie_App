@@ -3,8 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class FoodSelect extends StatelessWidget {
+class FoodSelect extends StatefulWidget {
   const FoodSelect({Key? key}) : super(key: key);
+
+  @override
+  State<FoodSelect> createState() => _FoodSelectState();
+}
+
+class _FoodSelectState extends State<FoodSelect> {
+
+  String name = "";
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +25,8 @@ class FoodSelect extends StatelessWidget {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Color(0xFF5fb27c),
-            ));
+                  backgroundColor: Color(0xFF5fb27c),
+                ));
           }
           if (snapshot.data!.docs.isEmpty) {
             return const Center(
@@ -38,7 +46,13 @@ class FoodSelect extends StatelessWidget {
                 children: [
                   Card(
                     shadowColor: Colors.black,
-                    child: TextFormField(
+                    child: TextField(
+                      onChanged: (value){
+                        setState(() {
+                          name = value;
+
+                        });
+                      },
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.search),
                         hintText: "Search....",
@@ -51,7 +65,6 @@ class FoodSelect extends StatelessWidget {
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                       ),
-
                     ),
                   ),
                   ListView.builder(
@@ -65,7 +78,7 @@ class FoodSelect extends StatelessWidget {
                             color: const Color(0xFF5fb27c),
                             child: Center(
                               child: Text(
-                                "${snapshot.data!.docs.length} รายการ",
+                                name.isEmpty ? "${snapshot.data!.docs.length} รายการ" : "รายการอาหารที่พบ",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -81,83 +94,147 @@ class FoodSelect extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: snapshot.data!.docs.map((document) {
-                      return Card(
-                        child: ListTile(
-                          leading: const CircleAvatar(
-                            backgroundColor: Color(0xFF5fb27c),
-                            foregroundColor: Colors.white,
-                            radius: 30,
-                            backgroundImage: NetworkImage(
-                                "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
-                            /*child: FittedBox(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Food",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
+                      if(name.isEmpty){
+                        return Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Color(0xFF5fb27c),
+                              foregroundColor: Colors.white,
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                  "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
+                            ),
+                            title: Padding(
+                              padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
+                              child: Text(
+                                document["name"],
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            subtitle: Column(
+                              children: <Widget>[
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      TextButton(
+                                        child: Text("แก้ไข"),
+                                        onPressed: () {
+                                          var userFood = document["name"].toString();
+                                          var userCalories = document["calories"].toString();
+                                          var userFat = document["fat"].toString();
+                                          var userCarb = document["carbohydrate"].toString();
+                                          var userProtein = document["protein"].toString();
+                                          var userSodium = document["sodium"].toString();
+                                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                                            return UpdateFood(name: userFood, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                          }));
+
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text(
+                                          "ลบ",
+                                          style: TextStyle(color: Colors.redAccent),
+                                        ),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection("users")
+                                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                                              .collection("foods")
+                                              .doc(document.id)
+                                              .delete();
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 )
-                            ),*/
-                          ),
-                          title: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
-                            child: Text(
-                              document["name"],
-                              style: const TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold),
+                              ],
+                            ),
+                            trailing: Text(
+                              "${document["calories"]} kcal",
+                              style: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
                             ),
                           ),
-                          subtitle: Column(
-                            children: <Widget>[
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    TextButton(
-                                      child: const Text("แก้ไข"),
-                                      onPressed: () {
-                                        var userFood = document["name"].toString();
-                                        var userCalories = document["calories"].toString();
-                                        var userFat = document["fat"].toString();
-                                        var userCarb = document["carbohydrate"].toString();
-                                        var userProtein = document["protein"].toString();
-                                        var userSodium = document["sodium"].toString();
-                                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                                          return UpdateFood(name: userFood, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
-                                        }));
+                        );
+                      }
+                      if(document["name"].toString().toLowerCase().startsWith(name.toLowerCase())){
+                        return Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Color(0xFF5fb27c),
+                              foregroundColor: Colors.white,
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                  "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
+                            ),
+                            title: Padding(
+                              padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
+                              child: Text(
+                                document["name"],
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            subtitle: Column(
+                              children: <Widget>[
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      TextButton(
+                                        child: Text("แก้ไข"),
+                                        onPressed: () {
+                                          var userFood = document["name"].toString();
+                                          var userCalories = document["calories"].toString();
+                                          var userFat = document["fat"].toString();
+                                          var userCarb = document["carbohydrate"].toString();
+                                          var userProtein = document["protein"].toString();
+                                          var userSodium = document["sodium"].toString();
+                                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                                            return UpdateFood(name: userFood, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                          }));
 
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: const Text(
-                                        "ลบ",
-                                        style: TextStyle(color: Colors.redAccent),
+                                        },
                                       ),
-                                      onPressed: () {
-                                        FirebaseFirestore.instance
-                                            .collection("users")
-                                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                                            .collection("foods")
-                                            .doc(document.id)
-                                            .delete();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                      TextButton(
+                                        child: Text(
+                                          "ลบ",
+                                          style: TextStyle(color: Colors.redAccent),
+                                        ),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection("users")
+                                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                                              .collection("foods")
+                                              .doc(document.id)
+                                              .delete();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            trailing: Text(
+                              "${document["calories"]} kcal",
+                              style: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
                           ),
-                          trailing: Text(
-                            "${document["calories"]} kcal",
-                            style: const TextStyle(
-                                color: Colors.blueGrey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                        ),
-                      );
+                        );
+                      }
+                      return Container();
                     }).toList(),
                   ),
                   const SizedBox(
@@ -172,6 +249,4 @@ class FoodSelect extends StatelessWidget {
       ),
     );
   }
-
 }
-

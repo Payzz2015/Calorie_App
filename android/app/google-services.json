@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "641535715295",
-    "project_id": "calories-calculator-25cb8",
-    "storage_bucket": "calories-calculator-25cb8.appspot.com"
+    "project_number": "1072941703540",
+    "project_id": "calorie-per-day-flutter",
+    "storage_bucket": "calorie-per-day-flutter.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:641535715295:android:4d32d9fb29cadf0604066a",
+        "mobilesdk_app_id": "1:1072941703540:android:3fac81557c1928327e8c21",
         "android_client_info": {
           "package_name": "com.calories_counter_project.calories_counter_project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "641535715295-jc6nm5mulmj64lgcddv6kbhsrlgtb9sc.apps.googleusercontent.com",
+          "client_id": "1072941703540-6b9edqlor7a2uf5094f51aihr0j68fvi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD9uDXSHxzUQR4rp-sLIM8yfY0DX9K0ubQ"
+          "current_key": "AIzaSyC1Fzos4_7cpIFFokOhjk2q4cgzyLXo8Pg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "641535715295-jc6nm5mulmj64lgcddv6kbhsrlgtb9sc.apps.googleusercontent.com",
+              "client_id": "1072941703540-6b9edqlor7a2uf5094f51aihr0j68fvi.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1072941703540-gqo8oviu6ndaml8tno25cvqm5qmte2ri.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.caloriescounterproject.caloriesCounterProject"
+              }
             }
           ]
         }

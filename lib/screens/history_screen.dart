@@ -3,6 +3,7 @@ import 'package:calories_counter_project/screens/historyOfday_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -28,10 +29,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
     bool useKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFF5fb27c),
         elevation: 0,
-        foregroundColor: const Color(0xFF5fb27c),
+        foregroundColor: Colors.white,
         centerTitle: true,
+
         title: Text(
           isChange
               ? "น้ำหนัก"
@@ -189,6 +191,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     child: Text(isChange ?"${snapshot.data!["weight"]}" :
                                     "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
+                                        fontSize: 12,
                                           color: Colors.lightBlueAccent,
                                           fontWeight: FontWeight.bold
                                       ),
@@ -293,6 +296,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     child: Text(isChange ? "${snapshot.data!["weight"]}"
                                       : "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
+                                        fontSize: 12,
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold
                                       ),
@@ -358,6 +362,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     child: Text(isChange ?"${snapshot.data!["weight"]}" :
                                     "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
+                                        fontSize: 12,
                                           color: Colors.greenAccent,
                                           fontWeight: FontWeight.bold
                                       ),
@@ -431,6 +436,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     child: Text(isChange ?"${snapshot.data!["weight"]}" :
                                     "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
+                                        fontSize: 12,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold
                                       ),
@@ -502,6 +508,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       isChange ?"${snapshot.data!["weight"]}" :
                                       "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
+                                        fontSize: 12,
                                           color: isChange ? Colors.blue : Color(0xFF00b752),
                                           fontWeight: FontWeight.bold
                                       ),

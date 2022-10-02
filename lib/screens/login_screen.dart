@@ -3,6 +3,7 @@ import 'package:calories_counter_project/screens/register_screen.dart';
 import 'package:calories_counter_project/widgets/bottombar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,
-            color: Colors.green,
+            color: Color(0xFF5fb27c),
           ),
         ),
       ),

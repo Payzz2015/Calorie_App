@@ -36,10 +36,11 @@ with SingleTickerProviderStateMixin
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Color(0xFF5fb27c),
+        backgroundColor: Color(0xFF5fb27c),
+        foregroundColor: Colors.white,
         centerTitle: true,
-        title: const Text("อาหาร",
+        title: Text(
+          "อาหารของฉัน",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25
           ),
         ),
@@ -95,7 +96,7 @@ with SingleTickerProviderStateMixin
                         tabs: const [
                           Tab(
                             icon: Icon(Icons.add),
-                            text: "เพิ่มอาหาร",
+                            text: "อาหาร",
                           ),
                           Tab(
                             icon: Icon(Icons.qr_code_scanner_rounded),
@@ -110,7 +111,7 @@ with SingleTickerProviderStateMixin
               Expanded(
                 child: TabBarView(
                   controller: tabController,
-                  children: const [
+                  children: [
                     FoodSelect(),
                     FoodBarcode()
                   ],
@@ -124,3 +125,5 @@ with SingleTickerProviderStateMixin
     );
   }
 }
+
+

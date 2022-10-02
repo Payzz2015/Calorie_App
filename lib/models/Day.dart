@@ -9,6 +9,9 @@ class Day{
   String? fat;
   String? protein;
   String? sodium;
+  String? carbLeft;
+  String? fatLeft;
+  String? proteinLeft;
   String? caloriesLeft;
   String? caloriesEaten;
   List<Food>? breakfast;
@@ -23,6 +26,9 @@ class Day{
     this.fat,
     this.protein,
     this.sodium,
+    this.carbLeft,
+    this.fatLeft,
+    this.proteinLeft,
     this.caloriesLeft,
     this.caloriesEaten,
     this.breakfast,
@@ -39,6 +45,9 @@ class Day{
     fat: json["fat"],
     protein: json["protein"],
     sodium: json["sodium"],
+    carbLeft: json["carbLeft"],
+    fatLeft: json["fatLeft"],
+    proteinLeft: json["proteinLeft"],
     caloriesLeft: json["caloriesLeft"],
     caloriesEaten: json["caloriesEaten"],
     breakfast: json["breakfast"] == null ? null : List<Food>.from(json["breakfast"].map((x) => Food.fromJson(x))),
@@ -54,6 +63,9 @@ class Day{
     'carb': carb,
     'fat': fat,
     'protein': protein,
+    'carbLeft': carbLeft,
+    'fatLeft': fatLeft,
+    'proteinLeft': proteinLeft,
     'sodium': sodium,
     'caloriesLeft': caloriesLeft,
     'caloriesEaten': caloriesEaten,
@@ -70,6 +82,9 @@ class Day{
       carb: map['carb'],
       fat: map['fat'],
       protein: map['protein'],
+      carbLeft: map['carbLeft'],
+      fatLeft: map['fatLeft'],
+      proteinLeft: map['proteinLeft'],
       sodium: map['sodium'],
       caloriesLeft: map['caloriesLeft'],
       caloriesEaten: map['caloriesEaten'],
@@ -87,6 +102,9 @@ class Day{
       'carb': carb,
       'fat': fat,
       'protein': protein,
+      'carbLeft': carbLeft,
+      'fatLeft': fatLeft,
+      'proteinLeft': proteinLeft,
       'sodium': sodium,
       'caloriesLeft': caloriesLeft,
       'caloriesEaten': caloriesEaten,

@@ -47,9 +47,9 @@ class _UserProfileState extends State<UserProfile> {
     //final Stream<QuerySnapshot> _usersStream = firebaseFirestore.collection('users').snapshots(includeMetadataChanges: true);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF5fb27c),
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Color(0xFF5fb27c),
+        foregroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
           "ข้อมูลส่วนตัว",

@@ -22,6 +22,8 @@ class _mealLunchState extends State<mealLunch> {
   final CollectionReference trackCollection =
   FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("food_track");
 
+  String name = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +86,12 @@ class _mealLunchState extends State<mealLunch> {
                 children: [
                   Card(
                     shadowColor: Colors.black,
-                    child: TextFormField(
+                    child: TextField(
+                      onChanged: (value){
+                        setState(() {
+                          name = value;
+                        });
+                      },
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.search),
                         hintText: "Search....",
@@ -111,7 +118,7 @@ class _mealLunchState extends State<mealLunch> {
                             color: const Color(0xFF5fb27c),
                             child: Center(
                               child: Text(
-                                "${snapshot.data!.docs.length} รายการ",
+                                name.isEmpty ? "${snapshot.data!.docs.length} รายการ" : "รายการอาหารที่พบ",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -127,29 +134,120 @@ class _mealLunchState extends State<mealLunch> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: snapshot.data!.docs.map((document) {
-                      return Card(
-                        child: ListTile(
-                          leading: const CircleAvatar(
-                            backgroundColor: Color(0xFF5fb27c),
-                            foregroundColor: Colors.white,
-                            radius: 30,
-                            backgroundImage: NetworkImage(
-                                "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
-                          ),
-                          title: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
-                            child: Text(
-                              document["name"],
+                      if(name.isEmpty){
+                        return Card(
+                          child: ListTile(
+                            leading: const CircleAvatar(
+                              backgroundColor: Color(0xFF5fb27c),
+                              foregroundColor: Colors.white,
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                  "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
+                            ),
+                            title: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                              child: Text(
+                                document["name"],
+                                style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            subtitle: Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    TextButton(
+                                      child: const Text("เลือก"),
+                                      onPressed: () async{
+                                        DocumentSnapshot trackSnapshot = await trackCollection.doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}").get();
+                                        var foodName = document["name"].toString();
+                                        var foodCalories = document["calories"].toString();
+                                        var foodFat = document["fat"].toString();
+                                        var foodCarb = document["carbohydrate"].toString();
+                                        var foodProtein = document["protein"].toString();
+                                        var foodSodium = document["sodium"].toString();
+                                        var eatenCalories = trackSnapshot["caloriesEaten"].toString();
+                                        int totalCalories = int.parse(eatenCalories) + int.parse(foodCalories);
+                                        int fat = int.parse("0");
+                                        int sodium = int.parse("0");
+                                        int protein = int.parse("0");
+                                        int carb = int.parse("0");
+                                        if(foodFat != ""){
+                                          fat = int.parse(trackSnapshot["fat"]) + int.parse(foodFat);
+                                        }
+                                        if(foodCarb != ""){
+                                          carb = int.parse(trackSnapshot["carb"]) + int.parse(foodCarb);
+                                        }
+                                        if(foodSodium != ""){
+                                          sodium = int.parse(trackSnapshot["sodium"]) + int.parse(foodSodium);
+                                        }
+                                        if(foodProtein != ""){
+                                          protein = int.parse(trackSnapshot["protein"]) + int.parse(foodProtein);
+                                        }
+
+                                        if(trackSnapshot.exists){
+                                          await trackCollection.doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}").set(
+                                              {
+                                                "lunch": FieldValue.arrayUnion([{
+                                                  "name": foodName,
+                                                  "calories": foodCalories,
+                                                  "fat": foodFat == "" ? "0" : foodFat,
+                                                  "carbohydrate": foodCarb == "" ? "0" : foodCarb,
+                                                  "protein": foodProtein == "" ? "0" : foodProtein,
+                                                  "sodium": foodSodium == "" ? "0" : foodSodium,
+                                                  "datetime": DateTime.now(),
+                                                }]),
+                                                "caloriesEaten": totalCalories.toString(),
+                                                "fat": fat.toString(),
+                                                "carb": carb.toString(),
+                                                "protein": protein.toString(),
+                                                "sodium": sodium.toString(),
+                                              },SetOptions(merge: true)
+                                          );
+                                        }
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            trailing: Text(
+                              "${document["calories"]} kcal",
                               style: const TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold),
+                                  color: Colors.blueGrey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
                             ),
                           ),
-                          subtitle: Column(
-                            children: <Widget>[
-                              Container(
-                                child: Row(
+                        );
+                      }
+                      if(document["name"].toString().toLowerCase().startsWith(name.toLowerCase())){
+                        return Card(
+                          child: ListTile(
+                            leading: const CircleAvatar(
+                              backgroundColor: Color(0xFF5fb27c),
+                              foregroundColor: Colors.white,
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                  "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
+                            ),
+                            title: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                              child: Text(
+                                document["name"],
+                                style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            subtitle: Column(
+                              children: <Widget>[
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     TextButton(
@@ -205,19 +303,20 @@ class _mealLunchState extends State<mealLunch> {
                                       },
                                     ),
                                   ],
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
+                            trailing: Text(
+                              "${document["calories"]} kcal",
+                              style: const TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
                           ),
-                          trailing: Text(
-                            "${document["calories"]} kcal",
-                            style: const TextStyle(
-                                color: Colors.blueGrey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                        ),
-                      );
+                        );
+                      }
+                      return Container();
                     }).toList(),
                   ),
                   const SizedBox(

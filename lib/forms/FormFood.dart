@@ -29,16 +29,15 @@ class _FormFoodState extends State<FormFood> {
             return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                foregroundColor: const Color(0xFF5fb27c),
+                backgroundColor: Color(0xFF5fb27c),
                 elevation: 0,
+                foregroundColor: Colors.white,
                 centerTitle: true,
                 title: const Text(
                   "Error",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
-                    color: Color(0xFF5fb27c),
                   ),
                 ),
               ),
@@ -52,16 +51,15 @@ class _FormFoodState extends State<FormFood> {
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
               appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                foregroundColor: const Color(0xFF5fb27c),
+                backgroundColor: Color(0xFF5fb27c),
                 elevation: 0,
+                foregroundColor: Colors.white,
                 centerTitle: true,
                 title: const Text(
                   "บันทึกข้อมูลอาหาร",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
-                    color: Color(0xFF5fb27c),
                   ),
                 ),
               ),
@@ -117,6 +115,11 @@ class _FormFoodState extends State<FormFood> {
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
+                              suffixText: "kcal",
+                              suffixStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "แคลอรี่*",
                               border: OutlineInputBorder(
@@ -127,6 +130,13 @@ class _FormFoodState extends State<FormFood> {
                           const SizedBox(
                             height: 20,
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text("ข้อมูลโภชนาการ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
                           TextFormField(
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -138,6 +148,11 @@ class _FormFoodState extends State<FormFood> {
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
+                              suffixText: "g",
+                              suffixStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "ไขมัน",
                               border: OutlineInputBorder(
@@ -159,6 +174,11 @@ class _FormFoodState extends State<FormFood> {
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
+                              suffixText: "g",
+                              suffixStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "โปรตีน",
                               border: OutlineInputBorder(
@@ -180,6 +200,11 @@ class _FormFoodState extends State<FormFood> {
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
+                              suffixText: "g",
+                              suffixStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "คาร์โบไฮเดรต",
                               border: OutlineInputBorder(
@@ -201,6 +226,11 @@ class _FormFoodState extends State<FormFood> {
                             },
                             textInputAction: TextInputAction.done,
                             decoration: InputDecoration(
+                              suffixText: "mg",
+                              suffixStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               hintText: "โซเดียม",
                               border: OutlineInputBorder(

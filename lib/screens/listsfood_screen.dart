@@ -10,6 +10,20 @@ class FoodList extends StatefulWidget {
 class _FoodListState extends State<FoodList> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF5fb27c),
+        elevation: 0,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        title: const Text(
+          "รายการอาหาร",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Text("sss"),
+      ),
+    );
   }
 }

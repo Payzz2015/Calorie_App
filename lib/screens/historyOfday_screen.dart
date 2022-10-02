@@ -202,14 +202,16 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
             Navigator.of(context).pop();
           },
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFF5fb27c),
         elevation: 0,
-        foregroundColor: Color(0xFF5fb27c),
+        foregroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
-          "ประวัติ",
+          "ประวัติย้อนหลัง",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
+
+
       ),
       body: SingleChildScrollView(
         child: Column(

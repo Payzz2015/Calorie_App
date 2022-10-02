@@ -21,7 +21,7 @@ class _BottomBarState extends State<BottomBar> {
     const Food(),
     const UserProfile(),
     const FoodList(),
-    const StatsScreen()
+    const StatScreen()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -124,7 +124,7 @@ class _BottomBarState extends State<BottomBar> {
                     minWidth: 40,
                     onPressed: (){
                       setState(() {
-                        currentScreen = const StatsScreen();
+                        currentScreen = const StatScreen();
                         currentTab = 4;
                       });
                     },
