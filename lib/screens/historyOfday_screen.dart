@@ -2,7 +2,6 @@ import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sn
 import 'package:calories_counter_project/helpers/dayofWeek.dart';
 import 'package:calories_counter_project/models/Day.dart';
 import 'package:calories_counter_project/profiles/gender.dart';
-import 'package:calories_counter_project/screens/history_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -134,13 +133,42 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
     String userTDEE = snap["tdee"];
     String userWeight = snap["weight"];
 
+    double carb = (0.5*int.parse(userTDEE))/4;
+    double fat = (0.2*int.parse(userTDEE))/9;
+    double protein = (0.3*int.parse(userTDEE))/4;
+
     DocumentSnapshot trackSnapshot = await trackCollection.doc("${_value.day}-${_value.month}-${_value.yearInBuddhistCalendar}").get();
-    day.day = DateFormat.yMMMMd().format(_value);
+    var outFormat = DateFormat("yyyy-MM-dd");
+    day.day = outFormat.format(_value);
     day.caloriesLeft = userTDEE;
+
+    //เช็คข้อมูลไม่ให้ติดลบ ถ้าติดลบ percent จะ error
+    if(carb == double.parse(carb.toString()).abs()){
+      day.carbLeft = "0";
+    }
+    else if(carb != double.parse(carb.toString()).abs()){
+      day.carbLeft = carb.toStringAsFixed(0);
+
+    }
+    if(fat == double.parse(fat.toString()).abs()){
+      day.fatLeft = "0";
+    }
+    else if(fat != double.parse(fat.toString()).abs()){
+      day.fatLeft = fat.toStringAsFixed(0);
+
+    }
+    if(protein == double.parse(protein.toString()).abs()){
+      day.proteinLeft = "0";
+    }
+    else if(protein != double.parse(protein.toString()).abs()){
+      day.proteinLeft = protein.toStringAsFixed(0);
+    }
+
     day.weight = "0";
     if(day.weight == "0"){
       day.weight = userWeight;
     }
+
     day.caloriesEaten = "0";
     day.carb = "0";
     day.fat = "0";
@@ -158,6 +186,9 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
             "carb": day.carb,
             "fat": day.fat,
             "protein": day.protein,
+            "carbLeft": day.carbLeft,
+            "fatLeft": day.fatLeft,
+            "proteinLeft": day.proteinLeft,
             "sodium": day.sodium,
             "caloriesLeft": day.caloriesLeft,
             "caloriesEaten": day.caloriesEaten,

@@ -181,7 +181,8 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
     double protein = (0.3*int.parse(userTDEE))/4;
 
     DocumentSnapshot trackSnapshot = await trackCollection.doc("${_value.day}-${_value.month}-${_value.yearInBuddhistCalendar}").get();
-    day.day = DateFormat.yMMMMd().format(_value);
+    var outFormat = DateFormat("yyyy-MM-dd");
+    day.day = outFormat.format(_value);
     day.caloriesLeft = userTDEE;
     day.carbLeft = carb.toStringAsFixed(0);
     day.fatLeft = fat.toStringAsFixed(0);

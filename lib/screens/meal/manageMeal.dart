@@ -240,7 +240,6 @@ class _ManageMealState extends State<ManageMeal> {
                           ),
                       ],
                     ),
-                    SizedBox(height: 15,),
                     snapshot.data!["lunch"].length == 0
                         ? Container() :
                     Column(
@@ -354,7 +353,6 @@ class _ManageMealState extends State<ManageMeal> {
                           ),
                         ],
                       ),
-                    SizedBox(height: 15,),
                     snapshot.data!["dinner"].length == 0
                         ? Container() : Column(
                       children: [
@@ -467,7 +465,7 @@ class _ManageMealState extends State<ManageMeal> {
                           ),
                       ],
                     ),
-                    SizedBox(height: 15,),
+
                     snapshot.data!["snack"].length == 0
                         ? Container() : Column(
                       children: [

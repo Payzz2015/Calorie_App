@@ -103,7 +103,7 @@ class _FormFoodState extends State<FormFood> {
                               if (value!.isEmpty) {
                                 return "กรุณาป้อนแคลอรี่";
                               } else if (int.parse(value) < 1) {
-                                return "กรุณาป้อนแคลอรี่มากกว่ากว่า 1";
+                                return "กรุณาป้อนแคลอรี่มากกว่า 0";
                               }
                               else if (int.parse(value) > 99999) {
                                 return "กรุณาป้อนแคลอรี่ได้ไม่เกิน 99999";
