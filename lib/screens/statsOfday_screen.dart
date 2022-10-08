@@ -279,6 +279,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             StreamBuilder(
               stream: trackCollection.doc("${_value.day}-${_value.month}-${_value.yearInBuddhistCalendar}").snapshots(),
