@@ -107,7 +107,7 @@ class _FoodListState extends State<FoodList> {
                 };
                 FirebaseFirestore.instance.collection("list_foods")
                     .doc("Standard")
-                    .collection('Milk and its products')
+                    .collection('Mixed foods: ready-to-eat')
                     .doc(name.text)
                     .set(data);
                 name.clear();
