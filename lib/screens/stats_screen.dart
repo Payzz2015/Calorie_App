@@ -60,7 +60,8 @@ class _StatScreenState extends State<StatScreen> {
                                     min += 1;
                                   });
 
-                                }, icon: Icon(Icons.arrow_back_ios_rounded)
+                                },
+                                icon: Icon(Icons.arrow_back_ios_rounded)
                             ),
                             Text("7 Days",style: (TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
                             min == 0 ? Container() : IconButton(

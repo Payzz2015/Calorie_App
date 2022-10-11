@@ -35,7 +35,6 @@ with SingleTickerProviderStateMixin
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0,
         backgroundColor: Color(0xFF5fb27c),
         foregroundColor: Colors.white,
         centerTitle: true,

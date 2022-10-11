@@ -12,8 +12,9 @@ class UpdateFood extends StatefulWidget {
   final String fat;
   final String carbohydrate;
   final String protein;
+  final String sugar;
   final String sodium;
-  const UpdateFood({Key? key,required this.name,required this.calories, required this.fat, required this.carbohydrate, required this.protein, required this.sodium}) : super(key: key);
+  const UpdateFood({Key? key,required this.name,required this.calories, required this.fat, required this.carbohydrate, required this.protein,required this.sugar, required this.sodium}) : super(key: key);
 
   @override
   State<UpdateFood> createState() => _UpdateFoodState();
@@ -22,7 +23,7 @@ class UpdateFood extends StatefulWidget {
 class _UpdateFoodState extends State<UpdateFood> {
 
   final formKey = GlobalKey<FormState>();
-  Food myFood = Food(name: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
+  Food myFood = Food(name: "",calories: "",fat: "",protein: "",carbohydrate: "",sugar: "",sodium: "");
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final CollectionReference _foodCollection = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("foods");
 
@@ -32,6 +33,7 @@ class _UpdateFoodState extends State<UpdateFood> {
   final TextEditingController fatEditingController = TextEditingController();
   final TextEditingController proteinEditingController = TextEditingController();
   final TextEditingController carbEditingController = TextEditingController();
+  final TextEditingController sugarEditingController = TextEditingController();
   final TextEditingController sodiumEditingController = TextEditingController();
 
   @override
@@ -43,6 +45,7 @@ class _UpdateFoodState extends State<UpdateFood> {
       fatEditingController.text = widget.fat;
       proteinEditingController.text = widget.protein;
       carbEditingController.text = widget.carbohydrate;
+      sugarEditingController.text = widget.sugar;
       sodiumEditingController.text = widget.sodium;
     });
   }
@@ -54,6 +57,7 @@ class _UpdateFoodState extends State<UpdateFood> {
     fatEditingController.dispose();
     proteinEditingController.dispose();
     carbEditingController.dispose();
+    sugarEditingController.dispose();
     sodiumEditingController.dispose();
     super.dispose();
   }
@@ -120,9 +124,12 @@ class _UpdateFoodState extends State<UpdateFood> {
                             },
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
+                              labelText: "ชื่อ*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               prefixIcon: const Icon(Icons.fastfood),
-                              hintText: "ชื่อ*",
+                              // hintText: "ชื่อ*",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -158,8 +165,10 @@ class _UpdateFoodState extends State<UpdateFood> {
                                   color: Colors.black,
                                   fontSize: 18
                               ),
+                              labelText: "แคลอรี่*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "แคลอรี่*",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -191,8 +200,10 @@ class _UpdateFoodState extends State<UpdateFood> {
                                   color: Colors.black,
                                   fontSize: 18
                               ),
+                              labelText: "ไขมัน",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "ไขมัน",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -217,8 +228,10 @@ class _UpdateFoodState extends State<UpdateFood> {
                                   color: Colors.black,
                                   fontSize: 18
                               ),
+                              labelText: "โปรตีน",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "โปรตีน",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -243,8 +256,12 @@ class _UpdateFoodState extends State<UpdateFood> {
                                   color: Colors.black,
                                   fontSize: 18
                               ),
+                              labelText: "คาร์โบไฮเดรต",
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                              ),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "คาร์โบไฮเดรต",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -269,8 +286,38 @@ class _UpdateFoodState extends State<UpdateFood> {
                                   color: Colors.black,
                                   fontSize: 18
                               ),
+                              labelText: "โซเดียม",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "โซเดียม",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            controller: sugarEditingController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            keyboardType: TextInputType.number,
+                            onSaved: (String? sugar) {
+                              myFood.sugar = sugar!;
+                            },
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              suffixText: "g",
+                              suffixStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
+                              labelText: "น้ำตาล",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -296,6 +343,7 @@ class _UpdateFoodState extends State<UpdateFood> {
                                       "fat": fatEditingController.text,
                                       "protein": proteinEditingController.text,
                                       "carbohydrate": carbEditingController.text,
+                                      "sugar": sugarEditingController.text,
                                       "sodium": sodiumEditingController.text
                                     }).then((value) => deleteData());
                                   }
@@ -306,6 +354,7 @@ class _UpdateFoodState extends State<UpdateFood> {
                                       "fat": fatEditingController.text,
                                       "protein": proteinEditingController.text,
                                       "carbohydrate": carbEditingController.text,
+                                      "sugar": sugarEditingController.text,
                                       "sodium": sodiumEditingController.text
                                     });
                                   }

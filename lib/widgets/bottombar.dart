@@ -1,9 +1,9 @@
 import 'package:calories_counter_project/screens/listsfood_screen.dart';
 import 'package:calories_counter_project/screens/stats_screen.dart';
+import 'package:calories_counter_project/widgets/tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:calories_counter_project/screens/home_screen.dart';
 import 'package:calories_counter_project/screens/profile_user.dart';
-import 'package:calories_counter_project/screens/record_food.dart';
 
 
 class BottomBar extends StatefulWidget {
@@ -18,7 +18,6 @@ class _BottomBarState extends State<BottomBar> {
   int currentTab = 0;
   final List<Widget> screens = [
     HomeScreen(),
-    const Food(),
     const UserProfile(),
     const FoodList(),
     const StatScreen()
@@ -43,10 +42,9 @@ class _BottomBarState extends State<BottomBar> {
           foregroundColor: Colors.white,
           child: const Icon(Icons.add),
           onPressed: (){
-            setState(() {
-              currentScreen = const Food();
-              currentTab = 2;
-            });
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return TabBarWidget();
+            }));
           },
         ),
       ),

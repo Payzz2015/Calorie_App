@@ -4,13 +4,13 @@ class Food{
   String fat;
   String protein;
   String carbohydrate;
+  String sugar;
   String sodium;
-  //String mealTime;
-  //String createdOn;
+
 
   Food({required this.name, required this.calories, required this.carbohydrate,
-    required this.fat, required this.protein, required this.sodium,
-    //required this.createdOn,required this.mealTime
+    required this.fat, required this.protein,required this.sugar, required this.sodium,
+
   });
 
   factory Food.fromJson(Map<String, dynamic> json) => Food(
@@ -19,6 +19,7 @@ class Food{
     calories: json["calories"],
     protein: json['protein'],
     carbohydrate: json['carbohydrate'],
+    sugar: json['sugar'],
     sodium: json['sodium'],
   );
 
@@ -28,30 +29,9 @@ class Food{
     'fat': fat,
     'protein': protein,
     'carbohydrate': carbohydrate,
+    'sugar': sugar,
     'sodium': sodium,
   };
 
-
- /* factory Food.fromMap(map){
-    return Food(
-      name: map['name'],
-      calories: map['calories'],
-      fat: map['fat'],
-      protein: map['protein'],
-      carbohydrate: map['carbohydrate'],
-      sodium: map['sodium'],
-    );
-  }
-
-  Map<String, dynamic> toMap(){
-    return {
-      'name': name,
-      'calories': calories,
-      'fat': fat,
-      'protein': protein,
-      'carbohydrate': carbohydrate,
-      'sodium': sodium,
-    };
-  }*/
 
 }

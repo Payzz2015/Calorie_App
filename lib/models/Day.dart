@@ -54,7 +54,6 @@ class Day{
     lunch: json["lunch"] == null ? null : List<Food>.from(json["lunch"].map((x) => Food.fromJson(x))),
     dinner: json["dinner"] == null ? null : List<Food>.from(json["dinner"].map((x) => Food.fromJson(x))),
     snack: json["snack"] == null ? null : List<Food>.from(json["snack"].map((x) => Food.fromJson(x))),
-    //breakfast: json["breakfast"] == null ? null : List<Food>.from(json["breakfast"].map((x) => Food.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {

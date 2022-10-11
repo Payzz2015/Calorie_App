@@ -1,3 +1,4 @@
+import 'package:calories_counter_project/ff.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -87,12 +88,12 @@ class _FoodListState extends State<FoodList> {
                   hintText: "sodium",
               ),
             ),
-            /*TextFormField(
+            TextFormField(
               controller: sugars,
               decoration: InputDecoration(
                   hintText: "sugars"
               ),
-            ),*/
+            ),
             IconButton(
               onPressed: (){
                 Map <String,dynamic> data = {
@@ -102,11 +103,11 @@ class _FoodListState extends State<FoodList> {
                   "fat": fat.text,
                   "carbohydrate": carbohydrate.text,
                   "sodium": sodium.text,
-                  /*"sugars": sugars.text*/
+                  "sugars": sugars.text
                 };
                 FirebaseFirestore.instance.collection("list_foods")
                     .doc("Standard")
-                    .collection('Starchy roots, tubers and their products')
+                    .collection('Milk and its products')
                     .doc(name.text)
                     .set(data);
                 name.clear();
@@ -115,9 +116,17 @@ class _FoodListState extends State<FoodList> {
                 fat.clear();
                 carbohydrate.clear();
                 sodium.clear();
-                /*sugars.clear();*/
+                sugars.clear();
               },
               icon: Icon(Icons.add),
+            ),
+            IconButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return const FF();
+                }));
+              },
+              icon: Icon(Icons.home),
             ),
           ],
         ),

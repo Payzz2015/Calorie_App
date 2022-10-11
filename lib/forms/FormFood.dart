@@ -16,7 +16,7 @@ class FormFood extends StatefulWidget {
 class _FormFoodState extends State<FormFood> {
 
   final formKey = GlobalKey<FormState>();
-  Food myFood = Food(name: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
+  Food myFood = Food(name: "",calories: "",fat: "",protein: "",carbohydrate: "",sugar: "",sodium: "");
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final CollectionReference _foodCollection = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("foods");
 
@@ -84,7 +84,9 @@ class _FormFoodState extends State<FormFood> {
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               prefixIcon: const Icon(Icons.fastfood),
-                              hintText: "ชื่อ*",
+                              labelText: "ชื่อ*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -121,7 +123,9 @@ class _FormFoodState extends State<FormFood> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "แคลอรี่*",
+                              labelText: "แคลอรี่*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -154,7 +158,9 @@ class _FormFoodState extends State<FormFood> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "ไขมัน",
+                              labelText: "ไขมัน",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -180,7 +186,9 @@ class _FormFoodState extends State<FormFood> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "โปรตีน",
+                              labelText: "โปรตีน",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -206,7 +214,11 @@ class _FormFoodState extends State<FormFood> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "คาร์โบไฮเดรต",
+                              labelText: "คาร์โบไฮเดรต",
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -232,7 +244,35 @@ class _FormFoodState extends State<FormFood> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "โซเดียม",
+                              labelText: "โซเดียม",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          TextFormField(
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            autofocus: false,
+                            keyboardType: TextInputType.number,
+                            onSaved: (String? sugar) {
+                              myFood.sugar = sugar!;
+                            },
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              suffixText: "g",
+                              suffixStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              labelText: "น้ำตาล",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -257,6 +297,7 @@ class _FormFoodState extends State<FormFood> {
                                     "fat": myFood.fat,
                                     "protein": myFood.protein,
                                     "carbohydrate": myFood.carbohydrate,
+                                    "sugar": myFood.sugar,
                                     "sodium": myFood.sodium
                                   });
                                   formKey.currentState!.reset();
