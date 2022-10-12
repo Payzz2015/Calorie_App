@@ -101,7 +101,7 @@ class _FoodListState extends State<FoodList> {
                   "calories":calories.text,
                   "protein":protein.text,
                   "fat": fat.text,
-                  "carbohydrate": carbohydrate.text,
+                  "carbohydrate":g carbohydrate.text,
                   "sodium": sodium.text,
                   "sugars": sugars.text
                 };
