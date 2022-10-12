@@ -48,13 +48,15 @@ class _StatScreenState extends State<StatScreen> {
                       chartData.add(ChartData((element.data()["day"]).toString(), int.parse(element.data()["caloriesEaten"]), int.parse(element.data()["weight"]), int.parse(element.data()["carb"]), int.parse(element.data()["protein"]), int.parse(element.data()["fat"])));
                     }
 
+
                     return Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            IconButton(
+                        chartData.length - min > 7 ? IconButton(
                                 onPressed: (){
+
                                   setState(() {
                                     max += 1;
                                     min += 1;
@@ -62,7 +64,7 @@ class _StatScreenState extends State<StatScreen> {
 
                                 },
                                 icon: Icon(Icons.arrow_back_ios_rounded)
-                            ),
+                            ) : Container(),
                             Text("7 Days",style: (TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
                             min == 0 ? Container() : IconButton(
                                 onPressed: (){
