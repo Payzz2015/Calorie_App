@@ -3,6 +3,7 @@ import 'package:calories_counter_project/helpers/dayofWeek.dart';
 import 'package:calories_counter_project/models/Day.dart';
 import 'package:calories_counter_project/profiles/gender.dart';
 import 'package:calories_counter_project/screens/history_screen.dart';
+import 'package:calories_counter_project/screens/manage_detail_food.dart';
 import 'package:calories_counter_project/screens/meal/manageMeal.dart';
 import 'package:calories_counter_project/screens/meal/meal_breakfast.dart';
 import 'package:calories_counter_project/screens/meal/meal_dinner.dart';
@@ -71,9 +72,8 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
             _dateFormatter(_value),
             style: const TextStyle(
                 fontFamily: 'Open Sans',
-                fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: Colors.white),
+                color: Colors.white),textScaleFactor: 1.5,
           ),
           IconButton(
               icon: const Icon(Icons.arrow_right, size: 30.0),
@@ -184,9 +184,9 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
     var outFormat = DateFormat("yyyy-MM-dd");
     day.day = outFormat.format(_value);
     day.caloriesLeft = userTDEE;
-    day.carbLeft = carb.toStringAsFixed(0);
-    day.fatLeft = fat.toStringAsFixed(0);
-    day.proteinLeft = protein.toStringAsFixed(0);
+    day.carbLeft = carb.toStringAsFixed(2);
+    day.fatLeft = fat.toStringAsFixed(2);
+    day.proteinLeft = protein.toStringAsFixed(2);
     day.weight = "0";
     if(day.weight == "0"){
       day.weight = userWeight;
@@ -196,6 +196,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
     day.fat = "0";
     day.protein = "0";
     day.sodium = "0";
+    day.sugar = "0";
     day.breakfast = [];
     day.lunch = [];
     day.dinner = [];
@@ -212,6 +213,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
               "fatLeft": day.fatLeft,
               "proteinLeft": day.proteinLeft,
               "sodium": day.sodium,
+              "sugar": day.sugar,
               "caloriesLeft": day.caloriesLeft,
               "caloriesEaten": day.caloriesEaten,
               "breakfast": day.breakfast,
@@ -262,7 +264,10 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
         centerTitle: true,
         title: const Text(
           "หน้าหลัก",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+          ),
+          textScaleFactor: 1.5,
         ),
         actions: [
           IconButton(
@@ -291,7 +296,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                 }
                 return SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0,top: 8.0,right: 5,left: 5),
                     child: Column(
                       children: [
                         PreferredSize(
@@ -317,14 +322,17 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                             children: [
                               Column(
                                 children: [
-                                  SizedBox(
+                                  Container(
                                     width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height*0.5,
+                                    margin: EdgeInsets.only(right: 5),
                                     child: Card(
                                       shape: ContinuousRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),
                                       elevation: 5,
                                       child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.all(15.0),
@@ -342,9 +350,9 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                                 : '${snapshot.data!['name']}',
                                                             style: TextStyle(
                                                               fontWeight: FontWeight.bold,
-                                                              fontSize: 20,
                                                               color: Colors.blue,
                                                             ),
+                                                            textScaleFactor: 2.0,
                                                           ),
                                                         ],
                                                       );
@@ -363,9 +371,9 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                       Text("เหลือแคลอรี่",
                                                         style: TextStyle(
                                                           fontWeight: FontWeight.bold,
-                                                          fontSize: 20,
                                                           color: Colors.blueGrey,
                                                         ),
+                                                        textScaleFactor: 1.5,
                                                       ),
                                                       SizedBox(height: 10,),
                                                       new Text(((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
@@ -374,13 +382,12 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                       ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))).toString(),
                                                         style: TextStyle(
                                                           fontWeight: FontWeight.bold,
-                                                          fontSize: ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
-                                                              ? 18
-                                                              : 35,
                                                           color: ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
                                                               ? Colors.red
                                                               : Colors.green,
                                                         ),
+                                                        textScaleFactor: ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
+                                                        ? 1.0 : 1.5,
                                                       ),
                                                     ],
                                                   ),
@@ -401,15 +408,15 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                     Text("คาร์โบไฮเดรต",
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.bold,
-                                                        fontSize: 15,
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                     Text(
-                                                      "${snapshot.data!["carb"]}",
+                                                      "${(double.parse(snapshot.data!["carb"])).toStringAsFixed(2)}",
                                                       style: TextStyle(
-                                                          fontSize: 15,
                                                           color: Colors.brown
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                   ],
                                                 ),
@@ -421,15 +428,15 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                     Text("ไขมัน",
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.bold,
-                                                        fontSize: 15,
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                     Text(
-                                                      "${snapshot.data!["fat"]}",
+                                                      "${double.parse(snapshot.data!["fat"]).toStringAsFixed(2)}",
                                                       style: TextStyle(
-                                                          fontSize: 15,
                                                           color: Colors.yellowAccent.shade700
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                   ],
                                                 ),
@@ -441,15 +448,15 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                     Text("โปรตีน",
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.bold,
-                                                        fontSize: 15,
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                     Text(
-                                                      "${snapshot.data!["protein"]}",
+                                                      "${double.parse(snapshot.data!["protein"]).toStringAsFixed(2)}",
                                                       style: TextStyle(
-                                                          fontSize: 15,
                                                           color: Colors.green
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                   ],
                                                 ),
@@ -487,20 +494,21 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(width: 5,),
                               Column(
                                 children: [
-                                  SizedBox(
+                                  Container(
                                     width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height*0.5,
                                     child: Card(
                                       shape: ContinuousRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),
                                       elevation: 5,
                                       child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.all(15.0),
+                                            padding: const EdgeInsets.only(right: 15.0,left: 15.0,bottom: 5.0,top: 5.0),
                                             child: Column(
                                               children: [
                                                 FutureBuilder(
@@ -513,120 +521,146 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                             'โภชนาการวันนี้',
                                                             style: TextStyle(
                                                               fontWeight: FontWeight.bold,
-                                                              fontSize: 30,
                                                               color: Colors.blue,
                                                             ),
+                                                            textScaleFactor: 2,
                                                           ),
                                                         ],
                                                       );
                                                     }
                                                 ),
-                                                SizedBox(height: 27,),
+                                                SizedBox(height: 5,),
                                                 Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
-                                                    Text("คาร์โบไฮเดรต (50%)",style: TextStyle(
-                                                      color: Colors.green,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 20
-                                                    ),),
+                                                    Text("คาร์โบไฮเดรต (50%)",
+                                                      style: TextStyle(
+                                                        color: Colors.green,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                      textScaleFactor: 1.5,
+                                                    ),
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
-                                                        Text("${snapshot.data["carb"]} g / ${snapshot.data["carbLeft"]} g",style: TextStyle(
-                                                            fontSize: 15,
+                                                        Text("${double.parse(snapshot.data["carb"]).toStringAsFixed(2)} g / ${double.parse(snapshot.data["carbLeft"]).toStringAsFixed(2)} g",style: TextStyle(
                                                           fontWeight: FontWeight.bold
-                                                        ),),
-                                                        Text(int.parse(snapshot.data["carb"]) > int.parse(snapshot.data["carbLeft"]) ? "ปริมาณคาร์โบไฮเดรตเกิน ${(int.parse(snapshot.data["carbLeft"])-int.parse(snapshot.data["carb"])).abs()} g" :"เหลือ ${int.parse(snapshot.data["carbLeft"])-int.parse(snapshot.data["carb"])} g",style: TextStyle(
-                                                            color: int.parse(snapshot.data["carb"]) > int.parse(snapshot.data["carbLeft"]) ? Colors.red : Colors.black,
-                                                            fontSize: 15,
+                                                        ),textScaleFactor: 1.0,
+                                                        ),
+                                                        Text(double.parse(snapshot.data["carb"]) > double.parse(snapshot.data["carbLeft"]) ? "ปริมาณคาร์โบไฮเดรตเกิน ${((double.parse(snapshot.data["carbLeft"])-double.parse(snapshot.data["carb"])).abs()).toStringAsFixed(2)} g" :"เหลือ ${(double.parse(snapshot.data["carbLeft"])-double.parse(snapshot.data["carb"])).toStringAsFixed(2)} g",style: TextStyle(
+                                                            color: double.parse(snapshot.data["carb"]) > double.parse(snapshot.data["carbLeft"]) ? Colors.red : Colors.black,
                                                           fontWeight: FontWeight.bold
-                                                        ),),
+                                                        ),textScaleFactor: 1.0,),
                                                       ],
                                                     ),
                                                     SizedBox(height: 5,),
-                                                    LinearPercentIndicator(
-                                                      width: 350,
-                                                      lineHeight: 14.0,
-                                                      percent: ((int.parse(snapshot.data["carb"])/int.parse(snapshot.data["carbLeft"]))*100)/100 > 1
-                                                          ? 1
-                                                          : ((int.parse(snapshot.data["carb"])/int.parse(snapshot.data["carbLeft"]))*100)/100,
-                                                      backgroundColor: Colors.grey.shade400,
-                                                      progressColor: ((int.parse(snapshot.data["carbLeft"]))-(int.parse(snapshot.data["carb"]))) < 0
-                                                          ? Colors.red
-                                                          : Colors.brown,
-                                                    ),
-                                                    SizedBox(height: 27,),
-                                                    Text("โปรตีน (30%)",style: TextStyle(
-                                                      color: Colors.green,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 20
-                                                    ),),
-
                                                     Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
-                                                        Text("${snapshot.data["protein"]} g / ${snapshot.data["proteinLeft"]} g",style: TextStyle(
-                                                            fontSize: 15,
-                                                          fontWeight: FontWeight.bold
-                                                        ),),
-                                                        Text(int.parse(snapshot.data["protein"]) > int.parse(snapshot.data["proteinLeft"]) ? "ปริมาณโปรตีนเกิน ${(int.parse(snapshot.data["proteinLeft"])-int.parse(snapshot.data["protein"])).abs()} g" :"เหลือ ${int.parse(snapshot.data["proteinLeft"])-int.parse(snapshot.data["protein"])} g",style: TextStyle(
-                                                            color: int.parse(snapshot.data["protein"]) > int.parse(snapshot.data["proteinLeft"]) ? Colors.red : Colors.black,
-                                                            fontSize: 15,
-                                                          fontWeight: FontWeight.bold
-                                                        ),),
-                                                      ],
-                                                    ),
-                                                    SizedBox(height: 5,),
-                                                    LinearPercentIndicator(
-                                                      width: 350.0,
-                                                      lineHeight: 14.0,
-                                                      percent: ((int.parse(snapshot.data["protein"])/int.parse(snapshot.data["proteinLeft"]))*100)/100 > 1
-                                                          ? 1
-                                                          : ((int.parse(snapshot.data["protein"])/int.parse(snapshot.data["proteinLeft"]))*100)/100,
-                                                      backgroundColor: Colors.grey.shade400,
-                                                      progressColor: ((int.parse(snapshot.data["proteinLeft"]))-(int.parse(snapshot.data["protein"]))) < 0
-                                                          ? Colors.red
-                                                          : Colors.green,
-                                                    ),
-                                                    SizedBox(height: 27,),
-                                                    Text("ไขมัน (20%)",style: TextStyle(
-                                                      color: Colors.green,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 20
-                                                    ),),
-
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                      children: [
-                                                        Text("${snapshot.data["fat"]} g / ${snapshot.data["fatLeft"]} g",style: TextStyle(
-                                                            fontSize: 15,
-                                                          fontWeight: FontWeight.bold
-                                                        ),),
-                                                        Text(int.parse(snapshot.data["fat"]) > int.parse(snapshot.data["fatLeft"]) ? "ปริมาณไขมันเกิน ${(int.parse(snapshot.data["fatLeft"])-int.parse(snapshot.data["fat"])).abs()} g" :"เหลือ ${int.parse(snapshot.data["fatLeft"])-int.parse(snapshot.data["fat"])} g",
-                                                          style: TextStyle(
-                                                            color: int.parse(snapshot.data["fat"]) > int.parse(snapshot.data["fatLeft"]) ? Colors.red : Colors.black,
-                                                            fontSize: 15,
-                                                            fontWeight: FontWeight.bold
-                                                          ),
+                                                        LinearPercentIndicator(
+                                                          width: MediaQuery.of(context).size.width*0.80,
+                                                          lineHeight: 14.0,
+                                                          percent: ((double.parse(snapshot.data["carb"])/double.parse(snapshot.data["carbLeft"]))*100)/100 > 1
+                                                              ? 1
+                                                              : ((double.parse(snapshot.data["carb"])/double.parse(snapshot.data["carbLeft"]))*100)/100,
+                                                          backgroundColor: Colors.grey.shade400,
+                                                          progressColor: ((double.parse(snapshot.data["carbLeft"]))-(double.parse(snapshot.data["carb"]))) < 0
+                                                              ? Colors.red
+                                                              : Colors.brown,
                                                         ),
                                                       ],
                                                     ),
                                                     SizedBox(height: 5,),
-                                                    LinearPercentIndicator(
-                                                      width: 350.0,
-                                                      lineHeight: 14.0,
-                                                      percent: ((int.parse(snapshot.data["fat"])/int.parse(snapshot.data["fatLeft"]))*100)/100 > 1
-                                                          ? 1
-                                                          : ((int.parse(snapshot.data["fat"])/int.parse(snapshot.data["fatLeft"]))*100)/100,
-                                                      backgroundColor: Colors.grey.shade400,
-                                                      progressColor: ((int.parse(snapshot.data["fatLeft"]))-(int.parse(snapshot.data["fat"]))) < 0
-                                                          ? Colors.red
-                                                          : Colors.yellowAccent.shade700,
+                                                    Text("โปรตีน (30%)",style: TextStyle(
+                                                      color: Colors.green,
+                                                        fontWeight: FontWeight.bold,
+                                                    ),textScaleFactor: 1.5,),
+
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      children: [
+                                                        Text("${double.parse(snapshot.data["protein"])} g / ${double.parse(snapshot.data["proteinLeft"])} g",style: TextStyle(
+                                                          fontWeight: FontWeight.bold
+                                                        ),textScaleFactor: 1.0,),
+                                                        Text(double.parse(snapshot.data["protein"]) > double.parse(snapshot.data["proteinLeft"]) ? "ปริมาณโปรตีนเกิน ${(double.parse(snapshot.data["proteinLeft"])-double.parse(snapshot.data["protein"])).abs().toStringAsFixed(2)} g" :"เหลือ ${(double.parse(snapshot.data["proteinLeft"])-double.parse(snapshot.data["protein"])).toStringAsFixed(2)} g",style: TextStyle(
+                                                            color: double.parse(snapshot.data["protein"]) > double.parse(snapshot.data["proteinLeft"]) ? Colors.red : Colors.black,
+                                                          fontWeight: FontWeight.bold
+                                                        ),textScaleFactor: 1.0,),
+                                                      ],
                                                     ),
+                                                    SizedBox(height: 5,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        LinearPercentIndicator(
+                                                          width: MediaQuery.of(context).size.width*0.80,
+                                                          lineHeight: 14.0,
+                                                          percent: ((double.parse(snapshot.data["protein"])/double.parse(snapshot.data["proteinLeft"]))*100)/100 > 1
+                                                              ? 1
+                                                              : ((double.parse(snapshot.data["protein"])/double.parse(snapshot.data["proteinLeft"]))*100)/100,
+                                                          backgroundColor: Colors.grey.shade400,
+                                                          progressColor: ((double.parse(snapshot.data["proteinLeft"]))-(double.parse(snapshot.data["protein"]))) < 0
+                                                              ? Colors.red
+                                                              : Colors.green,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Text("ไขมัน (20%)",style: TextStyle(
+                                                      color: Colors.green,
+                                                        fontWeight: FontWeight.bold,
+                                                    ),textScaleFactor: 1.5,),
+
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      children: [
+                                                        Text("${double.parse(snapshot.data["fat"]).toStringAsFixed(2)} g / ${double.parse(snapshot.data["fatLeft"]).toStringAsFixed(2)} g",style: TextStyle(
+                                                          fontWeight: FontWeight.bold
+                                                        ),textScaleFactor: 1.0,),
+                                                        Text(double.parse(snapshot.data["fat"]) > double.parse(snapshot.data["fatLeft"]) ? "ปริมาณไขมันเกิน ${((double.parse(snapshot.data["fatLeft"])-double.parse(snapshot.data["fat"])).abs()).toStringAsFixed(2)} g" :"เหลือ ${(double.parse(snapshot.data["fatLeft"])-double.parse(snapshot.data["fat"])).toStringAsFixed(2)} g",
+                                                          style: TextStyle(
+                                                            color: double.parse(snapshot.data["fat"]) > double.parse(snapshot.data["fatLeft"]) ? Colors.red : Colors.black,
+                                                            fontWeight: FontWeight.bold
+                                                          ),textScaleFactor: 1.0,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        LinearPercentIndicator(
+                                                          width: MediaQuery.of(context).size.width*0.80,
+                                                          lineHeight: 14.0,
+                                                          percent: ((double.parse(snapshot.data["fat"])/double.parse(snapshot.data["fatLeft"]))*100)/100 > 1
+                                                              ? 1
+                                                              : ((double.parse(snapshot.data["fat"])/double.parse(snapshot.data["fatLeft"]))*100)/100,
+                                                          backgroundColor: Colors.grey.shade400,
+                                                          progressColor: ((double.parse(snapshot.data["fatLeft"]))-(double.parse(snapshot.data["fat"]))) < 0
+                                                              ? Colors.red
+                                                              : Colors.yellowAccent.shade700,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Text("โซเดียม",style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),textScaleFactor: 1.5,),
+                                                    Text("${snapshot.data["sodium"]} g",style: TextStyle(
+                                                        fontWeight: FontWeight.bold
+                                                    ),textScaleFactor: 1.0,),
+                                                    SizedBox(height: 5,),
+                                                    Text("น้ำตาล",style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),textScaleFactor: 1.5,),
+                                                    Text("${double.parse(snapshot.data["sugar"]).toStringAsFixed(2)} g",style: TextStyle(
+                                                        fontWeight: FontWeight.bold
+                                                    ),textScaleFactor: 1.0,),
                                                   ],
-                                                )
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -667,66 +701,86 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context){
-                                  return ManageMeal(date: _value);
-                                }));
-                              },
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                elevation: 5,
-                                color: Colors.green,
-                                shadowColor: Colors.black,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      Icon(
-                                        Icons.restaurant,
-                                        size: 50,
-                                        color: Colors.white,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 12,right: 12,bottom: 12),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return ManageMeal(date: _value);
+                                    }));
+                                  },
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    elevation: 5,
+                                    color: Colors.green,
+                                    shadowColor: Colors.black,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        children: [
+                                          Icon(
+                                            Icons.restaurant,
+                                            size: 50,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            "จัดการมื้ออาหาร",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                            textScaleFactor: 1.0,
+                                          ),
+                                        ],
                                       ),
-                                      Text("จัดการมื้ออาหาร",style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.bold),),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                final weight = await openUpdateWeight();
-                                if (weight == null || weight.isEmpty) return;
+                                GestureDetector(
+                                  onTap: () async {
+                                    final weight = await openUpdateWeight();
+                                    if (weight == null || weight.isEmpty) return;
 
-                                setState(() {
-                                  updateWeight(weightUser: weight);
-                                });
-                              },
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                elevation: 5,
-                                color: Colors.green,
-                                shadowColor: Colors.black,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                        Icon(Icons.edit,size: 50,color: Colors.white),
+                                    setState(() {
+                                      updateWeight(weightUser: weight);
+                                    });
+                                  },
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    elevation: 5,
+                                    color: Colors.green,
+                                    shadowColor: Colors.black,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        children: [
+                                          Icon(Icons.edit,size: 50,color: Colors.white),
 
-                                      Text("อัพเดทน้ำหนัก (${snapshot.data!['weight']} กก.)",style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.bold),),
-                                    ],
+                                          Text(
+                                            "อัพเดทน้ำหนัก (${snapshot.data!['weight']} กก.)",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                            textScaleFactor: 1.0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                         SizedBox(height: 10,),
                         Card(
@@ -747,22 +801,14 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                 "มื้อเช้า",
                                 style: TextStyle(
                                   color: isVisibleBreakfast ? Colors.white : Colors.black,
-                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                 ),
+                                textScaleFactor: 2.0,
                               ),
                               trailing:
                               Wrap(
                                   spacing: 2,
                                   children: <Widget>[
-                                    IconButton(
-                                        onPressed: () {
-
-                                        },
-                                        icon: Icon(
-                                          Icons.camera_alt_rounded,
-                                          color: isVisibleBreakfast ? Colors.white : Color(0xFF5fb27c),
-                                        )),
                                     IconButton(
                                         onPressed: () {
                                           Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -786,21 +832,36 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                 ? Column(
                                   children: [
                                     ListTile(
-                                      leading: Text(""),
                                       title: snapshot.data!["breakfast"].length == 0 ? Center(child: Text("ไม่มีบันทึก",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),)) : Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                       trailing: snapshot.data!["breakfast"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                     ),
 
                                     for(var i in snapshot.data!["breakfast"])
-                                    ListTile(
-                                      leading: Icon(Icons.add),
-                                      title: Text(
-                                        '${i["name"]}',
-                                        textScaleFactor: 1.5,
-                                      ),
-                                      trailing: Text(
-                                        '${i["calories"]} kcal',
-                                        textScaleFactor: 1.2,
+                                    GestureDetector(
+                                      onTap: (){
+                                        var userFood = i["name"].toString();
+                                        var userCalories = i["calories"].toString();
+                                        var userFat = i["fat"].toString();
+                                        var userCarb = i["carbohydrate"].toString();
+                                        var userProtein = i["protein"].toString();
+                                        var userSugar = i["sugar"].toString();
+                                        var userSodium = i["sodium"].toString();
+                                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                                          return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                        }));
+                                      },
+                                      child: Card(
+                                        elevation: 10,
+                                        child: ListTile(
+                                          title: Text(
+                                            '${i["name"]}',style: TextStyle(fontWeight: FontWeight.bold),
+                                            textScaleFactor: 1.2,
+                                          ),
+                                          trailing: Text(
+                                            '${i["calories"]} kcal',
+                                            textScaleFactor: 1.0,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -831,18 +892,10 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                 style: TextStyle(
                                   color: isVisibleLunch ? Colors.white : Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 30
                                 ),
+                                textScaleFactor: 2.0,
                               ),
                               trailing: Wrap(spacing: 3, children: <Widget>[
-                                IconButton(
-                                    onPressed: () {
-
-                                    },
-                                    icon: Icon(
-                                      Icons.camera_alt_rounded,
-                                      color: isVisibleLunch ? Colors.white : Color(0xFF5fb27c),
-                                    )),
                                 IconButton(
                                     onPressed: () {
                                       Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -865,21 +918,36 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                 ? Column(
                               children: [
                                 ListTile(
-                                  leading: Text(""),
                                   title:
                                   snapshot.data!["lunch"].length == 0 ? Center(child: Text("ไม่มีบันทึก",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),)) : Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                   trailing: snapshot.data!["lunch"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                 ),
                                 for(var i in snapshot.data!["lunch"])
-                                  ListTile(
-                                    leading: Icon(Icons.add),
-                                    title: Text(
-                                      '${i["name"]}',
-                                      textScaleFactor: 1.5,
-                                    ),
-                                    trailing: Text(
-                                      '${i["calories"]} kcal',
-                                      textScaleFactor: 1.2,
+                                  GestureDetector(
+                                    onTap: (){
+                                      var userFood = i["name"].toString();
+                                      var userCalories = i["calories"].toString();
+                                      var userFat = i["fat"].toString();
+                                      var userCarb = i["carbohydrate"].toString();
+                                      var userProtein = i["protein"].toString();
+                                      var userSugar = i["sugar"].toString();
+                                      var userSodium = i["sodium"].toString();
+                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                        return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                      }));
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      child: ListTile(
+                                        title: Text(
+                                          '${i["name"]}',style: TextStyle(fontWeight: FontWeight.bold),
+                                          textScaleFactor: 1.2,
+                                        ),
+                                        trailing: Text(
+                                          '${i["calories"]} kcal',
+                                          textScaleFactor: 1.0,
+                                        ),
+                                      ),
                                     ),
                                   ),
                               ],
@@ -909,18 +977,10 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                 style: TextStyle(
                                   color: isVisibleDinner ? Colors.white : Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 30
                                 ),
+                                textScaleFactor: 2.0,
                               ),
                               trailing: Wrap(spacing: 3, children: <Widget>[
-                                IconButton(
-                                    onPressed: () {
-
-                                    },
-                                    icon: Icon(
-                                      Icons.camera_alt_rounded,
-                                      color: isVisibleDinner ? Colors.white : Color(0xFF5fb27c),
-                                    )),
                                 IconButton(
                                     onPressed: () {
                                       Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -942,21 +1002,36 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                 ? Column(
                               children: [
                                 ListTile(
-                                  leading: Text(""),
                                   title:
                                   snapshot.data!["dinner"].length == 0 ? Center(child: Text("ไม่มีบันทึก",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),)) : Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                   trailing: snapshot.data!["dinner"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                 ),
                                 for(var i in snapshot.data!["dinner"])
-                                  ListTile(
-                                    leading: Icon(Icons.add),
-                                    title: Text(
-                                      '${i["name"]}',
-                                      textScaleFactor: 1.5,
-                                    ),
-                                    trailing: Text(
-                                      '${i["calories"]} kcal',
-                                      textScaleFactor: 1.2,
+                                  GestureDetector(
+                                    onTap: (){
+                                      var userFood = i["name"].toString();
+                                      var userCalories = i["calories"].toString();
+                                      var userFat = i["fat"].toString();
+                                      var userCarb = i["carbohydrate"].toString();
+                                      var userProtein = i["protein"].toString();
+                                      var userSugar = i["sugar"].toString();
+                                      var userSodium = i["sodium"].toString();
+                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                        return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                      }));
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      child: ListTile(
+                                        title: Text(
+                                          '${i["name"]}',style: TextStyle(fontWeight: FontWeight.bold),
+                                          textScaleFactor: 1.2,
+                                        ),
+                                        trailing: Text(
+                                          '${i["calories"]} kcal',
+                                          textScaleFactor: 1.0,
+                                        ),
+                                      ),
                                     ),
                                   ),
                               ],
@@ -985,19 +1060,11 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                 "มื้อว่าง",
                                 style: TextStyle(
                                   color: isVisibleSnack ? Colors.white : Colors.black,
-                                  fontSize: 30,
                                   fontWeight: FontWeight.bold
                                 ),
+                                textScaleFactor: 2.0,
                               ),
                               trailing: Wrap(spacing: 3, children: <Widget>[
-                                IconButton(
-                                    onPressed: () {
-
-                                    },
-                                    icon: Icon(
-                                      Icons.camera_alt_rounded,
-                                      color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
-                                    )),
                                 IconButton(
                                     onPressed: () {
                                       Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -1019,22 +1086,36 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                 ? Column(
                               children: [
                                 ListTile(
-                                  leading: Text(""),
                                   title:
                                   snapshot.data!["snack"].length == 0 ? Center(child: Text("ไม่มีบันทึก",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),)) : Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                   trailing: snapshot.data!["snack"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                 ),
                                 for(var i in snapshot.data!["snack"])
-                                  if (snapshot.hasData)
-                                  ListTile(
-                                    leading: Icon(Icons.add),
-                                    title: Text(
-                                      '${i["name"]}',
-                                      textScaleFactor: 1.5,
-                                    ),
-                                    trailing: Text(
-                                      '${i["calories"]} kcal',
-                                      textScaleFactor: 1.2,
+                                  GestureDetector(
+                                    onTap: (){
+                                      var userFood = i["name"].toString();
+                                      var userCalories = i["calories"].toString();
+                                      var userFat = i["fat"].toString();
+                                      var userCarb = i["carbohydrate"].toString();
+                                      var userProtein = i["protein"].toString();
+                                      var userSugar = i["sugar"].toString();
+                                      var userSodium = i["sodium"].toString();
+                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                        return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                      }));
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      child: ListTile(
+                                        title: Text(
+                                          '${i["name"]}',style: TextStyle(fontWeight: FontWeight.bold),
+                                          textScaleFactor: 1.2,
+                                        ),
+                                        trailing: Text(
+                                          '${i["calories"]} kcal',
+                                          textScaleFactor: 1.0,
+                                        ),
+                                      ),
                                     ),
                                   ),
                               ],

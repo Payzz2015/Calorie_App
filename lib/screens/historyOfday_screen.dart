@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class HistoryOfDay extends StatefulWidget {
   final DateTime date;
@@ -51,10 +51,9 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
             Text(
               _dateFormatter(_value),
               style: TextStyle(
-                  fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: Colors.white
-              ),
+              ),textScaleFactor: 1.5,
             ),
           ],
         ),
@@ -141,29 +140,9 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
     var outFormat = DateFormat("yyyy-MM-dd");
     day.day = outFormat.format(_value);
     day.caloriesLeft = userTDEE;
-
-    //เช็คข้อมูลไม่ให้ติดลบ ถ้าติดลบ percent จะ error
-    if(carb == double.parse(carb.toString()).abs()){
-      day.carbLeft = "0";
-    }
-    else if(carb != double.parse(carb.toString()).abs()){
-      day.carbLeft = carb.toStringAsFixed(0);
-
-    }
-    if(fat == double.parse(fat.toString()).abs()){
-      day.fatLeft = "0";
-    }
-    else if(fat != double.parse(fat.toString()).abs()){
-      day.fatLeft = fat.toStringAsFixed(0);
-
-    }
-    if(protein == double.parse(protein.toString()).abs()){
-      day.proteinLeft = "0";
-    }
-    else if(protein != double.parse(protein.toString()).abs()){
-      day.proteinLeft = protein.toStringAsFixed(0);
-    }
-
+    day.carbLeft = carb.toStringAsFixed(0);
+    day.fatLeft = fat.toStringAsFixed(0);
+    day.proteinLeft = protein.toStringAsFixed(0);
     day.weight = "0";
     if(day.weight == "0"){
       day.weight = userWeight;
@@ -174,6 +153,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
     day.fat = "0";
     day.protein = "0";
     day.sodium = "0";
+    day.sugar = "0";
     day.breakfast = [];
     day.lunch = [];
     day.dinner = [];
@@ -190,6 +170,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
             "fatLeft": day.fatLeft,
             "proteinLeft": day.proteinLeft,
             "sodium": day.sodium,
+            "sugar": day.sugar,
             "caloriesLeft": day.caloriesLeft,
             "caloriesEaten": day.caloriesEaten,
             "breakfast": day.breakfast,
@@ -239,13 +220,12 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
         centerTitle: true,
         title: const Text(
           "ประวัติย้อนหลัง",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          style: TextStyle(fontWeight: FontWeight.bold),textScaleFactor: 1.5,
         ),
-
-
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             StreamBuilder(
               stream: trackCollection.doc("${_value.day}-${_value.month}-${_value.yearInBuddhistCalendar}").snapshots(),
@@ -283,14 +263,17 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                             children: [
                               Column(
                                 children: [
-                                  SizedBox(
+                                  Container(
                                     width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height*0.5,
+                                    margin: EdgeInsets.only(right: 5),
                                     child: Card(
                                       shape: ContinuousRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),
                                       elevation: 5,
                                       child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.all(15.0),
@@ -308,9 +291,9 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                                 : '${snapshot.data!['name']}',
                                                             style: TextStyle(
                                                               fontWeight: FontWeight.bold,
-                                                              fontSize: 20,
                                                               color: Colors.blue,
                                                             ),
+                                                            textScaleFactor: 2.0,
                                                           ),
                                                         ],
                                                       );
@@ -329,9 +312,9 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                       Text("เหลือแคลอรี่",
                                                         style: TextStyle(
                                                           fontWeight: FontWeight.bold,
-                                                          fontSize: 20,
                                                           color: Colors.blueGrey,
                                                         ),
+                                                        textScaleFactor: 2.0,
                                                       ),
                                                       SizedBox(height: 10,),
                                                       new Text(((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
@@ -340,13 +323,11 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                       ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))).toString(),
                                                         style: TextStyle(
                                                           fontWeight: FontWeight.bold,
-                                                          fontSize: ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
-                                                              ? 18
-                                                              : 35,
                                                           color: ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
                                                               ? Colors.red
                                                               : Colors.green,
                                                         ),
+                                                        textScaleFactor: 1.5,
                                                       ),
                                                     ],
                                                   ),
@@ -367,15 +348,15 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                     Text("คาร์โบไฮเดรต",
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.bold,
-                                                        fontSize: 15,
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                     Text(
                                                       "${snapshot.data!["carb"]}",
                                                       style: TextStyle(
-                                                          fontSize: 15,
                                                           color: Colors.brown
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                   ],
                                                 ),
@@ -387,15 +368,15 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                     Text("ไขมัน",
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.bold,
-                                                        fontSize: 15,
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                     Text(
                                                       "${snapshot.data!["fat"]}",
                                                       style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.green
+                                                          color: Colors.yellowAccent.shade700
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                   ],
                                                 ),
@@ -407,15 +388,15 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                     Text("โปรตีน",
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.bold,
-                                                        fontSize: 15,
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                     Text(
                                                       "${snapshot.data!["protein"]}",
                                                       style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.redAccent
+                                                          color: Colors.green
                                                       ),
+                                                      textScaleFactor: 1.0,
                                                     ),
                                                   ],
                                                 ),
@@ -455,17 +436,19 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                               ),
                               Column(
                                 children: [
-                                  SizedBox(
+                                  Container(
                                     width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height*0.5,
                                     child: Card(
                                       shape: ContinuousRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),
                                       elevation: 5,
                                       child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.all(15.0),
+                                            padding: const EdgeInsets.only(right: 15.0,left: 15.0,bottom: 5.0,top: 5.0),
                                             child: Column(
                                               children: [
                                                 FutureBuilder(
@@ -475,120 +458,147 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
                                                           Text(
-                                                            snapshot.connectionState == ConnectionState.waiting
-                                                                ? ''
-                                                                : '${snapshot.data!['name']}',
+                                                            'โภชนาการวันนี้',
                                                             style: TextStyle(
                                                               fontWeight: FontWeight.bold,
-                                                              fontSize: 20,
                                                               color: Colors.blue,
                                                             ),
+                                                            textScaleFactor: 2,
                                                           ),
                                                         ],
                                                       );
                                                     }
                                                 ),
-                                                SizedBox(height: 30,),
-                                                CircularPercentIndicator(
-                                                  radius: 100.0,
-                                                  lineWidth: 20,
-                                                  percent: ((int.parse(snapshot.data["caloriesEaten"])/int.parse(snapshot.data["caloriesLeft"]))*100)/100 > 1
-                                                      ? 1
-                                                      : ((int.parse(snapshot.data["caloriesEaten"])/int.parse(snapshot.data["caloriesLeft"]))*100)/100,
-                                                  center: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Text("เหลือแคลอรี่",
-                                                        style: TextStyle(
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: 20,
-                                                          color: Colors.blueGrey,
-                                                        ),
+                                                SizedBox(height: 5,),
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text("คาร์โบไฮเดรต (50%)",
+                                                      style: TextStyle(
+                                                        color: Colors.green,
+                                                        fontWeight: FontWeight.bold,
                                                       ),
-                                                      SizedBox(height: 10,),
-                                                      new Text(((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
-                                                          ? "แคลอรี่เกิน ${((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))).abs()}"
-                                                          :
-                                                      ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))).toString(),
-                                                        style: TextStyle(
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
-                                                              ? 18
-                                                              : 35,
-                                                          color: ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
+                                                      textScaleFactor: 1.5,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      children: [
+                                                        Text("${snapshot.data["carb"]} g / ${snapshot.data["carbLeft"]} g",style: TextStyle(
+                                                            fontWeight: FontWeight.bold
+                                                        ),textScaleFactor: 1.0,
+                                                        ),
+                                                        Text(int.parse(snapshot.data["carb"]) > int.parse(snapshot.data["carbLeft"]) ? "ปริมาณคาร์โบไฮเดรตเกิน ${(int.parse(snapshot.data["carbLeft"])-int.parse(snapshot.data["carb"])).abs()} g" :"เหลือ ${int.parse(snapshot.data["carbLeft"])-int.parse(snapshot.data["carb"])} g",style: TextStyle(
+                                                            color: int.parse(snapshot.data["carb"]) > int.parse(snapshot.data["carbLeft"]) ? Colors.red : Colors.black,
+                                                            fontWeight: FontWeight.bold
+                                                        ),textScaleFactor: 1.0,),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        LinearPercentIndicator(
+                                                          width: MediaQuery.of(context).size.width*0.80,
+                                                          lineHeight: 14.0,
+                                                          percent: ((int.parse(snapshot.data["carb"])/int.parse(snapshot.data["carbLeft"]))*100)/100 > 1
+                                                              ? 1
+                                                              : ((int.parse(snapshot.data["carb"])/int.parse(snapshot.data["carbLeft"]))*100)/100,
+                                                          backgroundColor: Colors.grey.shade400,
+                                                          progressColor: ((int.parse(snapshot.data["carbLeft"]))-(int.parse(snapshot.data["carb"]))) < 0
+                                                              ? Colors.red
+                                                              : Colors.brown,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Text("โปรตีน (30%)",style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),textScaleFactor: 1.5,),
+
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      children: [
+                                                        Text("${snapshot.data["protein"]} g / ${snapshot.data["proteinLeft"]} g",style: TextStyle(
+                                                            fontWeight: FontWeight.bold
+                                                        ),textScaleFactor: 1.0,),
+                                                        Text(int.parse(snapshot.data["protein"]) > int.parse(snapshot.data["proteinLeft"]) ? "ปริมาณโปรตีนเกิน ${(int.parse(snapshot.data["proteinLeft"])-int.parse(snapshot.data["protein"])).abs()} g" :"เหลือ ${int.parse(snapshot.data["proteinLeft"])-int.parse(snapshot.data["protein"])} g",style: TextStyle(
+                                                            color: int.parse(snapshot.data["protein"]) > int.parse(snapshot.data["proteinLeft"]) ? Colors.red : Colors.black,
+                                                            fontWeight: FontWeight.bold
+                                                        ),textScaleFactor: 1.0,),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        LinearPercentIndicator(
+                                                          width: MediaQuery.of(context).size.width*0.80,
+                                                          lineHeight: 14.0,
+                                                          percent: ((int.parse(snapshot.data["protein"])/int.parse(snapshot.data["proteinLeft"]))*100)/100 > 1
+                                                              ? 1
+                                                              : ((int.parse(snapshot.data["protein"])/int.parse(snapshot.data["proteinLeft"]))*100)/100,
+                                                          backgroundColor: Colors.grey.shade400,
+                                                          progressColor: ((int.parse(snapshot.data["proteinLeft"]))-(int.parse(snapshot.data["protein"]))) < 0
                                                               ? Colors.red
                                                               : Colors.green,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  progressColor: ((int.parse(snapshot.data["caloriesLeft"]))-(int.parse(snapshot.data["caloriesEaten"]))) < 0
-                                                      ? Colors.red
-                                                      : Colors.green,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(15.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Text("คาร์โบไฮเดรต",
-                                                      style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 15,
-                                                      ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      "${snapshot.data!["carb"]}",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.brown
-                                                      ),
+                                                    SizedBox(height: 5,),
+                                                    Text("ไขมัน (20%)",style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),textScaleFactor: 1.5,),
+
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      children: [
+                                                        Text("${snapshot.data["fat"]} g / ${snapshot.data["fatLeft"]} g",style: TextStyle(
+                                                            fontWeight: FontWeight.bold
+                                                        ),textScaleFactor: 1.0,),
+                                                        Text(int.parse(snapshot.data["fat"]) > int.parse(snapshot.data["fatLeft"]) ? "ปริมาณไขมันเกิน ${(int.parse(snapshot.data["fatLeft"])-int.parse(snapshot.data["fat"])).abs()} g" :"เหลือ ${int.parse(snapshot.data["fatLeft"])-int.parse(snapshot.data["fat"])} g",
+                                                          style: TextStyle(
+                                                              color: int.parse(snapshot.data["fat"]) > int.parse(snapshot.data["fatLeft"]) ? Colors.red : Colors.black,
+                                                              fontWeight: FontWeight.bold
+                                                          ),textScaleFactor: 1.0,
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  width: 15,
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text("ไขมัน",
-                                                      style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 15,
-                                                      ),
+                                                    SizedBox(height: 5,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        LinearPercentIndicator(
+                                                          width: MediaQuery.of(context).size.width*0.80,
+                                                          lineHeight: 14.0,
+                                                          percent: ((int.parse(snapshot.data["fat"])/int.parse(snapshot.data["fatLeft"]))*100)/100 > 1
+                                                              ? 1
+                                                              : ((int.parse(snapshot.data["fat"])/int.parse(snapshot.data["fatLeft"]))*100)/100,
+                                                          backgroundColor: Colors.grey.shade400,
+                                                          progressColor: ((int.parse(snapshot.data["fatLeft"]))-(int.parse(snapshot.data["fat"]))) < 0
+                                                              ? Colors.red
+                                                              : Colors.yellowAccent.shade700,
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      "${snapshot.data!["fat"]}",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.green
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  width: 15,
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text("โปรตีน",
-                                                      style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${snapshot.data!["protein"]}",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.redAccent
-                                                      ),
-                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Text("โซเดียม",style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),textScaleFactor: 1.5,),
+                                                    Text("${snapshot.data["sodium"]} g",style: TextStyle(
+                                                        fontWeight: FontWeight.bold
+                                                    ),textScaleFactor: 1.0,),
+                                                    SizedBox(height: 5,),
+                                                    Text("น้ำตาล",style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),textScaleFactor: 1.5,),
+                                                    Text("${snapshot.data["sugar"]} g",style: TextStyle(
+                                                        fontWeight: FontWeight.bold
+                                                    ),textScaleFactor: 1.0,),
                                                   ],
                                                 ),
                                               ],
@@ -649,19 +659,20 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                 "มื้อเช้า",
                                 style: TextStyle(
                                   color: isVisibleBreakfast ? Colors.white : Colors.black,
-                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                 ),
+                                textScaleFactor: 2.0,
                               ),
-                                trailing: Wrap(
-                                    spacing: 3,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 45,
-                                        color: isVisibleBreakfast ? Colors.white : Color(0xFF5fb27c),
-                                      ),]
-                                )
+                              trailing:
+                              Wrap(
+                                  spacing: 2,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.arrow_drop_down,
+                                      color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
+                                    ),
+                                  ]
+                              ),
                             ),
                           ),
                         ),
@@ -672,13 +683,12 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                 ? Column(
                               children: [
                                 ListTile(
-                                  leading: Text(""),
-                                  title: Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                  trailing: Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  title: snapshot.data!["breakfast"].length == 0 ? Center(child: Text("ไม่มีบันทึก",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),)) : Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  trailing: snapshot.data!["breakfast"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                 ),
+
                                 for(var i in snapshot.data!["breakfast"])
                                   ListTile(
-                                    leading: Icon(Icons.add),
                                     title: Text(
                                       '${i["name"]}',
                                       textScaleFactor: 1.5,
@@ -714,20 +724,17 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                               title: Text(
                                 "มื้อกลางวัน",
                                 style: TextStyle(
-                                    color: isVisibleLunch ? Colors.white : Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30
+                                  color: isVisibleLunch ? Colors.white : Colors.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
+                                textScaleFactor: 2.0,
                               ),
-                              trailing: Wrap(
-                                spacing: 3,
-                                children: <Widget>[
-                                  Icon(
+                              trailing: Wrap(spacing: 3, children: <Widget>[
+                                Icon(
                                   Icons.arrow_drop_down,
-                                    size: 45,
-                                    color: isVisibleLunch ? Colors.white : Color(0xFF5fb27c),
-                                ),]
-                              )
+                                  color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
+                                ),
+                              ]),
                             ),
                           ),
                         ),
@@ -738,13 +745,12 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                 ? Column(
                               children: [
                                 ListTile(
-                                  leading: Text(""),
-                                  title: Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                  trailing: Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  title:
+                                  snapshot.data!["lunch"].length == 0 ? Center(child: Text("ไม่มีบันทึก",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),)) : Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  trailing: snapshot.data!["lunch"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                 ),
                                 for(var i in snapshot.data!["lunch"])
                                   ListTile(
-                                    leading: Icon(Icons.add),
                                     title: Text(
                                       '${i["name"]}',
                                       textScaleFactor: 1.5,
@@ -779,20 +785,17 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                               title: Text(
                                 "มื้อเย็น",
                                 style: TextStyle(
-                                    color: isVisibleDinner ? Colors.white : Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30
+                                  color: isVisibleDinner ? Colors.white : Colors.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
+                                textScaleFactor: 2.0,
                               ),
-                                trailing: Wrap(
-                                    spacing: 3,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 45,
-                                        color: isVisibleDinner ? Colors.white : Color(0xFF5fb27c),
-                                      ),]
-                                )
+                              trailing: Wrap(spacing: 3, children: <Widget>[
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
+                                ),
+                              ]),
                             ),
                           ),
                         ),
@@ -803,13 +806,12 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                 ? Column(
                               children: [
                                 ListTile(
-                                  leading: Text(""),
-                                  title: Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                  trailing: Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  title:
+                                  snapshot.data!["dinner"].length == 0 ? Center(child: Text("ไม่มีบันทึก",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),)) : Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  trailing: snapshot.data!["dinner"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                 ),
                                 for(var i in snapshot.data!["dinner"])
                                   ListTile(
-                                    leading: Icon(Icons.add),
                                     title: Text(
                                       '${i["name"]}',
                                       textScaleFactor: 1.5,
@@ -845,19 +847,16 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                 "มื้อว่าง",
                                 style: TextStyle(
                                     color: isVisibleSnack ? Colors.white : Colors.black,
-                                    fontSize: 30,
                                     fontWeight: FontWeight.bold
                                 ),
+                                textScaleFactor: 2.0,
                               ),
-                                trailing: Wrap(
-                                    spacing: 3,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 45,
-                                        color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
-                                      ),]
-                                )
+                              trailing: Wrap(spacing: 3, children: <Widget>[
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
+                                ),
+                              ]),
                             ),
                           ),
                         ),
@@ -868,14 +867,13 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                 ? Column(
                               children: [
                                 ListTile(
-                                  leading: Text(""),
-                                  title: Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                  trailing: Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  title:
+                                  snapshot.data!["snack"].length == 0 ? Center(child: Text("ไม่มีบันทึก",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),)) : Text("ชื่ออาหาร",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  trailing: snapshot.data!["snack"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                 ),
                                 for(var i in snapshot.data!["snack"])
                                   if (snapshot.hasData)
                                     ListTile(
-                                      leading: Icon(Icons.add),
                                       title: Text(
                                         '${i["name"]}',
                                         textScaleFactor: 1.5,

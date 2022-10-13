@@ -45,7 +45,7 @@ class _mealLunchState extends State<mealLunch> {
               ),
               const Text(
                 "มื้อกลางวัน",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                style: TextStyle(fontWeight: FontWeight.bold),textScaleFactor: 1.0,
               ),
               IconButton(
                   onPressed: (){
@@ -74,9 +74,8 @@ class _mealLunchState extends State<mealLunch> {
               child: Text(
                 'ไม่มีรายการอาหาร',
                 style: TextStyle(
-                  fontSize: 20,
                   color: Color(0xFF5fb27c),
-                ),
+                ),textScaleFactor: 2.0,
               ),
             );
           }
@@ -121,9 +120,8 @@ class _mealLunchState extends State<mealLunch> {
                                 name.isEmpty ? "${snapshot.data!.docs.length} รายการ" : "รายการอาหารที่พบ",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
                                     color: Colors.white
-                                ),
+                                ),textScaleFactor: 1.5,
                               ),
                             ),
                           ),
@@ -141,8 +139,7 @@ class _mealLunchState extends State<mealLunch> {
                               backgroundColor: Color(0xFF5fb27c),
                               foregroundColor: Colors.white,
                               radius: 30,
-                              backgroundImage: NetworkImage(
-                                  "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
+                              backgroundImage: AssetImage("assets/icons/food_icon.jpg"),
                             ),
                             title: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
@@ -150,8 +147,7 @@ class _mealLunchState extends State<mealLunch> {
                                 document["name"],
                                 style: const TextStyle(
                                     color: Colors.blue,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold),textScaleFactor: 1.5,
                               ),
                             ),
                             subtitle: Column(
@@ -170,13 +166,18 @@ class _mealLunchState extends State<mealLunch> {
                                         var foodProtein = document["protein"].toString();
                                         var foodSodium = document["sodium"].toString();
                                         var eatenCalories = trackSnapshot["caloriesEaten"].toString();
+                                        var foodSugar = document["sugar"].toString();
                                         int totalCalories = int.parse(eatenCalories) + int.parse(foodCalories);
                                         int fat = int.parse("0");
                                         int sodium = int.parse("0");
                                         int protein = int.parse("0");
+                                        int sugar = int.parse("0");
                                         int carb = int.parse("0");
                                         if(foodFat != ""){
                                           fat = int.parse(trackSnapshot["fat"]) + int.parse(foodFat);
+                                        }
+                                        if(foodSugar != ""){
+                                          sugar = int.parse(trackSnapshot["sugar"]) + int.parse(foodSugar);
                                         }
                                         if(foodCarb != ""){
                                           carb = int.parse(trackSnapshot["carb"]) + int.parse(foodCarb);
@@ -198,6 +199,7 @@ class _mealLunchState extends State<mealLunch> {
                                                   "carbohydrate": foodCarb == "" ? "0" : foodCarb,
                                                   "protein": foodProtein == "" ? "0" : foodProtein,
                                                   "sodium": foodSodium == "" ? "0" : foodSodium,
+                                                  "sugar": foodSugar == "" ? "0" : foodSugar,
                                                   "datetime": DateTime.now(),
                                                 }]),
                                                 "caloriesEaten": totalCalories.toString(),
@@ -205,6 +207,7 @@ class _mealLunchState extends State<mealLunch> {
                                                 "carb": carb.toString(),
                                                 "protein": protein.toString(),
                                                 "sodium": sodium.toString(),
+                                                "sugar": sugar.toString(),
                                               },SetOptions(merge: true)
                                           );
                                         }
@@ -220,7 +223,7 @@ class _mealLunchState extends State<mealLunch> {
                               style: const TextStyle(
                                   color: Colors.blueGrey,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20),
+                                  ),textScaleFactor: 1.0,
                             ),
                           ),
                         );
@@ -232,8 +235,7 @@ class _mealLunchState extends State<mealLunch> {
                               backgroundColor: Color(0xFF5fb27c),
                               foregroundColor: Colors.white,
                               radius: 30,
-                              backgroundImage: NetworkImage(
-                                  "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
+                              backgroundImage: AssetImage("assets/icons/food_icon.jpg"),
                             ),
                             title: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
@@ -241,8 +243,7 @@ class _mealLunchState extends State<mealLunch> {
                                 document["name"],
                                 style: const TextStyle(
                                     color: Colors.blue,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold),textScaleFactor: 1.5,
                               ),
                             ),
                             subtitle: Column(
@@ -260,12 +261,15 @@ class _mealLunchState extends State<mealLunch> {
                                         var foodCarb = document["carbohydrate"].toString();
                                         var foodProtein = document["protein"].toString();
                                         var foodSodium = document["sodium"].toString();
+                                        var foodSugar = document["sugar"].toString();
                                         var eatenCalories = trackSnapshot["caloriesEaten"].toString();
                                         int totalCalories = int.parse(eatenCalories) + int.parse(foodCalories);
                                         int fat = int.parse("0");
                                         int sodium = int.parse("0");
                                         int protein = int.parse("0");
                                         int carb = int.parse("0");
+                                        int sugar = int.parse("0");
+
                                         if(foodFat != ""){
                                           fat = int.parse(trackSnapshot["fat"]) + int.parse(foodFat);
                                         }
@@ -278,6 +282,9 @@ class _mealLunchState extends State<mealLunch> {
                                         if(foodProtein != ""){
                                           protein = int.parse(trackSnapshot["protein"]) + int.parse(foodProtein);
                                         }
+                                        if(foodSugar != ""){
+                                          sugar = int.parse(trackSnapshot["sugar"]) + int.parse(foodSugar);
+                                        }
 
                                         if(trackSnapshot.exists){
                                           await trackCollection.doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}").set(
@@ -289,6 +296,7 @@ class _mealLunchState extends State<mealLunch> {
                                                   "carbohydrate": foodCarb,
                                                   "protein": foodProtein,
                                                   "sodium": foodSodium,
+                                                  "sugar": foodSugar,
                                                   "datetime": DateTime.now(),
                                                 }]),
                                                 "caloriesEaten": totalCalories.toString(),
@@ -296,6 +304,7 @@ class _mealLunchState extends State<mealLunch> {
                                                 "carb": carb.toString(),
                                                 "protein": protein.toString(),
                                                 "sodium": sodium.toString(),
+                                                "sugar": sugar.toString(),
                                               },SetOptions(merge: true)
                                           );
                                         }
@@ -311,7 +320,7 @@ class _mealLunchState extends State<mealLunch> {
                               style: const TextStyle(
                                   color: Colors.blueGrey,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20),
+                                  ),textScaleFactor: 1.0,
                             ),
                           ),
                         );

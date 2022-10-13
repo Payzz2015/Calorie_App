@@ -115,8 +115,7 @@ class _FoodSelectState extends State<FoodSelect> {
                                 backgroundColor: Color(0xFF5fb27c),
                                 foregroundColor: Colors.white,
                                 radius: 30,
-                                backgroundImage: NetworkImage(
-                                    "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
+                                backgroundImage: AssetImage("assets/icons/food_icon.jpg"),
                               ),
                               title: Padding(
                                 padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
@@ -124,8 +123,9 @@ class _FoodSelectState extends State<FoodSelect> {
                                   document["name"],
                                   style: TextStyle(
                                       color: Colors.blue,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                  textScaleFactor: 1.5,
                                 ),
                               ),
                               subtitle: Column(
@@ -174,7 +174,8 @@ class _FoodSelectState extends State<FoodSelect> {
                                 style: TextStyle(
                                     color: Colors.blueGrey,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                                ),
+                                textScaleFactor: 1.5,
                               ),
                             ),
                           ),
@@ -200,8 +201,7 @@ class _FoodSelectState extends State<FoodSelect> {
                                 backgroundColor: Color(0xFF5fb27c),
                                 foregroundColor: Colors.white,
                                 radius: 30,
-                                backgroundImage: NetworkImage(
-                                    "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
+                                backgroundImage: AssetImage("assets/icons/food_icon.jpg"),
                               ),
                               title: Padding(
                                 padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
@@ -209,8 +209,9 @@ class _FoodSelectState extends State<FoodSelect> {
                                   document["name"],
                                   style: TextStyle(
                                       color: Colors.blue,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                  textScaleFactor: 1.5,
                                 ),
                               ),
                               subtitle: Column(
@@ -259,7 +260,8 @@ class _FoodSelectState extends State<FoodSelect> {
                                 style: TextStyle(
                                     color: Colors.blueGrey,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                                ),
+                                textScaleFactor: 1.5,
                               ),
                             ),
                           ),

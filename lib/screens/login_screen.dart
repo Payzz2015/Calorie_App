@@ -30,12 +30,12 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          "Calories Calculator App",
+          "Calories App",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 30,
             color: Color(0xFF5fb27c),
           ),
+          textScaleFactor: 1.5,
         ),
       ),
       body: Center(

@@ -45,7 +45,7 @@ class _StatScreenState extends State<StatScreen> {
                   final List<ChartData> chartData = [];
                   if(snapshot.hasData){
                     for (var element in snapshot.data!.docs) {
-                      chartData.add(ChartData((element.data()["day"]).toString(), int.parse(element.data()["caloriesEaten"]), int.parse(element.data()["weight"]), int.parse(element.data()["carb"]), int.parse(element.data()["protein"]), int.parse(element.data()["fat"])));
+                      chartData.add(ChartData((element.data()["day"]).toString(), int.parse(element.data()["caloriesEaten"]), int.parse(element.data()["weight"]), double.parse(element.data()["carb"]), double.parse(element.data()["protein"]), double.parse(element.data()["fat"])));
                     }
 
 
@@ -65,7 +65,9 @@ class _StatScreenState extends State<StatScreen> {
                                 },
                                 icon: Icon(Icons.arrow_back_ios_rounded)
                             ) : Container(),
-                            Text("7 Days",style: (TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
+                            Text(chartData.length > 7 ?
+                              "7 Days" : "${chartData.length} Days",
+                              style: (TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
                             min == 0 ? Container() : IconButton(
                                 onPressed: (){
                                   setState(() {
@@ -80,8 +82,8 @@ class _StatScreenState extends State<StatScreen> {
                         SfCartesianChart(
                           isTransposed: true,
                           primaryXAxis: CategoryAxis(
-                            maximum: max,
-                            minimum: min,
+                            maximum: chartData.length > 7 ? max : chartData.length.toDouble()-1,
+                            minimum: chartData.length > 7 ? min : 0,
                           ),
                           primaryYAxis: NumericAxis(
                             labelAlignment: LabelAlignment.center
@@ -115,91 +117,97 @@ class _StatScreenState extends State<StatScreen> {
                           ],
                         ),
                         SizedBox(height: 10,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                  color: Color(0xFF4b87b9),
-                                  height: 25,
-                                  width: 25,
-                                ),
-                                Text(
-                                  "น้ำหนัก",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        color: Color(0xFF4b87b9),
+                                        height: 25,
+                                        width: 25,
+                                      ),
+                                      Text(
+                                        "น้ำหนัก",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                        ),
+                                        textScaleFactor: 1.0,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  color: Color(0xFFc06c84),
-                                  height: 25,
-                                  width: 25,
-                                ),
-                                Text(
-                                  "แคลอรี่",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15
+                                  Column(
+                                    children: [
+                                      Container(
+                                        color: Color(0xFFc06c84),
+                                        height: 25,
+                                        width: 25,
+                                      ),
+                                      Text(
+                                        "แคลอรี่",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                        ),
+                                        textScaleFactor: 1.0,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  color: Color(0xFFf67280),
-                                  height: 25,
-                                  width: 25,
-                                ),
-                                Text(
-                                  "คาร์โบไฮเดรต",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15
+                                  Column(
+                                    children: [
+                                      Container(
+                                        color: Color(0xFFf67280),
+                                        height: 25,
+                                        width: 25,
+                                      ),
+                                      Text(
+                                        "คาร์โบไฮเดรต",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                        ),
+                                        textScaleFactor: 1.0,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  color: Color(0xFFf8b195),
-                                  height: 25,
-                                  width: 25,
-                                ),
-                                Text(
-                                  "โปรตีน",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15
+                                  Column(
+                                    children: [
+                                      Container(
+                                        color: Color(0xFFf8b195),
+                                        height: 25,
+                                        width: 25,
+                                      ),
+                                      Text(
+                                        "โปรตีน",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                        ),
+                                        textScaleFactor: 1.0,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  color: Color(0xFF74b49b),
-                                  height: 25,
-                                  width: 25,
-                                ),
-                                Text(
-                                  "ไขมัน",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15
+                                  Column(
+                                    children: [
+                                      Container(
+                                        color: Color(0xFF74b49b),
+                                        height: 25,
+                                        width: 25,
+                                      ),
+                                      Text(
+                                        "ไขมัน",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                        ),
+                                        textScaleFactor: 1.0,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     );
@@ -220,8 +228,8 @@ class ChartData{
   final String date;
   final int caloriesEaten;
   final int weight;
-  final int carb;
-  final int protein;
-  final int fat;
+  final double carb;
+  final double protein;
+  final double fat;
   ChartData(this.date, this.caloriesEaten, this.weight, this.carb, this.protein, this.fat);
 }

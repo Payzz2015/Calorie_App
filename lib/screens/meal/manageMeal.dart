@@ -1,4 +1,6 @@
 import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
+import 'package:calories_counter_project/screens/detail_food.dart';
+import 'package:calories_counter_project/screens/manage_detail_food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -87,8 +89,7 @@ class _ManageMealState extends State<ManageMeal> {
           _dateFormatter(date),
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 25,
-          ),
+          ),textScaleFactor: 1.5,
         ),
       ),
       body: StreamBuilder(
@@ -99,9 +100,9 @@ class _ManageMealState extends State<ManageMeal> {
               child: Text(
                 'ไม่มีการบันทึกรายการอาหารของวันนี้',
                 style: TextStyle(
-                  fontSize: 20,
                   color: Color(0xFF5fb27c),
                 ),
+                textScaleFactor: 1.0,
               ),
             );
           }
@@ -115,9 +116,8 @@ class _ManageMealState extends State<ManageMeal> {
                 child: Text(
                   'ไม่มีการบันทึกรายการอาหารของวันนี้',
                   style: TextStyle(
-                    fontSize: 20,
                     color: Color(0xFF5fb27c),
-                  ),
+                  ),textScaleFactor: 1.0,
                 ),
               );
             }
@@ -143,9 +143,9 @@ class _ManageMealState extends State<ManageMeal> {
                                   "มื้อเช้า",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 25,
                                       color: Colors.white
                                   ),
+                                  textScaleFactor: 1.5,
                                 ),
                               ],
                             ),
@@ -158,52 +158,50 @@ class _ManageMealState extends State<ManageMeal> {
                               elevation: 2,
                               shadowColor: Colors.grey.shade200,
                               child: Container(
-                                padding: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade100,
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: (){
-                                        print("${i}");
-                                      },
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: Color(0xFF5fb27c),
-                                            foregroundColor: Colors.white,
-                                            radius: 25,
-                                            backgroundImage: NetworkImage(
-                                                "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
-                                          ),
-                                          SizedBox(width: 20,),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                '${i["name"]}',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              SizedBox(height: 4,),
-                                              Text(
-                                                '${i["calories"]} แคลอรี่',
-                                                style: TextStyle(
-                                                  color: Colors.black54,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                child:
+                                GestureDetector(
+                                  onTap: (){
+                                    var userFood = i["name"].toString();
+                                    var userCalories = i["calories"].toString();
+                                    var userFat = i["fat"].toString();
+                                    var userCarb = i["carbohydrate"].toString();
+                                    var userProtein = i["protein"].toString();
+                                    var userSugar = i["sugar"].toString();
+                                    var userSodium = i["sodium"].toString();
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                    }));
+                                  },
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Color(0xFF5fb27c),
+                                      foregroundColor: Colors.white,
+                                      radius: 25,
+                                      backgroundImage: AssetImage("assets/icons/food_icon.jpg"),
                                     ),
-                                    CircleAvatar(
+                                    title: Padding(
+                                      padding: const EdgeInsets.only(bottom: 8.0),
+                                      child: Text(
+                                          '${i["name"]}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                          textScaleFactor: 1.0,
+                                        ),
+                                    ),
+                                    subtitle: Text(
+                                      '${i["calories"]} แคลอรี่',
+                                        style: TextStyle(
+                                          color: Colors.black54,
+                                        ),
+                                        textScaleFactor: 1.0,
+                                    ),
+                                    trailing: CircleAvatar(
                                       radius: 23.5,
                                       backgroundColor: Colors.black26,
                                       //Color(0xffFDCF09),
@@ -221,19 +219,21 @@ class _ManageMealState extends State<ManageMeal> {
                                                   .collection("food_track")
                                                   .doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}")
                                                   .update({
-                                                    "breakfast": FieldValue.arrayRemove(val),
-                                                    "caloriesEaten": (int.parse(snapshot.data!["caloriesEaten"])-int.parse(i["calories"])).toString(),
-                                                    "carb": (int.parse(snapshot.data!["carb"])-int.parse(i["carbohydrate"])).toString(),
-                                                    "protein": (int.parse(snapshot.data!["protein"])-int.parse(i["protein"])).toString(),
-                                                    "fat": (int.parse(snapshot.data!["fat"])-int.parse(i["fat"])).toString(),
-                                                  });
+                                                "breakfast": FieldValue.arrayRemove(val),
+                                                "caloriesEaten": (int.parse(snapshot.data!["caloriesEaten"])-int.parse(i["calories"])).toString(),
+                                                "carb": (double.parse(snapshot.data!["carb"])-double.parse(i["carbohydrate"])).toStringAsFixed(2),
+                                                "protein": (double.parse(snapshot.data!["protein"])-double.parse(i["protein"])).toStringAsFixed(2),
+                                                "fat": (double.parse(snapshot.data!["fat"])-double.parse(i["fat"])).toStringAsFixed(2),
+                                                "sodium": (int.parse(snapshot.data!["sodium"])-int.parse(i["sodium"])).toString(),
+                                                "sugar": (double.parse(snapshot.data!["sugar"])-double.parse(i["sugar"])).toStringAsFixed(2),
+                                              });
 
                                             },
                                             icon: Icon(Icons.delete)
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -257,100 +257,101 @@ class _ManageMealState extends State<ManageMeal> {
                                       "มื้อกลางวัน",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 25,
                                       color: Colors.white
                                     ),
+                                    textScaleFactor: 1.5,
                                   ),
                                 ],
                               ),
                             ),
                           ),
                           for(var i in snapshot.data!["lunch"])
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: Card(
-                              elevation: 2,
-                              shadowColor: Colors.grey.shade200,
-                              child: Container(
-                                padding: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: (){
-                                        print("${i}");
-                                      },
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: Color(0xFF5fb27c),
-                                            foregroundColor: Colors.white,
-                                            radius: 25,
-                                            backgroundImage: NetworkImage(
-                                                "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
-                                          ),
-                                          SizedBox(width: 20,),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                '${i["name"]}',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              SizedBox(height: 4,),
-                                              Text(
-                                                '${i["calories"]} แคลอรี่',
-                                                style: TextStyle(
-                                                  color: Colors.black45,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: Card(
+                                elevation: 2,
+                                shadowColor: Colors.grey.shade200,
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                  ),
+                                  child:
+                                  GestureDetector(
+                                    onTap: (){
+                                      var userFood = i["name"].toString();
+                                      var userCalories = i["calories"].toString();
+                                      var userFat = i["fat"].toString();
+                                      var userCarb = i["carbohydrate"].toString();
+                                      var userProtein = i["protein"].toString();
+                                      var userSugar = i["sugar"].toString();
+                                      var userSodium = i["sodium"].toString();
+                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                        return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                      }));
+                                    },
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundColor: Color(0xFF5fb27c),
+                                        foregroundColor: Colors.white,
+                                        radius: 25,
+                                        backgroundImage: AssetImage("assets/icons/food_icon.jpg"),
                                       ),
-                                    ),
-                                    CircleAvatar(
-                                      radius: 23.5,
-                                      backgroundColor: Colors.black26,
-                                      //Color(0xffFDCF09),
-                                      child: CircleAvatar(
-                                        radius: 20,
-                                        backgroundColor: Colors.white,
-                                        foregroundColor: Colors.black,
-                                        child: IconButton(
-                                            onPressed: () async{
-                                              var val= [];
-                                              val.add(i);
-                                              await FirebaseFirestore.instance
-                                                  .collection("users")
-                                                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                                                  .collection("food_track")
-                                                  .doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}")
-                                                  .update({
-                                                    "lunch": FieldValue.arrayRemove(val),
-                                                    "caloriesEaten": (int.parse(snapshot.data!["caloriesEaten"])-int.parse(i["calories"])).toString(),
-                                                    "carb": (int.parse(snapshot.data!["carb"])-int.parse(i["carbohydrate"])).toString(),
-                                                    "protein": (int.parse(snapshot.data!["protein"])-int.parse(i["protein"])).toString(),
-                                                    "fat": (int.parse(snapshot.data!["fat"])-int.parse(i["fat"])).toString(),
-                                                  });
-                                            },
-                                            icon: Icon(Icons.delete)
+                                      title: Padding(
+                                        padding: const EdgeInsets.only(bottom: 8.0),
+                                        child: Text(
+                                          '${i["name"]}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                          textScaleFactor: 1.0,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        '${i["calories"]} แคลอรี่',
+                                        style: TextStyle(
+                                          color: Colors.black54,
+                                        ),
+                                        textScaleFactor: 1.0,
+                                      ),
+                                      trailing: CircleAvatar(
+                                        radius: 23.5,
+                                        backgroundColor: Colors.black26,
+                                        //Color(0xffFDCF09),
+                                        child: CircleAvatar(
+                                          radius: 20,
+                                          backgroundColor: Colors.white,
+                                          foregroundColor: Colors.black,
+                                          child: IconButton(
+                                              onPressed: () async{
+                                                var val= [];
+                                                val.add(i);
+                                                await FirebaseFirestore.instance
+                                                    .collection("users")
+                                                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                                                    .collection("food_track")
+                                                    .doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}")
+                                                    .update({
+                                                  "lunch": FieldValue.arrayRemove(val),
+                                                  "caloriesEaten": (int.parse(snapshot.data!["caloriesEaten"])-int.parse(i["calories"])).toString(),
+                                                  "carb": (double.parse(snapshot.data!["carb"])-double.parse(i["carbohydrate"])).toStringAsFixed(2),
+                                                  "protein": (double.parse(snapshot.data!["protein"])-double.parse(i["protein"])).toStringAsFixed(2),
+                                                  "fat": (double.parse(snapshot.data!["fat"])-double.parse(i["fat"])).toStringAsFixed(2),
+                                                  "sodium": (int.parse(snapshot.data!["sodium"])-int.parse(i["sodium"])).toString(),
+                                                  "sugar": (double.parse(snapshot.data!["sugar"])-double.parse(i["sugar"])).toStringAsFixed(2),
+                                                });
+
+                                              },
+                                              icon: Icon(Icons.delete)
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     snapshot.data!["dinner"].length == 0
@@ -369,9 +370,9 @@ class _ManageMealState extends State<ManageMeal> {
                                   "มื้อเย็น",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 25,
                                       color: Colors.white
                                   ),
+                                  textScaleFactor: 1.5,
                                 ),
                               ],
                             ),
@@ -384,52 +385,50 @@ class _ManageMealState extends State<ManageMeal> {
                               elevation: 2,
                               shadowColor: Colors.grey.shade200,
                               child: Container(
-                                padding: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade100,
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: (){
-                                        print("${i}");
-                                      },
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: Color(0xFF5fb27c),
-                                            foregroundColor: Colors.white,
-                                            radius: 25,
-                                            backgroundImage: NetworkImage(
-                                                "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
-                                          ),
-                                          SizedBox(width: 20,),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                '${i["name"]}',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              SizedBox(height: 4,),
-                                              Text(
-                                                '${i["calories"]} แคลอรี่',
-                                                style: TextStyle(
-                                                  color: Colors.black45,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                child:
+                                GestureDetector(
+                                  onTap: (){
+                                    var userFood = i["name"].toString();
+                                    var userCalories = i["calories"].toString();
+                                    var userFat = i["fat"].toString();
+                                    var userCarb = i["carbohydrate"].toString();
+                                    var userProtein = i["protein"].toString();
+                                    var userSugar = i["sugar"].toString();
+                                    var userSodium = i["sodium"].toString();
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                    }));
+                                  },
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Color(0xFF5fb27c),
+                                      foregroundColor: Colors.white,
+                                      radius: 25,
+                                      backgroundImage: AssetImage("assets/icons/food_icon.jpg"),
+                                    ),
+                                    title: Padding(
+                                      padding: const EdgeInsets.only(bottom: 8.0),
+                                      child: Text(
+                                        '${i["name"]}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        textScaleFactor: 1.0,
                                       ),
                                     ),
-                                    CircleAvatar(
+                                    subtitle: Text(
+                                      '${i["calories"]} แคลอรี่',
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                      textScaleFactor: 1.0,
+                                    ),
+                                    trailing: CircleAvatar(
                                       radius: 23.5,
                                       backgroundColor: Colors.black26,
                                       //Color(0xffFDCF09),
@@ -447,18 +446,21 @@ class _ManageMealState extends State<ManageMeal> {
                                                   .collection("food_track")
                                                   .doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}")
                                                   .update({
-                                                    "dinner": FieldValue.arrayRemove(val),
-                                                    "caloriesEaten": (int.parse(snapshot.data!["caloriesEaten"])-int.parse(i["calories"])).toString(),
-                                                    "carb": (int.parse(snapshot.data!["carb"])-int.parse(i["carbohydrate"])).toString(),
-                                                    "protein": (int.parse(snapshot.data!["protein"])-int.parse(i["protein"])).toString(),
-                                                    "fat": (int.parse(snapshot.data!["fat"])-int.parse(i["fat"])).toString(),
-                                                  });
+                                                "dinner": FieldValue.arrayRemove(val),
+                                                "caloriesEaten": (int.parse(snapshot.data!["caloriesEaten"])-int.parse(i["calories"])).toString(),
+                                                "carb": (double.parse(snapshot.data!["carb"])-double.parse(i["carbohydrate"])).toStringAsFixed(2),
+                                                "protein": (double.parse(snapshot.data!["protein"])-double.parse(i["protein"])).toStringAsFixed(2),
+                                                "fat": (double.parse(snapshot.data!["fat"])-double.parse(i["fat"])).toStringAsFixed(2),
+                                                "sodium": (int.parse(snapshot.data!["sodium"])-int.parse(i["sodium"])).toString(),
+                                                "sugar": (double.parse(snapshot.data!["sugar"])-double.parse(i["sugar"])).toStringAsFixed(2),
+                                              });
+
                                             },
                                             icon: Icon(Icons.delete)
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -482,9 +484,9 @@ class _ManageMealState extends State<ManageMeal> {
                                   "มื้อว่าง",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 25,
                                       color: Colors.white
                                   ),
+                                  textScaleFactor: 1.5,
                                 ),
                               ],
                             ),
@@ -497,52 +499,50 @@ class _ManageMealState extends State<ManageMeal> {
                               elevation: 2,
                               shadowColor: Colors.grey.shade200,
                               child: Container(
-                                padding: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade100,
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: (){
-                                        print("${i}");
-                                      },
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: Color(0xFF5fb27c),
-                                            foregroundColor: Colors.white,
-                                            radius: 25,
-                                            backgroundImage: NetworkImage(
-                                                "https://cdn-icons-png.flaticon.com/512/5141/5141534.png"),
-                                          ),
-                                          SizedBox(width: 20,),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                '${i["name"]}',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              SizedBox(height: 4,),
-                                              Text(
-                                                '${i["calories"]} แคลอรี่',
-                                                style: TextStyle(
-                                                  color: Colors.black45,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                child:
+                                GestureDetector(
+                                  onTap: (){
+                                    var userFood = i["name"].toString();
+                                    var userCalories = i["calories"].toString();
+                                    var userFat = i["fat"].toString();
+                                    var userCarb = i["carbohydrate"].toString();
+                                    var userProtein = i["protein"].toString();
+                                    var userSugar = i["sugar"].toString();
+                                    var userSodium = i["sodium"].toString();
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                    }));
+                                  },
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Color(0xFF5fb27c),
+                                      foregroundColor: Colors.white,
+                                      radius: 25,
+                                      backgroundImage: AssetImage("assets/icons/food_icon.jpg"),
+                                    ),
+                                    title: Padding(
+                                      padding: const EdgeInsets.only(bottom: 8.0),
+                                      child: Text(
+                                        '${i["name"]}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        textScaleFactor: 1.0,
                                       ),
                                     ),
-                                    CircleAvatar(
+                                    subtitle: Text(
+                                      '${i["calories"]} แคลอรี่',
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                      textScaleFactor: 1.0,
+                                    ),
+                                    trailing: CircleAvatar(
                                       radius: 23.5,
                                       backgroundColor: Colors.black26,
                                       //Color(0xffFDCF09),
@@ -560,18 +560,21 @@ class _ManageMealState extends State<ManageMeal> {
                                                   .collection("food_track")
                                                   .doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}")
                                                   .update({
-                                                    "snack": FieldValue.arrayRemove(val),
-                                                    "caloriesEaten": (int.parse(snapshot.data!["caloriesEaten"])-int.parse(i["calories"])).toString(),
-                                                    "carb": (int.parse(snapshot.data!["carb"])-int.parse(i["carbohydrate"])).toString(),
-                                                    "protein": (int.parse(snapshot.data!["protein"])-int.parse(i["protein"])).toString(),
-                                                    "fat": (int.parse(snapshot.data!["fat"])-int.parse(i["fat"])).toString(),
-                                                  });
+                                                "snack": FieldValue.arrayRemove(val),
+                                                "caloriesEaten": (int.parse(snapshot.data!["caloriesEaten"])-int.parse(i["calories"])).toString(),
+                                                "carb": (double.parse(snapshot.data!["carb"])-double.parse(i["carbohydrate"])).toStringAsFixed(2),
+                                                "protein": (double.parse(snapshot.data!["protein"])-double.parse(i["protein"])).toStringAsFixed(2),
+                                                "fat": (double.parse(snapshot.data!["fat"])-double.parse(i["fat"])).toStringAsFixed(2),
+                                                "sodium": (int.parse(snapshot.data!["sodium"])-int.parse(i["sodium"])).toString(),
+                                                "sugar": (double.parse(snapshot.data!["sugar"])-double.parse(i["sugar"])).toStringAsFixed(2),
+                                              });
+
                                             },
                                             icon: Icon(Icons.delete)
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),

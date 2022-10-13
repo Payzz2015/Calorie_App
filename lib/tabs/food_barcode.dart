@@ -98,8 +98,7 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                               backgroundColor: Color(0xFF5fb27c),
                               foregroundColor: Colors.white,
                               radius: 30,
-                              backgroundImage: NetworkImage(
-                                  "https://cdn.icon-icons.com/icons2/1526/PNG/512/barcodescanning_106580.png"),
+                              backgroundImage: AssetImage("assets/icons/barcode_icon.jpg"),
                             ),
                             title: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
@@ -107,8 +106,9 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                                 document["name"],
                                 style: const TextStyle(
                                     color: Colors.blue,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold
+                                ),
+                                textScaleFactor: 2,
                               ),
                             ),
                             subtitle: Column(
@@ -139,7 +139,9 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                                           ),
                                           onPressed: () {
                                             FirebaseFirestore.instance
-                                                .collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}")
+                                                .collection("users")
+                                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                                .collection("barcodes")
                                                 .doc(document.id)
                                                 .delete();
                                           },
@@ -153,8 +155,8 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                               style: const TextStyle(
                                   color: Colors.blueGrey,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20
                               ),
+                              textScaleFactor: 1.5,
                             ),
                           ),
                         );
@@ -166,8 +168,7 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                               backgroundColor: Color(0xFF5fb27c),
                               foregroundColor: Colors.white,
                               radius: 30,
-                              backgroundImage: NetworkImage(
-                                  "https://cdn.icon-icons.com/icons2/1526/PNG/512/barcodescanning_106580.png"),
+                              backgroundImage: AssetImage("assets/icons/barcode_icon.jpg"),
                             ),
                             title: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
@@ -175,8 +176,9 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                                 document["name"],
                                 style: const TextStyle(
                                     color: Colors.blue,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold
+                                ),
+                                textScaleFactor: 2,
                               ),
                             ),
                             subtitle: Column(
@@ -221,8 +223,8 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                               style: const TextStyle(
                                   color: Colors.blueGrey,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20
                               ),
+                              textScaleFactor: 1.5,
                             ),
                           ),
                         );

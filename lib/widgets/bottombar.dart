@@ -35,6 +35,7 @@ class _BottomBarState extends State<BottomBar> {
         bucket: bucket,
         child: currentScreen,
       ),
+
       floatingActionButton: Visibility(
         visible: !useKeyboard,
         child: FloatingActionButton(
@@ -48,8 +49,9 @@ class _BottomBarState extends State<BottomBar> {
           },
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
         elevation: 5,
         color: Colors.white,
         child: SizedBox(
@@ -58,9 +60,9 @@ class _BottomBarState extends State<BottomBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(width: 5,),
+                children: <Widget>[
                   MaterialButton(
                     minWidth: 40,
                     onPressed: (){
@@ -71,7 +73,7 @@ class _BottomBarState extends State<BottomBar> {
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         Icon(
                           Icons.home,
                           color: currentTab == 0 ? Color(0xFF5fb27c) : Colors.grey,
@@ -81,13 +83,11 @@ class _BottomBarState extends State<BottomBar> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                             color: currentTab == 0 ? Color(0xFF5fb27c) : Colors.grey
-                          ),
+                          ),textScaleFactor: 1.2,
                         )
                       ],
                     ),
                   ),
-                  SizedBox(width: 5,),
-
                   MaterialButton(
                     minWidth: 40,
                     onPressed: (){
@@ -98,7 +98,7 @@ class _BottomBarState extends State<BottomBar> {
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         Icon(
                           Icons.fastfood,
                           color: currentTab == 3 ? Color(0xFF5fb27c) : Colors.grey,
@@ -108,7 +108,7 @@ class _BottomBarState extends State<BottomBar> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: currentTab == 3 ? Color(0xFF5fb27c) : Colors.grey
-                          ),
+                          ),textScaleFactor: 1.2,
                         )
                       ],
                     ),
@@ -116,8 +116,9 @@ class _BottomBarState extends State<BottomBar> {
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   MaterialButton(
                     minWidth: 40,
                     onPressed: (){
@@ -128,7 +129,7 @@ class _BottomBarState extends State<BottomBar> {
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         Icon(
                           Icons.stacked_bar_chart,
                           color: currentTab == 4 ?  Color(0xFF5fb27c) : Colors.grey,
@@ -138,14 +139,12 @@ class _BottomBarState extends State<BottomBar> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: currentTab == 4 ?  Color(0xFF5fb27c) : Colors.grey
-                          ),
+                          ),textScaleFactor: 1.2,
                         )
                       ],
                     ),
                   ),
-                  SizedBox(width: 15,),
                   MaterialButton(
-
                     minWidth: 40,
                     onPressed: (){
                       setState(() {
@@ -155,22 +154,21 @@ class _BottomBarState extends State<BottomBar> {
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         Icon(
                           Icons.account_circle,
                           color: currentTab == 1 ? Color(0xFF5fb27c) : Colors.grey,
                         ),
                         Text(
-                          "ข้อมูล",
+                          "ข้อมูลผู้ใช้",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: currentTab == 1 ? Color(0xFF5fb27c) : Colors.grey
-                          ),
+                          ),textScaleFactor: 1.2,
                         )
                       ],
                     ),
                   ),
-                  SizedBox(width: 5,),
                 ],
               )
             ],

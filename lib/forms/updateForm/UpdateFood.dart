@@ -187,7 +187,15 @@ class _UpdateFoodState extends State<UpdateFood> {
                           TextFormField(
                             controller: fatEditingController,
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             keyboardType: TextInputType.number,
                             onSaved: (String? fat) {
@@ -215,7 +223,15 @@ class _UpdateFoodState extends State<UpdateFood> {
                           TextFormField(
                             controller: proteinEditingController,
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             keyboardType: TextInputType.number,
                             onSaved: (String? protein) {
@@ -243,7 +259,15 @@ class _UpdateFoodState extends State<UpdateFood> {
                           TextFormField(
                             controller: carbEditingController,
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             keyboardType: TextInputType.number,
                             onSaved: (String? carbohydrate) {
@@ -301,7 +325,15 @@ class _UpdateFoodState extends State<UpdateFood> {
                           TextFormField(
                             controller: sugarEditingController,
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             keyboardType: TextInputType.number,
                             onSaved: (String? sugar) {

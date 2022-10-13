@@ -143,7 +143,15 @@ class _FormFoodState extends State<FormFood> {
                           SizedBox(height: 10,),
                           TextFormField(
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,
@@ -171,10 +179,20 @@ class _FormFoodState extends State<FormFood> {
                           ),
                           TextFormField(
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.numberWithOptions(
+                                decimal: true,
+                                signed: false),
                             onSaved: (String? protein) {
                               myFood.protein = protein!;
                             },
@@ -199,7 +217,15 @@ class _FormFoodState extends State<FormFood> {
                           ),
                           TextFormField(
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,
@@ -255,7 +281,15 @@ class _FormFoodState extends State<FormFood> {
                           SizedBox(height: 10,),
                           TextFormField(
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,

@@ -38,8 +38,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
           isChange
               ? "น้ำหนัก"
               : "แคลอรี่",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold,
+          ),textScaleFactor: 1.5,
         ),
       ),
       body: SingleChildScrollView(
@@ -156,7 +156,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold
-                                        ),
+                                        ),textScaleFactor: 1.0,
                                       ),
                                     ),
                                   ],
@@ -183,7 +183,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       style: TextStyle(
                                           color: Colors.lightBlueAccent,
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   ),
                                   Align(
@@ -191,10 +191,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     child: Text(isChange ?"${snapshot.data!["weight"]}" :
                                     "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
-                                        fontSize: 12,
                                           color: Colors.lightBlueAccent,
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   )
                                 ],
@@ -232,14 +231,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             text = DateFormat("Undefined").format(day);
                             break;
                         }
-                        return Center(
-                          child: Text(
-                            text,
-                            style: TextStyle(
-                              color: Colors.black,
-                              // fontWeight: FontWeight.bold
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              text,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold
+                              ),textScaleFactor: 1.0,
                             ),
-                          ),
+
+                          ],
                         );
                       },
                       outsideBuilder: (context, day, focusedDay){
@@ -264,7 +267,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         style: TextStyle(
                                             color: Colors.grey,
                                             fontWeight: FontWeight.bold
-                                        ),
+                                        ),textScaleFactor: 1.0,
                                       ),
                                     ),
                                   ],
@@ -288,7 +291,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   ),
                                   Align(
@@ -296,10 +299,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     child: Text(isChange ? "${snapshot.data!["weight"]}"
                                       : "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
-                                        fontSize: 12,
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   )
                                 ],
@@ -330,7 +332,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         style: TextStyle(
                                             color: Colors.grey,
                                             fontWeight: FontWeight.bold
-                                        ),
+                                        ),textScaleFactor: 1.0,
                                       ),
                                     ),
                                   ],
@@ -354,7 +356,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   ),
                                   Align(
@@ -362,10 +364,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     child: Text(isChange ?"${snapshot.data!["weight"]}" :
                                     "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
-                                        fontSize: 12,
                                           color: Colors.greenAccent,
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   )
                                 ],
@@ -401,7 +402,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold
-                                        ),
+                                        ),textScaleFactor: 1.0,
                                       ),
                                     ),
                                   ],
@@ -428,7 +429,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   ),
                                   Align(
@@ -436,10 +437,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     child: Text(isChange ?"${snapshot.data!["weight"]}" :
                                     "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
-                                        fontSize: 12,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   )
                                 ],
@@ -473,7 +473,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold
-                                        ),
+                                        ),textScaleFactor: 1.0,
                                       ),
                                     ),
                                   ],
@@ -499,7 +499,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   ),
                                   Align(
@@ -508,10 +508,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       isChange ?"${snapshot.data!["weight"]}" :
                                       "${snapshot.data!["caloriesEaten"]}",
                                       style: TextStyle(
-                                        fontSize: 12,
                                           color: isChange ? Colors.blue : Color(0xFF00b752),
                                           fontWeight: FontWeight.bold
-                                      ),
+                                      ),textScaleFactor: 1.0,
                                     ),
                                   )
                                 ],

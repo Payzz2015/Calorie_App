@@ -1,8 +1,7 @@
-import 'package:calories_counter_project/screens/record_food.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class DetailFood extends StatefulWidget {
+class ManageDetailFood extends StatefulWidget {
   final String name;
   final String calories;
   final String fat;
@@ -10,13 +9,13 @@ class DetailFood extends StatefulWidget {
   final String protein;
   final String sugar;
   final String sodium;
-  const DetailFood({Key? key,required this.name,required this.calories, required this.fat, required this.carbohydrate, required this.protein,required this.sugar, required this.sodium}) : super(key: key);
+  const ManageDetailFood({Key? key,required this.name,required this.calories, required this.fat, required this.carbohydrate, required this.protein,required this.sugar, required this.sodium}) : super(key: key);
 
   @override
-  State<DetailFood> createState() => _DetailFoodState();
+  State<ManageDetailFood> createState() => _ManageDetailFoodState();
 }
 
-class _DetailFoodState extends State<DetailFood> {
+class _ManageDetailFoodState extends State<ManageDetailFood> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,14 +69,6 @@ class _DetailFoodState extends State<DetailFood> {
                         fontWeight: FontWeight.bold,color: Colors.black
                     )
                     ,textScaleFactor: 1.5,
-                  ),
-                  Text(
-                    "(1 เสิร์ฟ/100 กรัม)",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF5fb27c)
-                    ),
-                    textScaleFactor: 1.0,
                   ),
                 ],
               ),
@@ -141,7 +132,7 @@ class _DetailFoodState extends State<DetailFood> {
                         SizedBox(height: 5,),
                         Text(widget.protein == "" ?
                         "0 g" :
-                            "${widget.protein} g",
+                        "${widget.protein} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -177,7 +168,7 @@ class _DetailFoodState extends State<DetailFood> {
                         SizedBox(height: 5,),
                         Text(widget.fat == "" ?
                         "0 g" :
-                            "${widget.fat} g",
+                        "${widget.fat} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -213,7 +204,7 @@ class _DetailFoodState extends State<DetailFood> {
                         SizedBox(height: 5,),
                         Text(widget.carbohydrate == "" ?
                         "0 g":
-                            "${widget.carbohydrate} g",
+                        "${widget.carbohydrate} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -295,30 +286,6 @@ class _DetailFoodState extends State<DetailFood> {
                         ),
                       ],
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20,),
-              Material(
-                elevation: 5,
-                borderRadius: BorderRadius.circular(10),
-                color: const Color(0xFF5fb27c),
-                child: MaterialButton(
-                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                  minWidth: MediaQuery.of(context).size.width,
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return RecordFood(name: widget.name, calories: widget.calories, fat: widget.fat, carbohydrate: widget.carbohydrate, protein: widget.protein, sugar: widget.sugar, sodium: widget.sodium);
-                    }));
-
-                  },
-                  child: const Text(
-                    "บันทึก",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

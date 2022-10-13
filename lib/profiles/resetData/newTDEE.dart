@@ -128,8 +128,9 @@ class _newDataTDEEState extends State<newDataTDEE> {
                                 color:
                                 selectorExercise == 1 ? Colors.white : Colors
                                     .blueGrey,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold
+                            ),
+                            textScaleFactor: 1.0,
                           ),
                         ],
                       ),
@@ -159,8 +160,9 @@ class _newDataTDEEState extends State<newDataTDEE> {
                                 color:
                                 selectorExercise == 2 ? Colors.white : Colors
                                     .blueGrey,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold
+                            ),
+                            textScaleFactor: 1.0,
                           ),
                         ],
                       ),
@@ -190,8 +192,9 @@ class _newDataTDEEState extends State<newDataTDEE> {
                                 color:
                                 selectorExercise == 3 ? Colors.white : Colors
                                     .blueGrey,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold
+                            ),
+                            textScaleFactor: 1.0,
                           ),
                         ],
                       ),
@@ -221,8 +224,9 @@ class _newDataTDEEState extends State<newDataTDEE> {
                                 color:
                                 selectorExercise == 4 ? Colors.white : Colors
                                     .blueGrey,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold
+                            ),
+                            textScaleFactor: 1.0,
                           ),
                         ],
                       ),
@@ -252,8 +256,9 @@ class _newDataTDEEState extends State<newDataTDEE> {
                                 color:
                                 selectorExercise == 5 ? Colors.white : Colors
                                     .blueGrey,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold
+                            ),
+                            textScaleFactor: 1.0,
                           ),
                         ],
                       ),
