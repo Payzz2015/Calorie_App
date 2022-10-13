@@ -74,7 +74,7 @@ class _mealDinnerState extends State<mealDinner> {
                 'ไม่มีรายการอาหาร',
                 style: TextStyle(
                   color: Color(0xFF5fb27c),
-                ),textScaleFactor: 2.0,
+                ),textScaleFactor: 1.0,
               ),
             );
           }

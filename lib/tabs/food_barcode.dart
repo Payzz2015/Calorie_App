@@ -32,9 +32,8 @@ class _FoodBarcodeState extends State<FoodBarcode> {
               child: Text(
                 'ไม่มีรายการบาร์โค้ด',
                 style: TextStyle(
-                  fontSize: 20,
                   color: Color(0xFF5fb27c),
-                ),
+                ),textScaleFactor: 1.0,
               ),
             );
           }

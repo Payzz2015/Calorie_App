@@ -34,9 +34,8 @@ class _FoodSelectState extends State<FoodSelect> {
               child: Text(
                 'ไม่มีรายการอาหาร',
                 style: TextStyle(
-                  fontSize: 20,
                   color: Color(0xFF5fb27c),
-                ),
+                ),textScaleFactor: 1.0,
               ),
             );
           }
