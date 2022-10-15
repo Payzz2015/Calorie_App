@@ -87,6 +87,7 @@ class _mealBreakfastState extends State<mealBreakfast> {
           }
           if (snapshot.hasData) {
             return SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
                   Card(

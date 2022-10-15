@@ -9,6 +9,7 @@ import 'package:calories_counter_project/screens/meal/meal_breakfast.dart';
 import 'package:calories_counter_project/screens/meal/meal_dinner.dart';
 import 'package:calories_counter_project/screens/meal/meal_lunch.dart';
 import 'package:calories_counter_project/screens/meal/meal_snack.dart';
+import 'package:calories_counter_project/screens/test_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -283,6 +284,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
         ],
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -317,6 +319,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                         ),
                         SizedBox(height: 5,),
                         SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
@@ -414,7 +417,8 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                     Text(
                                                       "${(double.parse(snapshot.data!["carb"])).toStringAsFixed(2)}",
                                                       style: TextStyle(
-                                                          color: Colors.brown
+                                                          color: Colors.brown,
+                                                        fontWeight: FontWeight.bold
                                                       ),
                                                       textScaleFactor: 1.0,
                                                     ),
@@ -434,7 +438,8 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                     Text(
                                                       "${double.parse(snapshot.data!["fat"]).toStringAsFixed(2)}",
                                                       style: TextStyle(
-                                                          color: Colors.yellowAccent.shade700
+                                                          color: Colors.yellowAccent.shade700,
+                                                          fontWeight: FontWeight.bold
                                                       ),
                                                       textScaleFactor: 1.0,
                                                     ),
@@ -454,7 +459,8 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                                     Text(
                                                       "${double.parse(snapshot.data!["protein"]).toStringAsFixed(2)}",
                                                       style: TextStyle(
-                                                          color: Colors.green
+                                                          color: Colors.green,
+                                                          fontWeight: FontWeight.bold
                                                       ),
                                                       textScaleFactor: 1.0,
                                                     ),
@@ -1147,9 +1153,9 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
             foregroundColor: Colors.white,
             child: const Icon(Icons.camera_alt_rounded),
             onPressed: () {
-              /*Navigator.push(context, MaterialPageRoute(builder: (context){
+              Navigator.push(context, MaterialPageRoute(builder: (context){
                 return TestScreen();
-              }));*/
+              }));
             },
           ),
         ),

@@ -41,7 +41,7 @@ class _FoodSelectState extends State<FoodSelect> {
           }
           if (snapshot.hasData) {
             return SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
                   Card(
@@ -68,7 +68,7 @@ class _FoodSelectState extends State<FoodSelect> {
                     ),
                   ),
                   ListView.builder(
-                      physics: const AlwaysScrollableScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: 1,
                       itemBuilder: (context, index) {
@@ -91,7 +91,7 @@ class _FoodSelectState extends State<FoodSelect> {
                       }
                   ),
                   ListView(
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
                     children: snapshot.data!.docs.map((document) {
                       if(name.isEmpty){

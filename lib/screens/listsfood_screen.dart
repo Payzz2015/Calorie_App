@@ -43,7 +43,7 @@ class _FoodListState extends State<FoodList> {
             builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
               if (snapshot.hasData) {
                 return SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     children: [
                       ListView.builder(
@@ -584,7 +584,7 @@ class _FoodListState extends State<FoodList> {
                         ),
                       ),
                       ListView(
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         children: snapshot.data!.docs.map((QueryDocumentSnapshot document) {
                           final dynamic data = document.data();
@@ -625,7 +625,7 @@ class _FoodListState extends State<FoodList> {
                             return GestureDetector(
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context){
-                                  return DetailFood(name: data["name"].toString(), calories: data["calories"].toString(),sugar: data["sugar"].toString(), fat: data["fat"].toString(), carbohydrate: data["carbohydrate"].toString(), protein: data["protein"].toString(), sodium: data["sodium"].toString());
+                                  return DetailFood(name: data["name"].toString(), calories: data["calories"].toString(),sugar: data["sugars"].toString(), fat: data["fat"].toString(), carbohydrate: data["carbohydrate"].toString(), protein: data["protein"].toString(), sodium: data["sodium"].toString());
                                 }));
                               },
                               child: Card(

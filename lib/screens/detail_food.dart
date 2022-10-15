@@ -26,6 +26,7 @@ class _DetailFoodState extends State<DetailFood> {
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(

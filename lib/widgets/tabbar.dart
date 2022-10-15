@@ -109,6 +109,7 @@ with SingleTickerProviderStateMixin
               ),
               Expanded(
                 child: TabBarView(
+                  physics: BouncingScrollPhysics(),
                   controller: tabController,
                   children: [
                     FoodSelect(),

@@ -140,9 +140,9 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
     var outFormat = DateFormat("yyyy-MM-dd");
     day.day = outFormat.format(_value);
     day.caloriesLeft = userTDEE;
-    day.carbLeft = carb.toStringAsFixed(0);
-    day.fatLeft = fat.toStringAsFixed(0);
-    day.proteinLeft = protein.toStringAsFixed(0);
+    day.carbLeft = carb.toStringAsFixed(2);
+    day.fatLeft = fat.toStringAsFixed(2);
+    day.proteinLeft = protein.toStringAsFixed(2);
     day.weight = "0";
     if(day.weight == "0"){
       day.weight = userWeight;
@@ -224,6 +224,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
         ),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -236,6 +237,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                   );
                 }
                 return SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -258,6 +260,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                         ),
                         SizedBox(height: 5,),
                         SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
@@ -352,7 +355,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                       textScaleFactor: 1.0,
                                                     ),
                                                     Text(
-                                                      "${snapshot.data!["carb"]}",
+                                                      "${(double.parse(snapshot.data!["carb"])).toStringAsFixed(2)}",
                                                       style: TextStyle(
                                                           color: Colors.brown
                                                       ),
@@ -372,7 +375,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                       textScaleFactor: 1.0,
                                                     ),
                                                     Text(
-                                                      "${snapshot.data!["fat"]}",
+                                                      "${(double.parse(snapshot.data!["fat"])).toStringAsFixed(2)}",
                                                       style: TextStyle(
                                                           color: Colors.yellowAccent.shade700
                                                       ),
@@ -392,7 +395,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                       textScaleFactor: 1.0,
                                                     ),
                                                     Text(
-                                                      "${snapshot.data!["protein"]}",
+                                                      "${(double.parse(snapshot.data!["protein"])).toStringAsFixed(2)}",
                                                       style: TextStyle(
                                                           color: Colors.green
                                                       ),
@@ -484,12 +487,12 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
-                                                        Text("${snapshot.data["carb"]} g / ${snapshot.data["carbLeft"]} g",style: TextStyle(
+                                                        Text("${double.parse(snapshot.data["carb"]).toStringAsFixed(2)} g / ${double.parse(snapshot.data["carbLeft"]).toStringAsFixed(2)} g",style: TextStyle(
                                                             fontWeight: FontWeight.bold
                                                         ),textScaleFactor: 1.0,
                                                         ),
-                                                        Text(int.parse(snapshot.data["carb"]) > int.parse(snapshot.data["carbLeft"]) ? "ปริมาณคาร์โบไฮเดรตเกิน ${(int.parse(snapshot.data["carbLeft"])-int.parse(snapshot.data["carb"])).abs()} g" :"เหลือ ${int.parse(snapshot.data["carbLeft"])-int.parse(snapshot.data["carb"])} g",style: TextStyle(
-                                                            color: int.parse(snapshot.data["carb"]) > int.parse(snapshot.data["carbLeft"]) ? Colors.red : Colors.black,
+                                                        Text(double.parse(snapshot.data["carb"]) > double.parse(snapshot.data["carbLeft"]) ? "ปริมาณคาร์โบไฮเดรตเกิน ${((double.parse(snapshot.data["carbLeft"])-double.parse(snapshot.data["carb"])).abs()).toStringAsFixed(2)} g" :"เหลือ ${(double.parse(snapshot.data["carbLeft"])-double.parse(snapshot.data["carb"])).toStringAsFixed(2)} g",style: TextStyle(
+                                                            color: double.parse(snapshot.data["carb"]) > double.parse(snapshot.data["carbLeft"]) ? Colors.red : Colors.black,
                                                             fontWeight: FontWeight.bold
                                                         ),textScaleFactor: 1.0,),
                                                       ],
@@ -501,11 +504,11 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                         LinearPercentIndicator(
                                                           width: MediaQuery.of(context).size.width*0.80,
                                                           lineHeight: 14.0,
-                                                          percent: ((int.parse(snapshot.data["carb"])/int.parse(snapshot.data["carbLeft"]))*100)/100 > 1
+                                                          percent: ((double.parse(snapshot.data["carb"])/double.parse(snapshot.data["carbLeft"]))*100)/100 > 1
                                                               ? 1
-                                                              : ((int.parse(snapshot.data["carb"])/int.parse(snapshot.data["carbLeft"]))*100)/100,
+                                                              : ((double.parse(snapshot.data["carb"])/double.parse(snapshot.data["carbLeft"]))*100)/100,
                                                           backgroundColor: Colors.grey.shade400,
-                                                          progressColor: ((int.parse(snapshot.data["carbLeft"]))-(int.parse(snapshot.data["carb"]))) < 0
+                                                          progressColor: ((double.parse(snapshot.data["carbLeft"]))-(double.parse(snapshot.data["carb"]))) < 0
                                                               ? Colors.red
                                                               : Colors.brown,
                                                         ),
@@ -520,11 +523,11 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
-                                                        Text("${snapshot.data["protein"]} g / ${snapshot.data["proteinLeft"]} g",style: TextStyle(
+                                                        Text("${double.parse(snapshot.data["protein"])} g / ${double.parse(snapshot.data["proteinLeft"])} g",style: TextStyle(
                                                             fontWeight: FontWeight.bold
                                                         ),textScaleFactor: 1.0,),
-                                                        Text(int.parse(snapshot.data["protein"]) > int.parse(snapshot.data["proteinLeft"]) ? "ปริมาณโปรตีนเกิน ${(int.parse(snapshot.data["proteinLeft"])-int.parse(snapshot.data["protein"])).abs()} g" :"เหลือ ${int.parse(snapshot.data["proteinLeft"])-int.parse(snapshot.data["protein"])} g",style: TextStyle(
-                                                            color: int.parse(snapshot.data["protein"]) > int.parse(snapshot.data["proteinLeft"]) ? Colors.red : Colors.black,
+                                                        Text(double.parse(snapshot.data["protein"]) > double.parse(snapshot.data["proteinLeft"]) ? "ปริมาณโปรตีนเกิน ${(double.parse(snapshot.data["proteinLeft"])-double.parse(snapshot.data["protein"])).abs().toStringAsFixed(2)} g" :"เหลือ ${(double.parse(snapshot.data["proteinLeft"])-double.parse(snapshot.data["protein"])).toStringAsFixed(2)} g",style: TextStyle(
+                                                            color: double.parse(snapshot.data["protein"]) > double.parse(snapshot.data["proteinLeft"]) ? Colors.red : Colors.black,
                                                             fontWeight: FontWeight.bold
                                                         ),textScaleFactor: 1.0,),
                                                       ],
@@ -536,11 +539,11 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                         LinearPercentIndicator(
                                                           width: MediaQuery.of(context).size.width*0.80,
                                                           lineHeight: 14.0,
-                                                          percent: ((int.parse(snapshot.data["protein"])/int.parse(snapshot.data["proteinLeft"]))*100)/100 > 1
+                                                          percent: ((double.parse(snapshot.data["protein"])/double.parse(snapshot.data["proteinLeft"]))*100)/100 > 1
                                                               ? 1
-                                                              : ((int.parse(snapshot.data["protein"])/int.parse(snapshot.data["proteinLeft"]))*100)/100,
+                                                              : ((double.parse(snapshot.data["protein"])/double.parse(snapshot.data["proteinLeft"]))*100)/100,
                                                           backgroundColor: Colors.grey.shade400,
-                                                          progressColor: ((int.parse(snapshot.data["proteinLeft"]))-(int.parse(snapshot.data["protein"]))) < 0
+                                                          progressColor: ((double.parse(snapshot.data["proteinLeft"]))-(double.parse(snapshot.data["protein"]))) < 0
                                                               ? Colors.red
                                                               : Colors.green,
                                                         ),
@@ -555,12 +558,12 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
-                                                        Text("${snapshot.data["fat"]} g / ${snapshot.data["fatLeft"]} g",style: TextStyle(
+                                                        Text("${double.parse(snapshot.data["fat"]).toStringAsFixed(2)} g / ${double.parse(snapshot.data["fatLeft"]).toStringAsFixed(2)} g",style: TextStyle(
                                                             fontWeight: FontWeight.bold
                                                         ),textScaleFactor: 1.0,),
-                                                        Text(int.parse(snapshot.data["fat"]) > int.parse(snapshot.data["fatLeft"]) ? "ปริมาณไขมันเกิน ${(int.parse(snapshot.data["fatLeft"])-int.parse(snapshot.data["fat"])).abs()} g" :"เหลือ ${int.parse(snapshot.data["fatLeft"])-int.parse(snapshot.data["fat"])} g",
+                                                        Text(double.parse(snapshot.data["fat"]) > double.parse(snapshot.data["fatLeft"]) ? "ปริมาณไขมันเกิน ${((double.parse(snapshot.data["fatLeft"])-double.parse(snapshot.data["fat"])).abs()).toStringAsFixed(2)} g" :"เหลือ ${(double.parse(snapshot.data["fatLeft"])-double.parse(snapshot.data["fat"])).toStringAsFixed(2)} g",
                                                           style: TextStyle(
-                                                              color: int.parse(snapshot.data["fat"]) > int.parse(snapshot.data["fatLeft"]) ? Colors.red : Colors.black,
+                                                              color: double.parse(snapshot.data["fat"]) > double.parse(snapshot.data["fatLeft"]) ? Colors.red : Colors.black,
                                                               fontWeight: FontWeight.bold
                                                           ),textScaleFactor: 1.0,
                                                         ),
@@ -573,11 +576,11 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                         LinearPercentIndicator(
                                                           width: MediaQuery.of(context).size.width*0.80,
                                                           lineHeight: 14.0,
-                                                          percent: ((int.parse(snapshot.data["fat"])/int.parse(snapshot.data["fatLeft"]))*100)/100 > 1
+                                                          percent: ((double.parse(snapshot.data["fat"])/double.parse(snapshot.data["fatLeft"]))*100)/100 > 1
                                                               ? 1
-                                                              : ((int.parse(snapshot.data["fat"])/int.parse(snapshot.data["fatLeft"]))*100)/100,
+                                                              : ((double.parse(snapshot.data["fat"])/double.parse(snapshot.data["fatLeft"]))*100)/100,
                                                           backgroundColor: Colors.grey.shade400,
-                                                          progressColor: ((int.parse(snapshot.data["fatLeft"]))-(int.parse(snapshot.data["fat"]))) < 0
+                                                          progressColor: ((double.parse(snapshot.data["fatLeft"]))-(double.parse(snapshot.data["fat"]))) < 0
                                                               ? Colors.red
                                                               : Colors.yellowAccent.shade700,
                                                         ),
@@ -596,7 +599,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                                       color: Colors.green,
                                                       fontWeight: FontWeight.bold,
                                                     ),textScaleFactor: 1.5,),
-                                                    Text("${snapshot.data["sugar"]} g",style: TextStyle(
+                                                    Text("${double.parse(snapshot.data["sugar"]).toStringAsFixed(2)} g",style: TextStyle(
                                                         fontWeight: FontWeight.bold
                                                     ),textScaleFactor: 1.0,),
                                                   ],

@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:http_parser/http_parser.dart';
+import 'package:calories_counter_project/screens/detail_food.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
 
 class TestScreen extends StatefulWidget {
   const TestScreen({Key? key}) : super(key: key);
@@ -14,39 +13,227 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
+  File? pickedImage;
+  bool _loading = false;
+  List? _result;
+  final _imagePicker = ImagePicker();
+
+  String name = "";
+
+  late Stream<QuerySnapshot> collectionStream = FirebaseFirestore.instance.collection('recognition').where("name", isLessThanOrEqualTo: _result![0]["label"]).snapshots();
 
 
-  File? _image;
-  Uint8List? bytes;
-  String? _image64;
-  List<String> images = [];
+  @override
+  void initState(){
+    super.initState();
+    _loading = true;
 
-  Future<void> getImage() async {
-    var image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    loadModel().then((value) {
+      setState(() {
+        _loading = false;
+      });
+    });
+  }
+
+  loadModel() async {
+    await Tflite.loadModel(
+        model: "assets/models/model_unquant.tflite",
+        labels: "assets/models/labels.txt");
+  }
+
+  getImageGallery() async {
+    var image = await _imagePicker.pickImage(source: ImageSource.gallery);
     //source: ImageSource.gallery เป็นเมธอดนำภาพจาก gallery ใน mobile
     //source: ImageSource.camera เป็นเมธอดนำภาพจาก การถ่ายภาพ
-    String url = "https://api.aiforthai.in.th/thaifood/";
+    if (image == null) return null;
+    setState(() {
+      _loading = true;
+      pickedImage = File(image.path);
+    });
+    classifyImage(pickedImage!);
+  }
 
+  getImageCamera() async {
+    var image = await _imagePicker.pickImage(source: ImageSource.camera);
+    if (image == null) return null;
+    setState(() {
+      _loading = true;
+      pickedImage = File(image.path);
+    });
+    classifyImage(pickedImage!);
+  }
 
-    final String key = "Q1QV7QmKhx2bxfAmDrlf6k625js1DRuv";
-    var postUri = Uri.parse(url);
-    var request = new http.MultipartRequest("POST", postUri);
-    request.headers["Content-type"] = "application/json";
-    request.headers["Apikey"] = key;
-    bytes = File(image!.path).readAsBytesSync();
-    _image64 = base64Encode(bytes!);
-    images.add(_image64!);
+  classifyImage(File image) async {
+    var output = await Tflite.runModelOnImage(
+      path: image.path,
+      numResults: 2,
+      threshold: 0.5,
+      imageStd: 127.5,
+      imageMean: 127.5,
+    );
 
-    request.files.add(
-      await http.MultipartFile.fromPath(
-      'file',
-      _image64!,
-    ));
-
+    setState(() {
+      _loading = false;
+      _result = output;
+      print(_result![0]["label"]);
+      name = _result![0]["label"];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            "เพิ่มอาหารด้วยรูปภาพ",
+            style: TextStyle(fontWeight: FontWeight.bold),
+            textScaleFactor: 1.0,
+          ),
+          backgroundColor: Color(0xFF5fb27c),
+          foregroundColor: Colors.white,
+        ),
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 30,
+                ),
+                _loading
+                    ? Container(
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(),
+                )
+                    : Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      pickedImage == null
+                          ? Container()
+                          : Container(
+                        child: Image.file(pickedImage!),
+                        height: 350,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _result != null
+                          ? Column(
+                        children: [
+                          Text(
+                            "${_result![0]["label"]}"
+                                .replaceAll(RegExp(r'[0-9]'), ''),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                background: Paint()
+                                  ..color = Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          StreamBuilder(
+                              stream: collectionStream,
+                              builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+                                if (!snapshot.hasData) {
+                                  return Text("Loading");
+                                }
+                                  return Column(
+                                    children: [
+                                      ListView(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        children: snapshot.data!.docs.map((QueryDocumentSnapshot document) {
+                                          final dynamic data = document.data();
+                                          if(document["name"].toString().toLowerCase().startsWith(name.toLowerCase())){
+                                            return GestureDetector(
+                                              onTap: (){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                  return DetailFood(name: data["name"].toString(), calories: data["calories"].toString(),sugar: data["sugars"].toString(), fat: data["fat"].toString(), carbohydrate: data["carbohydrate"].toString(), protein: data["protein"].toString(), sodium: data["sodium"].toString());
+                                                }));
+                                              },
+                                              child: Card(
+                                                elevation: 1,
+                                                child: ListTile(
+                                                  title: Padding(
+                                                    padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
+                                                    child: Text(
+                                                      document["name"],
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight: FontWeight.bold
+                                                      ),
+                                                      textScaleFactor: 1,
+                                                    ),
+                                                  ),
+                                                  trailing: Text(
+                                                    "${document["calories"]} kcal",
+                                                    style: TextStyle(
+                                                      color: Colors.blueGrey,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                    textScaleFactor: 1,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          return Container();
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  );
+                              }
+                          ),
+                        ],
+                      )
+                          : Container(
+                        child: Center(
+                          child: Text(
+                            "เพิ่มรูปภาพ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                            textScaleFactor: 1.0,
+                          ),
+                        ),
+                        height: 350,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: 1,
+                onPressed: getImageCamera,
+                child: Icon(Icons.camera_alt_rounded),
+                backgroundColor: Color(0xFF5fb27c),
+              ),
+              SizedBox(width: 15,),
+              FloatingActionButton(
+                heroTag: 2,
+                onPressed: getImageGallery,
+                child: Icon(Icons.photo_album_rounded),
+                backgroundColor: Color(0xFF5fb27c),
+              ),
+            ],
+          ),
+        )
+    );
   }
 }

@@ -123,7 +123,7 @@ class _ManageMealState extends State<ManageMeal> {
             }
             else{
               return SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

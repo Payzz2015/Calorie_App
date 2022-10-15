@@ -65,6 +65,7 @@ class _FormBarcodeState extends State<FormBarcode> {
               ),
               body: Center(
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     child: Form(

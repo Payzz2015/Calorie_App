@@ -36,6 +36,7 @@ class _RecordFoodState extends State<RecordFood> {
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(

@@ -39,6 +39,7 @@ class _FoodBarcodeState extends State<FoodBarcode> {
           }
           if (snapshot.hasData) {
             return SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
                   Card(
@@ -65,7 +66,7 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                     ),
                   ),
                   ListView.builder(
-                      physics: const AlwaysScrollableScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: 1,
                       itemBuilder: (context, index) {
@@ -87,7 +88,7 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                         );
                       }),
                   ListView(
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
                     children: snapshot.data!.docs.map((document) {
                       if(name.isEmpty){

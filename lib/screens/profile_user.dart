@@ -65,6 +65,7 @@ class _UserProfileState extends State<UserProfile> {
             );
           }
             return SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Center(

@@ -107,6 +107,7 @@ class _UpdateFoodState extends State<UpdateFood> {
               ),
               body: Center(
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     child: Form(
