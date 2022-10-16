@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:image_picker/image_picker.dart';
 
-class TestScreen extends StatefulWidget {
-  const TestScreen({Key? key}) : super(key: key);
+class ScanPhoto extends StatefulWidget {
+  const ScanPhoto({Key? key}) : super(key: key);
 
   @override
-  State<TestScreen> createState() => _TestScreenState();
+  State<ScanPhoto> createState() => _ScanPhotoState();
 }
 
-class _TestScreenState extends State<TestScreen> {
+class _ScanPhotoState extends State<ScanPhoto> {
   File? pickedImage;
   bool _loading = false;
   List? _result;

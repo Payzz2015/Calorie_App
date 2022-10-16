@@ -14,7 +14,8 @@ class UpdateBarcode extends StatefulWidget {
   final String carbohydrate;
   final String protein;
   final String sodium;
-  const UpdateBarcode({Key? key,required this.name,required this.barcode,required this.calories, required this.fat, required this.carbohydrate, required this.protein, required this.sodium}) : super(key: key);
+  final String sugar;
+  const UpdateBarcode({Key? key,required this.name,required this.barcode,required this.calories, required this.fat, required this.carbohydrate, required this.protein, required this.sodium, required this.sugar}) : super(key: key);
 
   @override
   State<UpdateBarcode> createState() => _UpdateBarcodeState();
@@ -22,7 +23,7 @@ class UpdateBarcode extends StatefulWidget {
 
 class _UpdateBarcodeState extends State<UpdateBarcode> {
   final formKey = GlobalKey<FormState>();
-  Barcode myBarcode = Barcode(name: "",barcode: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
+  Barcode myBarcode = Barcode(name: "",barcode: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "",sugar: "");
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final CollectionReference _barcodeCollection = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("barcodes");
 
@@ -33,6 +34,7 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
   final TextEditingController proteinEditingController = TextEditingController();
   final TextEditingController carbEditingController = TextEditingController();
   final TextEditingController sodiumEditingController = TextEditingController();
+  final TextEditingController sugarEditingController = TextEditingController();
 
 
   @override
@@ -46,6 +48,7 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
       proteinEditingController.text = widget.protein;
       carbEditingController.text = widget.carbohydrate;
       sodiumEditingController.text = widget.sodium;
+      sugarEditingController.text = widget.sugar;
     });
   }
 
@@ -58,6 +61,7 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
     proteinEditingController.dispose();
     carbEditingController.dispose();
     sodiumEditingController.dispose();
+    sugarEditingController.dispose();
     super.dispose();
   }
 
@@ -116,8 +120,8 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           TextFormField(
-                            autofocus: false,
                             controller: nameEditingController,
+                            autofocus: false,
                             keyboardType: TextInputType.name,
                             validator:
                             RequiredValidator(errorText: "กรุณาป้อนชื่ออาหาร"),
@@ -128,21 +132,23 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               prefixIcon: const Icon(Icons.fastfood),
-                              hintText: "ชื่อ*",
+                              labelText: "ชื่อ*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 20,
                           ),
                           TextFormField(
+                            controller: barcodeEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
                             autofocus: false,
-                            controller: barcodeEditingController,
                             maxLength: 13,
                             keyboardType: TextInputType.number,
                             validator: (value){
@@ -162,7 +168,9 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               prefixIcon: const Icon(Icons.qr_code_scanner_rounded),
-                              hintText: "บาร์โค้ด*",
+                              labelText: "บาร์โค้ด*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -200,7 +208,9 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "แคลอรี่*",
+                              labelText: "แคลอรี่*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -219,7 +229,15 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                           TextFormField(
                             controller: fatEditingController,
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,
@@ -234,7 +252,9 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "ไขมัน",
+                              labelText: "ไขมัน",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -246,10 +266,20 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                           TextFormField(
                             controller: proteinEditingController,
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.numberWithOptions(
+                                decimal: true,
+                                signed: false),
                             onSaved: (String? protein) {
                               myBarcode.protein = protein!;
                             },
@@ -261,7 +291,9 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "โปรตีน",
+                              labelText: "โปรตีน",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -273,7 +305,15 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                           TextFormField(
                             controller: carbEditingController,
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,
@@ -288,7 +328,11 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "คาร์โบไฮเดรต",
+                              labelText: "คาร์โบไฮเดรต",
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -315,7 +359,44 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "โซเดียม",
+                              labelText: "โซเดียม",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          TextFormField(
+                            controller: sugarEditingController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
+                            ],
+                            autofocus: false,
+                            keyboardType: TextInputType.number,
+                            onSaved: (String? sugar) {
+                              myBarcode.sugar = sugar!;
+                            },
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              suffixText: "g",
+                              suffixStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              labelText: "น้ำตาล",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -342,18 +423,20 @@ class _UpdateBarcodeState extends State<UpdateBarcode> {
                                       "fat": fatEditingController.text,
                                       "protein": proteinEditingController.text,
                                       "carbohydrate": carbEditingController.text,
+                                      "sugar": sugarEditingController.text,
                                       "sodium": sodiumEditingController.text
                                     }).then((value) => deleteData());
                                   }
                                   else{
-                                    await _barcodeCollection.doc(myBarcode.name).set({
+                                    await _barcodeCollection.doc(myBarcode.barcode).set({
                                       "name": nameEditingController.text,
                                       "barcode": barcodeEditingController.text,
                                       "calories": caloriesEditingController.text,
-                                      "fat": fatEditingController.text,
-                                      "protein": proteinEditingController.text,
-                                      "carbohydrate": carbEditingController.text,
-                                      "sodium": sodiumEditingController.text
+                                      "fat": fatEditingController.text == null ? (double.parse(fatEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "protein": proteinEditingController.text == null ?(double.parse(proteinEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "carbohydrate": carbEditingController.text == null ? (double.parse(carbEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "sugar": sugarEditingController.text == null ?(double.parse(sugarEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "sodium": sodiumEditingController.text == null ? sodiumEditingController.text : "0"
                                     });
                                   }
                                   formKey.currentState!.reset();

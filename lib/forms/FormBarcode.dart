@@ -15,7 +15,7 @@ class FormBarcode extends StatefulWidget {
 
 class _FormBarcodeState extends State<FormBarcode> {
   final formKey = GlobalKey<FormState>();
-  Barcode myBarcode = Barcode(name: "",barcode: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "");
+  Barcode myBarcode = Barcode(name: "",barcode: "",calories: "",fat: "",protein: "",carbohydrate: "",sodium: "",sugar: "");
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final CollectionReference _barcodeCollection = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("barcodes");
 
@@ -85,14 +85,16 @@ class _FormBarcodeState extends State<FormBarcode> {
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               prefixIcon: const Icon(Icons.fastfood),
-                              hintText: "ชื่อ*",
+                              labelText: "ชื่อ*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 20,
                           ),
                           TextFormField(
                             inputFormatters: [
@@ -118,7 +120,9 @@ class _FormBarcodeState extends State<FormBarcode> {
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               prefixIcon: const Icon(Icons.qr_code_scanner_rounded),
-                              hintText: "บาร์โค้ด*",
+                              labelText: "บาร์โค้ด*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -151,11 +155,13 @@ class _FormBarcodeState extends State<FormBarcode> {
                             decoration: InputDecoration(
                               suffixText: "kcal",
                               suffixStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18
+                                  color: Colors.black,
+                                  fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "แคลอรี่*",
+                              labelText: "แคลอรี่*",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -173,7 +179,15 @@ class _FormBarcodeState extends State<FormBarcode> {
                           SizedBox(height: 10,),
                           TextFormField(
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,
@@ -188,7 +202,9 @@ class _FormBarcodeState extends State<FormBarcode> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "ไขมัน",
+                              labelText: "ไขมัน",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -199,10 +215,20 @@ class _FormBarcodeState extends State<FormBarcode> {
                           ),
                           TextFormField(
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.numberWithOptions(
+                                decimal: true,
+                                signed: false),
                             onSaved: (String? protein) {
                               myBarcode.protein = protein!;
                             },
@@ -214,7 +240,9 @@ class _FormBarcodeState extends State<FormBarcode> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "โปรตีน",
+                              labelText: "โปรตีน",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -225,7 +253,15 @@ class _FormBarcodeState extends State<FormBarcode> {
                           ),
                           TextFormField(
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
                             ],
                             autofocus: false,
                             keyboardType: TextInputType.number,
@@ -240,7 +276,11 @@ class _FormBarcodeState extends State<FormBarcode> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "คาร์โบไฮเดรต",
+                              labelText: "คาร์โบไฮเดรต",
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -266,7 +306,43 @@ class _FormBarcodeState extends State<FormBarcode> {
                                   fontSize: 18
                               ),
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "โซเดียม",
+                              labelText: "โซเดียม",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          TextFormField(
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                              TextInputFormatter.withFunction((oldValue, newValue) {
+                                try {
+                                  final text = newValue.text;
+                                  if (text.isNotEmpty) double.parse(text);
+                                  return newValue;
+                                } catch (e) {}
+                                return oldValue;
+                              }),
+                            ],
+                            autofocus: false,
+                            keyboardType: TextInputType.number,
+                            onSaved: (String? sugar) {
+                              myBarcode.sugar = sugar!;
+                            },
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              suffixText: "g",
+                              suffixStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
+                              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              labelText: "น้ำตาล",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -285,14 +361,15 @@ class _FormBarcodeState extends State<FormBarcode> {
                               onPressed: () async{
                                 if (formKey.currentState!.validate()) {
                                   formKey.currentState!.save();
-                                  await _barcodeCollection.doc(myBarcode.name).set({
+                                  await _barcodeCollection.doc(myBarcode.barcode).set({
                                     "name": myBarcode.name,
                                     "barcode": myBarcode.barcode,
                                     "calories": myBarcode.calories,
-                                    "fat": myBarcode.fat,
-                                    "protein": myBarcode.protein,
-                                    "carbohydrate": myBarcode.carbohydrate,
-                                    "sodium": myBarcode.sodium
+                                    "fat": myBarcode.fat == null ?(double.parse(myBarcode.fat)).toStringAsFixed(2) : "0.00",
+                                    "protein": myBarcode.protein == null ?(double.parse(myBarcode.protein)).toStringAsFixed(2) : "0.00",
+                                    "carbohydrate": myBarcode.carbohydrate == null ?(double.parse(myBarcode.carbohydrate)).toStringAsFixed(2) : "0.00",
+                                    "sugar": myBarcode.sugar == null ?(double.parse(myBarcode.sugar)).toStringAsFixed(2) : "0.00",
+                                    "sodium": myBarcode.sodium == null ?myBarcode.sodium : "0"
                                   });
                                   formKey.currentState!.reset();
                                   Navigator.of(context).pop();

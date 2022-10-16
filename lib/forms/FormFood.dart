@@ -329,11 +329,11 @@ class _FormFoodState extends State<FormFood> {
                                   await _foodCollection.doc(myFood.name).set({
                                     "name": myFood.name,
                                     "calories": myFood.calories,
-                                    "fat": myFood.fat,
-                                    "protein": myFood.protein,
-                                    "carbohydrate": myFood.carbohydrate,
-                                    "sugar": myFood.sugar,
-                                    "sodium": myFood.sodium
+                                    "fat": myFood.fat == null ? (double.parse(myFood.fat)).toStringAsFixed(2) : "0.00",
+                                    "protein": myFood.protein == null ? (double.parse(myFood.protein)).toStringAsFixed(2) : "0.00",
+                                    "carbohydrate": myFood.carbohydrate == null ? (double.parse(myFood.carbohydrate)).toStringAsFixed(2) : "0.00",
+                                    "sugar": myFood.sugar == null ? (double.parse(myFood.sugar)).toStringAsFixed(2) : "0.00",
+                                    "sodium": myFood.sodium == null ? myFood.sodium : "0"
                                   });
                                   formKey.currentState!.reset();
                                   Navigator.of(context).pop();

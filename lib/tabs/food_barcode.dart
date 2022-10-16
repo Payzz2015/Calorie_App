@@ -1,4 +1,6 @@
 import 'package:calories_counter_project/forms/updateForm/UpdateBarcode.dart';
+import 'package:calories_counter_project/screens/detail_barcode.dart';
+import 'package:calories_counter_project/screens/scan_barcode.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -92,139 +94,171 @@ class _FoodBarcodeState extends State<FoodBarcode> {
                     shrinkWrap: true,
                     children: snapshot.data!.docs.map((document) {
                       if(name.isEmpty){
-                        return Card(
-                          child: ListTile(
-                            leading: const CircleAvatar(
-                              backgroundColor: Color(0xFF5fb27c),
-                              foregroundColor: Colors.white,
-                              radius: 30,
-                              backgroundImage: AssetImage("assets/icons/barcode_icon.jpg"),
-                            ),
-                            title: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
-                              child: Text(
-                                document["name"],
-                                style: const TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold
+                        return GestureDetector(
+                          onTap: (){
+                            var userFood = document["name"].toString();
+                            var userBarcode = document["barcode"].toString();
+                            var userCalories = document["calories"].toString();
+                            var userFat = document["fat"].toString();
+                            var userCarb = document["carbohydrate"].toString();
+                            var userProtein = document["protein"].toString();
+                            var userSugar = document["sugar"].toString();
+                            var userSodium = document["sodium"].toString();
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return DetailBarcode(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium, barcode: userBarcode,);
+                            }));
+                          },
+                          child: Card(
+                            child: ListTile(
+                              leading: const CircleAvatar(
+                                backgroundColor: Color(0xFF5fb27c),
+                                foregroundColor: Colors.white,
+                                radius: 30,
+                                backgroundImage: AssetImage("assets/icons/barcode_icon.jpg"),
+                              ),
+                              title: Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                                child: Text(
+                                  document["name"],
+                                  style: const TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                  textScaleFactor: 2,
                                 ),
-                                textScaleFactor: 2,
                               ),
-                            ),
-                            subtitle: Column(
-                              children: <Widget>[
-                                Container(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        TextButton(
-                                          child: const Text("แก้ไข"),
-                                          onPressed: () {
-                                            var userFood = document["name"].toString();
-                                            var userBarcode = document["barcode"].toString();
-                                            var userCalories = document["calories"].toString();
-                                            var userFat = document["fat"].toString();
-                                            var userCarb = document["carbohydrate"].toString();
-                                            var userProtein = document["protein"].toString();
-                                            var userSodium = document["sodium"].toString();
-                                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                                              return UpdateBarcode(name: userFood,barcode: userBarcode, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
-                                            }));
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text(
-                                            "ลบ",
-                                            style: TextStyle(color: Colors.redAccent),
+                              subtitle: Column(
+                                children: <Widget>[
+                                  Container(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          TextButton(
+                                            child: const Text("แก้ไข"),
+                                            onPressed: () {
+                                              var userFood = document["name"].toString();
+                                              var userBarcode = document["barcode"].toString();
+                                              var userCalories = document["calories"].toString();
+                                              var userFat = document["fat"].toString();
+                                              var userCarb = document["carbohydrate"].toString();
+                                              var userProtein = document["protein"].toString();
+                                              var userSodium = document["sodium"].toString();
+                                              var userSugar = document["sugar"].toString();
+                                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                return UpdateBarcode(name: userFood,barcode: userBarcode, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium,sugar: userSugar);
+                                              }));
+                                            },
                                           ),
-                                          onPressed: () {
-                                            FirebaseFirestore.instance
-                                                .collection("users")
-                                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                                .collection("barcodes")
-                                                .doc(document.id)
-                                                .delete();
-                                          },
-                                        ),
-                                      ],
-                                    ))
-                              ],
-                            ),
-                            trailing: Text(
-                              "${document["calories"]} kcal",
-                              style: const TextStyle(
-                                  color: Colors.blueGrey,
-                                  fontWeight: FontWeight.bold,
+                                          TextButton(
+                                            child: const Text(
+                                              "ลบ",
+                                              style: TextStyle(color: Colors.redAccent),
+                                            ),
+                                            onPressed: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("users")
+                                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                                  .collection("barcodes")
+                                                  .doc(document.id)
+                                                  .delete();
+                                            },
+                                          ),
+                                        ],
+                                      ))
+                                ],
                               ),
-                              textScaleFactor: 1.5,
+                              trailing: Text(
+                                "${document["calories"]} kcal",
+                                style: const TextStyle(
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.bold,
+                                ),
+                                textScaleFactor: 1.5,
+                              ),
                             ),
                           ),
                         );
                       }
                       if(document["name"].toString().toLowerCase().startsWith(name.toLowerCase())){
-                        return Card(
-                          child: ListTile(
-                            leading: const CircleAvatar(
-                              backgroundColor: Color(0xFF5fb27c),
-                              foregroundColor: Colors.white,
-                              radius: 30,
-                              backgroundImage: AssetImage("assets/icons/barcode_icon.jpg"),
-                            ),
-                            title: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
-                              child: Text(
-                                document["name"],
-                                style: const TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold
+                        return GestureDetector(
+                          onTap: (){
+                            var userFood = document["name"].toString();
+                            var userBarcode = document["barcode"].toString();
+                            var userCalories = document["calories"].toString();
+                            var userFat = document["fat"].toString();
+                            var userCarb = document["carbohydrate"].toString();
+                            var userProtein = document["protein"].toString();
+                            var userSugar = document["sugar"].toString();
+                            var userSodium = document["sodium"].toString();
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return DetailBarcode(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium, barcode: userBarcode,);
+                            }));
+                          },
+                          child: Card(
+                            child: ListTile(
+                              leading: const CircleAvatar(
+                                backgroundColor: Color(0xFF5fb27c),
+                                foregroundColor: Colors.white,
+                                radius: 30,
+                                backgroundImage: AssetImage("assets/icons/barcode_icon.jpg"),
+                              ),
+                              title: Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                                child: Text(
+                                  document["name"],
+                                  style: const TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                  textScaleFactor: 2,
                                 ),
-                                textScaleFactor: 2,
                               ),
-                            ),
-                            subtitle: Column(
-                              children: <Widget>[
-                                Container(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        TextButton(
-                                          child: const Text("แก้ไข"),
-                                          onPressed: () {
-                                            var userFood = document["name"].toString();
-                                            var userBarcode = document["barcode"].toString();
-                                            var userCalories = document["calories"].toString();
-                                            var userFat = document["fat"].toString();
-                                            var userCarb = document["carbohydrate"].toString();
-                                            var userProtein = document["protein"].toString();
-                                            var userSodium = document["sodium"].toString();
-                                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                                              return UpdateBarcode(name: userFood,barcode: userBarcode, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
-                                            }));
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text(
-                                            "ลบ",
-                                            style: TextStyle(color: Colors.redAccent),
+                              subtitle: Column(
+                                children: <Widget>[
+                                  Container(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          TextButton(
+                                            child: const Text("แก้ไข"),
+                                            onPressed: () {
+                                              var userFood = document["name"].toString();
+                                              var userBarcode = document["barcode"].toString();
+                                              var userCalories = document["calories"].toString();
+                                              var userFat = document["fat"].toString();
+                                              var userCarb = document["carbohydrate"].toString();
+                                              var userProtein = document["protein"].toString();
+                                              var userSodium = document["sodium"].toString();
+                                              var userSugar = document["sugar"].toString();
+                                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                return UpdateBarcode(name: userFood,barcode: userBarcode, calories: userCalories, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium,sugar: userSugar,);
+                                              }));
+                                            },
                                           ),
-                                          onPressed: () {
-                                            FirebaseFirestore.instance
-                                                .collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}")
-                                                .doc(document.id)
-                                                .delete();
-                                          },
-                                        ),
-                                      ],
-                                    ))
-                              ],
-                            ),
-                            trailing: Text(
-                              "${document["calories"]} kcal",
-                              style: const TextStyle(
-                                  color: Colors.blueGrey,
-                                  fontWeight: FontWeight.bold,
+                                          TextButton(
+                                            child: const Text(
+                                              "ลบ",
+                                              style: TextStyle(color: Colors.redAccent),
+                                            ),
+                                            onPressed: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("BARCODES_UID_${FirebaseAuth.instance.currentUser!.uid}")
+                                                  .doc(document.id)
+                                                  .delete();
+                                            },
+                                          ),
+                                        ],
+                                      ))
+                                ],
                               ),
-                              textScaleFactor: 1.5,
+                              trailing: Text(
+                                "${document["calories"]} kcal",
+                                style: const TextStyle(
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.bold,
+                                ),
+                                textScaleFactor: 1.5,
+                              ),
                             ),
                           ),
                         );
@@ -242,6 +276,17 @@ class _FoodBarcodeState extends State<FoodBarcode> {
           return Container();
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return ScanBarcode();
+          }));
+        },
+        heroTag: 1,
+        child: Icon(Icons.qr_code_rounded),
+        backgroundColor: Color(0xFF5fb27c),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
     );
   }
 }

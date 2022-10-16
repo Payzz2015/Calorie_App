@@ -9,7 +9,7 @@ import 'package:calories_counter_project/screens/meal/meal_breakfast.dart';
 import 'package:calories_counter_project/screens/meal/meal_dinner.dart';
 import 'package:calories_counter_project/screens/meal/meal_lunch.dart';
 import 'package:calories_counter_project/screens/meal/meal_snack.dart';
-import 'package:calories_counter_project/screens/test_screen.dart';
+import 'package:calories_counter_project/screens/scan_photo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -1154,7 +1154,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
             child: const Icon(Icons.camera_alt_rounded),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context){
-                return TestScreen();
+                return ScanPhoto();
               }));
             },
           ),
