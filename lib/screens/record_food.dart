@@ -345,11 +345,11 @@ class _RecordFoodState extends State<RecordFood> {
                     var foodSugar = (double.parse(widget.sugar)*(int.parse(gramController.text)/100)).toStringAsFixed(2);
                     var eatenCalories = trackSnapshot["caloriesEaten"].toString();
                     int totalCalories = int.parse(eatenCalories) + int.parse(foodCalories);
-                    double fat = double.parse("0");
+                    double fat = double.parse("0.00");
                     int sodium = int.parse("0");
-                    double sugar = double.parse("0");
-                    double protein = double.parse("0");
-                    double carb = double.parse("0");
+                    double sugar = double.parse("0.00");
+                    double protein = double.parse("0.00");
+                    double carb = double.parse("0.00");
                     if(foodFat != ""){
                       fat = double.parse(trackSnapshot["fat"]) + double.parse(foodFat);
                     }
@@ -373,11 +373,11 @@ class _RecordFoodState extends State<RecordFood> {
                           "breakfast": FieldValue.arrayUnion([{
                             "name": foodName,
                             "calories": foodCalories,
-                            "fat": foodFat == "" ? "0" : foodFat,
-                            "carbohydrate": foodCarb == "" ? "0" : foodCarb,
-                            "protein": foodProtein == "" ? "0" : foodProtein,
+                            "fat": foodFat == "" ? "0.00" : foodFat,
+                            "carbohydrate": foodCarb == "" ? "0.00" : foodCarb,
+                            "protein": foodProtein == "" ? "0.00" : foodProtein,
                             "sodium": foodSodium == "" ? "0" : foodSodium,
-                            "sugar": foodSugar == "" ? "0" : foodSugar,
+                            "sugar": foodSugar == "" ? "0.00" : foodSugar,
                             "datetime": DateTime.now(),
                           }]),
                           "caloriesEaten": totalCalories.toString(),
@@ -420,7 +420,7 @@ class _RecordFoodState extends State<RecordFood> {
                     var foodProtein = (double.parse(widget.protein)*(int.parse(gramController.text)/100)).toStringAsFixed(2);
                     var foodSodium = (int.parse(widget.sodium)*(int.parse(gramController.text)/100)).toStringAsFixed(0);
                     var foodSugar = (double.parse(widget.sugar)*(int.parse(gramController.text)/100)).toStringAsFixed(2);
-                    var eatenCalories = trackSnapshot["caloriesEaten"].toString();
+                    var eatenCalories = trackSnapshot["caloriesEaten"];
                     int totalCalories = int.parse(eatenCalories) + int.parse(foodCalories);
                     double fat = double.parse("0");
                     int sodium = int.parse("0");

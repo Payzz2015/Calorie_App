@@ -20,6 +20,12 @@ class _FormFoodState extends State<FormFood> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final CollectionReference _foodCollection = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("foods");
 
+  final TextEditingController fatEditingController = TextEditingController();
+  final TextEditingController proteinEditingController = TextEditingController();
+  final TextEditingController carbEditingController = TextEditingController();
+  final TextEditingController sugarEditingController = TextEditingController();
+  final TextEditingController sodiumEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -143,6 +149,7 @@ class _FormFoodState extends State<FormFood> {
                           ),
                           SizedBox(height: 10,),
                           TextFormField(
+                            controller: fatEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                               TextInputFormatter.withFunction((oldValue, newValue) {
@@ -179,6 +186,7 @@ class _FormFoodState extends State<FormFood> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: proteinEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                               TextInputFormatter.withFunction((oldValue, newValue) {
@@ -217,6 +225,7 @@ class _FormFoodState extends State<FormFood> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: carbEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                               TextInputFormatter.withFunction((oldValue, newValue) {
@@ -255,6 +264,7 @@ class _FormFoodState extends State<FormFood> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: sodiumEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
@@ -263,7 +273,7 @@ class _FormFoodState extends State<FormFood> {
                             onSaved: (String? sodium) {
                               myFood.sodium = sodium!;
                             },
-                            textInputAction: TextInputAction.done,
+                            textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               suffixText: "mg",
                               suffixStyle: TextStyle(
@@ -281,6 +291,7 @@ class _FormFoodState extends State<FormFood> {
                           ),
                           SizedBox(height: 10,),
                           TextFormField(
+                            controller: sugarEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                               TextInputFormatter.withFunction((oldValue, newValue) {
@@ -297,7 +308,7 @@ class _FormFoodState extends State<FormFood> {
                             onSaved: (String? sugar) {
                               myFood.sugar = sugar!;
                             },
-                            textInputAction: TextInputAction.next,
+                            textInputAction: TextInputAction.done,
                             decoration: InputDecoration(
                               suffixText: "g",
                               suffixStyle: TextStyle(
@@ -329,11 +340,11 @@ class _FormFoodState extends State<FormFood> {
                                   await _foodCollection.doc(myFood.name).set({
                                     "name": myFood.name,
                                     "calories": myFood.calories,
-                                    "fat": myFood.fat == null ? (double.parse(myFood.fat)).toStringAsFixed(2) : "0.00",
-                                    "protein": myFood.protein == null ? (double.parse(myFood.protein)).toStringAsFixed(2) : "0.00",
-                                    "carbohydrate": myFood.carbohydrate == null ? (double.parse(myFood.carbohydrate)).toStringAsFixed(2) : "0.00",
-                                    "sugar": myFood.sugar == null ? (double.parse(myFood.sugar)).toStringAsFixed(2) : "0.00",
-                                    "sodium": myFood.sodium == null ? myFood.sodium : "0"
+                                    "fat": fatEditingController.text.isNotEmpty ?(double.parse(myFood.fat)).toStringAsFixed(2) : "0.00",
+                                    "protein": proteinEditingController.text.isNotEmpty ?(double.parse(myFood.protein)).toStringAsFixed(2) : "0.00",
+                                    "carbohydrate": carbEditingController.text.isNotEmpty ?(double.parse(myFood.carbohydrate)).toStringAsFixed(2) : "0.00",
+                                    "sugar": sugarEditingController.text.isNotEmpty ?(double.parse(myFood.sugar)).toStringAsFixed(2) : "0.00",
+                                    "sodium": sodiumEditingController.text.isNotEmpty ? myFood.sodium : "0"
                                   });
                                   formKey.currentState!.reset();
                                   Navigator.of(context).pop();

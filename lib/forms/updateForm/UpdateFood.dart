@@ -373,22 +373,22 @@ class _UpdateFoodState extends State<UpdateFood> {
                                     await _foodCollection.doc(myFood.name).set({
                                       "name": nameEditingController.text,
                                       "calories": caloriesEditingController.text,
-                                      "fat": fatEditingController.text,
-                                      "protein": proteinEditingController.text,
-                                      "carbohydrate": carbEditingController.text,
-                                      "sugar": sugarEditingController.text,
-                                      "sodium": sodiumEditingController.text
+                                      "fat": fatEditingController.text.isNotEmpty ? (double.parse(fatEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "protein": proteinEditingController.text.isNotEmpty ? (double.parse(proteinEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "carbohydrate": carbEditingController.text.isNotEmpty ? (double.parse(carbEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "sugar": sugarEditingController.text.isNotEmpty ? (double.parse(sugarEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "sodium": sodiumEditingController.text.isNotEmpty ? sodiumEditingController.text : "0"
                                     }).then((value) => deleteData());
                                   }
                                   else{
                                     await _foodCollection.doc(myFood.name).set({
                                       "name": nameEditingController.text,
                                       "calories": caloriesEditingController.text,
-                                      "fat": fatEditingController.text == null ? (double.parse(fatEditingController.text)).toStringAsFixed(2) : "0.00",
-                                      "protein": proteinEditingController.text == null ? (double.parse(proteinEditingController.text)).toStringAsFixed(2) : "0.00",
-                                      "carbohydrate": carbEditingController.text == null ? (double.parse(carbEditingController.text)).toStringAsFixed(2) : "0.00",
-                                      "sugar": sugarEditingController.text == null ? (double.parse(sugarEditingController.text)).toStringAsFixed(2) : "0.00",
-                                      "sodium": sodiumEditingController.text == null ? sodiumEditingController.text : "0"
+                                      "fat": fatEditingController.text.isNotEmpty ? (double.parse(fatEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "protein": proteinEditingController.text.isNotEmpty ? (double.parse(proteinEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "carbohydrate": carbEditingController.text.isNotEmpty ? (double.parse(carbEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "sugar": sugarEditingController.text.isNotEmpty ? (double.parse(sugarEditingController.text)).toStringAsFixed(2) : "0.00",
+                                      "sodium": sodiumEditingController.text.isNotEmpty ? sodiumEditingController.text : "0"
                                     });
                                   }
                                   formKey.currentState!.reset();

@@ -168,25 +168,25 @@ class _mealDinnerState extends State<mealDinner> {
                                         var eatenCalories = trackSnapshot["caloriesEaten"].toString();
                                         var foodSugar = document["sugar"].toString();
                                         int totalCalories = int.parse(eatenCalories) + int.parse(foodCalories);
-                                        int fat = int.parse("0");
+                                        double fat = double.parse("0");
                                         int sodium = int.parse("0");
-                                        int protein = int.parse("0");
-                                        int carb = int.parse("0");
-                                        int sugar = int.parse("0");
+                                        double protein = double.parse("0");
+                                        double sugar = double.parse("0");
+                                        double carb = double.parse("0");
                                         if(foodFat != ""){
-                                          fat = int.parse(trackSnapshot["fat"]) + int.parse(foodFat);
+                                          fat = double.parse(trackSnapshot["fat"]) + double.parse(foodFat);
+                                        }
+                                        if(foodSugar != ""){
+                                          sugar = double.parse(trackSnapshot["sugar"]) + double.parse(foodSugar);
                                         }
                                         if(foodCarb != ""){
-                                          carb = int.parse(trackSnapshot["carb"]) + int.parse(foodCarb);
+                                          carb = double.parse(trackSnapshot["carb"]) + double.parse(foodCarb);
                                         }
                                         if(foodSodium != ""){
                                           sodium = int.parse(trackSnapshot["sodium"]) + int.parse(foodSodium);
                                         }
                                         if(foodProtein != ""){
-                                          protein = int.parse(trackSnapshot["protein"]) + int.parse(foodProtein);
-                                        }
-                                        if(foodSugar != ""){
-                                          sugar = int.parse(trackSnapshot["sugar"]) + int.parse(foodSugar);
+                                          protein = double.parse(trackSnapshot["protein"]) + double.parse(foodProtein);
                                         }
 
                                         if(trackSnapshot.exists){
@@ -195,11 +195,11 @@ class _mealDinnerState extends State<mealDinner> {
                                                 "dinner": FieldValue.arrayUnion([{
                                                   "name": foodName,
                                                   "calories": foodCalories,
-                                                  "fat": foodFat == "" ? "0" : foodFat,
-                                                  "carbohydrate": foodCarb == "" ? "0" : foodCarb,
-                                                  "protein": foodProtein == "" ? "0" : foodProtein,
+                                                  "fat": foodFat == "" ? "0.00" : foodFat,
+                                                  "carbohydrate": foodCarb == "" ? "0.00" : foodCarb,
+                                                  "protein": foodProtein == "" ? "0.00" : foodProtein,
                                                   "sodium": foodSodium == "" ? "0" : foodSodium,
-                                                  "sugar": foodSugar == "" ? "0" : foodSugar,
+                                                  "sugar": foodSugar == "" ? "0.00" : foodSugar,
                                                   "datetime": DateTime.now(),
                                                 }]),
                                                 "caloriesEaten": totalCalories.toString(),

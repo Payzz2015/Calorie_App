@@ -19,6 +19,11 @@ class _FormBarcodeState extends State<FormBarcode> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final CollectionReference _barcodeCollection = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("barcodes");
 
+  final TextEditingController fatEditingController = TextEditingController();
+  final TextEditingController proteinEditingController = TextEditingController();
+  final TextEditingController carbEditingController = TextEditingController();
+  final TextEditingController sugarEditingController = TextEditingController();
+  final TextEditingController sodiumEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -178,6 +183,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                           ),
                           SizedBox(height: 10,),
                           TextFormField(
+                            controller: fatEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                               TextInputFormatter.withFunction((oldValue, newValue) {
@@ -214,6 +220,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: proteinEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                               TextInputFormatter.withFunction((oldValue, newValue) {
@@ -252,6 +259,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: carbEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                               TextInputFormatter.withFunction((oldValue, newValue) {
@@ -290,6 +298,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: sodiumEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
@@ -298,7 +307,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                             onSaved: (String? sodium) {
                               myBarcode.sodium = sodium!;
                             },
-                            textInputAction: TextInputAction.done,
+                            textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               suffixText: "mg",
                               suffixStyle: TextStyle(
@@ -316,6 +325,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                           ),
                           SizedBox(height: 10,),
                           TextFormField(
+                            controller: sugarEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                               TextInputFormatter.withFunction((oldValue, newValue) {
@@ -332,7 +342,7 @@ class _FormBarcodeState extends State<FormBarcode> {
                             onSaved: (String? sugar) {
                               myBarcode.sugar = sugar!;
                             },
-                            textInputAction: TextInputAction.next,
+                            textInputAction: TextInputAction.done,
                             decoration: InputDecoration(
                               suffixText: "g",
                               suffixStyle: TextStyle(
@@ -365,11 +375,11 @@ class _FormBarcodeState extends State<FormBarcode> {
                                     "name": myBarcode.name,
                                     "barcode": myBarcode.barcode,
                                     "calories": myBarcode.calories,
-                                    "fat": myBarcode.fat == null ?(double.parse(myBarcode.fat)).toStringAsFixed(2) : "0.00",
-                                    "protein": myBarcode.protein == null ?(double.parse(myBarcode.protein)).toStringAsFixed(2) : "0.00",
-                                    "carbohydrate": myBarcode.carbohydrate == null ?(double.parse(myBarcode.carbohydrate)).toStringAsFixed(2) : "0.00",
-                                    "sugar": myBarcode.sugar == null ?(double.parse(myBarcode.sugar)).toStringAsFixed(2) : "0.00",
-                                    "sodium": myBarcode.sodium == null ?myBarcode.sodium : "0"
+                                    "fat": fatEditingController.text.isNotEmpty ?(double.parse(myBarcode.fat)).toStringAsFixed(2) : "0.00",
+                                    "protein": proteinEditingController.text.isNotEmpty ?(double.parse(myBarcode.protein)).toStringAsFixed(2) : "0.00",
+                                    "carbohydrate": carbEditingController.text.isNotEmpty ?(double.parse(myBarcode.carbohydrate)).toStringAsFixed(2) : "0.00",
+                                    "sugar": sugarEditingController.text.isNotEmpty ?(double.parse(myBarcode.sugar)).toStringAsFixed(2) : "0.00",
+                                    "sodium": sodiumEditingController.text.isNotEmpty ? myBarcode.sodium : "0"
                                   });
                                   formKey.currentState!.reset();
                                   Navigator.of(context).pop();

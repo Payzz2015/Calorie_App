@@ -47,8 +47,8 @@ dependencies:
   http: ^0.13.5
   table_calendar: ^3.0.7
   syncfusion_flutter_charts: ^20.3.47
-  flutter_tflite: ^1.0.1
-  meta: ^1.8.0
+  flutter_tflite: any
+  meta: any
   flutter_barcode_scanner: ^2.0.0
 
 dev_dependencies:

@@ -2,6 +2,7 @@ import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sn
 import 'package:calories_counter_project/helpers/dayofWeek.dart';
 import 'package:calories_counter_project/models/Day.dart';
 import 'package:calories_counter_project/profiles/gender.dart';
+import 'package:calories_counter_project/screens/manage_detail_food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -671,8 +672,8 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                   spacing: 2,
                                   children: <Widget>[
                                     Icon(
-                                      Icons.arrow_drop_down,
-                                      color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
+                                      isVisibleBreakfast ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                      color: isVisibleBreakfast ? Colors.white : Color(0xFF5fb27c),
                                     ),
                                   ]
                               ),
@@ -691,14 +692,31 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                 ),
 
                                 for(var i in snapshot.data!["breakfast"])
-                                  ListTile(
-                                    title: Text(
-                                      '${i["name"]}',
-                                      textScaleFactor: 1.5,
-                                    ),
-                                    trailing: Text(
-                                      '${i["calories"]} kcal',
-                                      textScaleFactor: 1.2,
+                                  GestureDetector(
+                                    onTap: (){
+                                      var userFood = i["name"].toString();
+                                      var userCalories = i["calories"].toString();
+                                      var userFat = i["fat"].toString();
+                                      var userCarb = i["carbohydrate"].toString();
+                                      var userProtein = i["protein"].toString();
+                                      var userSugar = i["sugar"].toString();
+                                      var userSodium = i["sodium"].toString();
+                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                        return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                      }));
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      child: ListTile(
+                                        title: Text(
+                                          '${i["name"]}',style: TextStyle(fontWeight: FontWeight.bold),
+                                          textScaleFactor: 1.2,
+                                        ),
+                                        trailing: Text(
+                                          '${i["calories"]} kcal',
+                                          textScaleFactor: 1.0,
+                                        ),
+                                      ),
                                     ),
                                   ),
                               ],
@@ -734,8 +752,8 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                               ),
                               trailing: Wrap(spacing: 3, children: <Widget>[
                                 Icon(
-                                  Icons.arrow_drop_down,
-                                  color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
+                                  isVisibleLunch ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                  color: isVisibleLunch ? Colors.white : Color(0xFF5fb27c),
                                 ),
                               ]),
                             ),
@@ -753,14 +771,31 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                   trailing: snapshot.data!["lunch"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                 ),
                                 for(var i in snapshot.data!["lunch"])
-                                  ListTile(
-                                    title: Text(
-                                      '${i["name"]}',
-                                      textScaleFactor: 1.5,
-                                    ),
-                                    trailing: Text(
-                                      '${i["calories"]} kcal',
-                                      textScaleFactor: 1.2,
+                                  GestureDetector(
+                                    onTap: (){
+                                      var userFood = i["name"].toString();
+                                      var userCalories = i["calories"].toString();
+                                      var userFat = i["fat"].toString();
+                                      var userCarb = i["carbohydrate"].toString();
+                                      var userProtein = i["protein"].toString();
+                                      var userSugar = i["sugar"].toString();
+                                      var userSodium = i["sodium"].toString();
+                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                        return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                      }));
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      child: ListTile(
+                                        title: Text(
+                                          '${i["name"]}',style: TextStyle(fontWeight: FontWeight.bold),
+                                          textScaleFactor: 1.2,
+                                        ),
+                                        trailing: Text(
+                                          '${i["calories"]} kcal',
+                                          textScaleFactor: 1.0,
+                                        ),
+                                      ),
                                     ),
                                   ),
                               ],
@@ -795,8 +830,8 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                               ),
                               trailing: Wrap(spacing: 3, children: <Widget>[
                                 Icon(
-                                  Icons.arrow_drop_down,
-                                  color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
+                                  isVisibleDinner ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                  color: isVisibleDinner ? Colors.white : Color(0xFF5fb27c),
                                 ),
                               ]),
                             ),
@@ -814,14 +849,31 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                   trailing: snapshot.data!["dinner"].length == 0 ? Text("",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),) : Text("จำนวนแคลอรี่",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
                                 ),
                                 for(var i in snapshot.data!["dinner"])
-                                  ListTile(
-                                    title: Text(
-                                      '${i["name"]}',
-                                      textScaleFactor: 1.5,
-                                    ),
-                                    trailing: Text(
-                                      '${i["calories"]} kcal',
-                                      textScaleFactor: 1.2,
+                                  GestureDetector(
+                                    onTap: (){
+                                      var userFood = i["name"].toString();
+                                      var userCalories = i["calories"].toString();
+                                      var userFat = i["fat"].toString();
+                                      var userCarb = i["carbohydrate"].toString();
+                                      var userProtein = i["protein"].toString();
+                                      var userSugar = i["sugar"].toString();
+                                      var userSodium = i["sodium"].toString();
+                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                        return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                      }));
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      child: ListTile(
+                                        title: Text(
+                                          '${i["name"]}',style: TextStyle(fontWeight: FontWeight.bold),
+                                          textScaleFactor: 1.2,
+                                        ),
+                                        trailing: Text(
+                                          '${i["calories"]} kcal',
+                                          textScaleFactor: 1.0,
+                                        ),
+                                      ),
                                     ),
                                   ),
                               ],
@@ -856,7 +908,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                               ),
                               trailing: Wrap(spacing: 3, children: <Widget>[
                                 Icon(
-                                  Icons.arrow_drop_down,
+                                  isVisibleSnack ? Icons.arrow_drop_down : Icons.arrow_drop_up,
                                   color: isVisibleSnack ? Colors.white : Color(0xFF5fb27c),
                                 ),
                               ]),
@@ -876,14 +928,31 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
                                 ),
                                 for(var i in snapshot.data!["snack"])
                                   if (snapshot.hasData)
-                                    ListTile(
-                                      title: Text(
-                                        '${i["name"]}',
-                                        textScaleFactor: 1.5,
-                                      ),
-                                      trailing: Text(
-                                        '${i["calories"]} kcal',
-                                        textScaleFactor: 1.2,
+                                    GestureDetector(
+                                      onTap: (){
+                                        var userFood = i["name"].toString();
+                                        var userCalories = i["calories"].toString();
+                                        var userFat = i["fat"].toString();
+                                        var userCarb = i["carbohydrate"].toString();
+                                        var userProtein = i["protein"].toString();
+                                        var userSugar = i["sugar"].toString();
+                                        var userSodium = i["sodium"].toString();
+                                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                                          return ManageDetailFood(name: userFood, calories: userCalories,sugar: userSugar, fat: userFat, carbohydrate: userCarb, protein: userProtein, sodium: userSodium);
+                                        }));
+                                      },
+                                      child: Card(
+                                        elevation: 10,
+                                        child: ListTile(
+                                          title: Text(
+                                            '${i["name"]}',style: TextStyle(fontWeight: FontWeight.bold),
+                                            textScaleFactor: 1.2,
+                                          ),
+                                          trailing: Text(
+                                            '${i["calories"]} kcal',
+                                            textScaleFactor: 1.0,
+                                          ),
+                                        ),
                                       ),
                                     ),
                               ],

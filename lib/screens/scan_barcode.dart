@@ -37,6 +37,21 @@ class _ScanBarcodeState extends State<ScanBarcode> {
     });
   }
 
+  Future<void> scanBarcodeNormalZ() async {
+    String barcodeScanRes;
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,9 +69,11 @@ class _ScanBarcodeState extends State<ScanBarcode> {
                 children: <Widget>[
                   ElevatedButton(
                       onPressed: () => scanBarcodeNormal(),
-                      style: ElevatedButton.styleFrom(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Color(0xFF5fb27c)),
+                      ),/*ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF5fb27c),
-                      ),
+                      ),*/
                       child: Text('เริ่มแสกนยาร์โค้ด',style: TextStyle(fontWeight: FontWeight.bold),),
                   ),
                   Text('Scan result : $_scanBarcode\n',
