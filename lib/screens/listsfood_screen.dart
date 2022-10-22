@@ -1,4 +1,4 @@
-import 'package:calories_counter_project/screens/detail_food.dart';
+import 'package:calories_counter_project/screens/details/detail_food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

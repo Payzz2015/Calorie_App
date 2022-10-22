@@ -69,11 +69,12 @@ class _FormFoodState extends State<FormFood> {
                   ),
                 ),
               ),
-              body: Center(
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
+              body: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Form(
                       key: formKey,
                       child: Column(

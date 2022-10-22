@@ -1,11 +1,9 @@
 import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
-import 'package:calories_counter_project/screens/detail_food.dart';
-import 'package:calories_counter_project/screens/manage_detail_food.dart';
+import 'package:calories_counter_project/screens/details/manage_detail_food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ManageMeal extends StatefulWidget {
   final DateTime date;
@@ -204,7 +202,6 @@ class _ManageMealState extends State<ManageMeal> {
                                     trailing: CircleAvatar(
                                       radius: 23.5,
                                       backgroundColor: Colors.black26,
-                                      //Color(0xffFDCF09),
                                       child: CircleAvatar(
                                         radius: 20,
                                         backgroundColor: Colors.white,
@@ -318,7 +315,6 @@ class _ManageMealState extends State<ManageMeal> {
                                       trailing: CircleAvatar(
                                         radius: 23.5,
                                         backgroundColor: Colors.black26,
-                                        //Color(0xffFDCF09),
                                         child: CircleAvatar(
                                           radius: 20,
                                           backgroundColor: Colors.white,
@@ -431,7 +427,6 @@ class _ManageMealState extends State<ManageMeal> {
                                     trailing: CircleAvatar(
                                       radius: 23.5,
                                       backgroundColor: Colors.black26,
-                                      //Color(0xffFDCF09),
                                       child: CircleAvatar(
                                         radius: 20,
                                         backgroundColor: Colors.white,
@@ -545,7 +540,6 @@ class _ManageMealState extends State<ManageMeal> {
                                     trailing: CircleAvatar(
                                       radius: 23.5,
                                       backgroundColor: Colors.black26,
-                                      //Color(0xffFDCF09),
                                       child: CircleAvatar(
                                         radius: 20,
                                         backgroundColor: Colors.white,

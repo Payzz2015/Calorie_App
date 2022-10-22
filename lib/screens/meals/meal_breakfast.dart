@@ -1,25 +1,22 @@
 import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
-import 'package:calories_counter_project/forms/updateForm/UpdateFood.dart';
-import 'package:calories_counter_project/models/Barcode.dart';
-import 'package:calories_counter_project/screens/meal/meal_breakfast.dart';
-import 'package:calories_counter_project/screens/meal/meal_dinner.dart';
+import 'package:calories_counter_project/screens/meals/meal_lunch.dart';
+import 'package:calories_counter_project/screens/meals/meal_snack.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-class mealSnack extends StatefulWidget {
+class mealBreakfast extends StatefulWidget {
   final DateTime date;
-  const mealSnack({Key? key,required this.date}) : super(key: key);
+  const mealBreakfast({Key? key,required this.date}) : super(key: key);
 
   @override
-  State<mealSnack> createState() => _mealSnackState(date);
+  State<mealBreakfast> createState() => _mealBreakfastState(date);
 }
 
-class _mealSnackState extends State<mealSnack> {
+class _mealBreakfastState extends State<mealBreakfast> {
 
   final DateTime date;
-  _mealSnackState(this.date);
+  _mealBreakfastState(this.date);
 
   final CollectionReference trackCollection =
   FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("food_track");
@@ -29,6 +26,8 @@ class _mealSnackState extends State<mealSnack> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color(0xFF5fb27c),
         foregroundColor: Colors.white,
@@ -40,19 +39,20 @@ class _mealSnackState extends State<mealSnack> {
               IconButton(
                   onPressed: (){
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                      return mealDinner(date: date,);
+                      return mealSnack(date: date,);
                     }));
                   },
                   icon: const Icon(Icons.arrow_back_ios_new_rounded)
               ),
               const Text(
-                "มื้อว่าง",
-                style: TextStyle(fontWeight: FontWeight.bold),textScaleFactor: 1.0,
+                "มื้อเช้า",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold),textScaleFactor: 1.0,
               ),
               IconButton(
                   onPressed: (){
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                      return mealBreakfast(date: date,);
+                      return mealLunch(date: date,);
                     }));
                   },
                   icon: const Icon(Icons.arrow_forward_ios_rounded)
@@ -77,7 +77,8 @@ class _mealSnackState extends State<mealSnack> {
                 'ไม่มีรายการอาหาร',
                 style: TextStyle(
                   color: Color(0xFF5fb27c),
-                ),textScaleFactor: 1.0,
+                ),
+                textScaleFactor: 1.0,
               ),
             );
           }
@@ -124,13 +125,13 @@ class _mealSnackState extends State<mealSnack> {
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white
-                                ),
-                                textScaleFactor: 1.5,
+                                ),textScaleFactor: 1.5,
                               ),
                             ),
                           ),
                         );
-                      }),
+                      }
+                  ),
                   ListView(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -158,7 +159,6 @@ class _mealSnackState extends State<mealSnack> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
-
                                     TextButton(
                                       child: const Text("เลือก"),
                                       onPressed: () async{
@@ -169,8 +169,8 @@ class _mealSnackState extends State<mealSnack> {
                                         var foodCarb = document["carbohydrate"].toString();
                                         var foodProtein = document["protein"].toString();
                                         var foodSodium = document["sodium"].toString();
-                                        var eatenCalories = trackSnapshot["caloriesEaten"].toString();
                                         var foodSugar = document["sugar"].toString();
+                                        var eatenCalories = trackSnapshot["caloriesEaten"].toString();
                                         int totalCalories = int.parse(eatenCalories) + int.parse(foodCalories);
                                         double fat = double.parse("0");
                                         int sodium = int.parse("0");
@@ -193,10 +193,11 @@ class _mealSnackState extends State<mealSnack> {
                                           protein = double.parse(trackSnapshot["protein"]) + double.parse(foodProtein);
                                         }
 
+
                                         if(trackSnapshot.exists){
                                           await trackCollection.doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}").set(
                                               {
-                                                "snack": FieldValue.arrayUnion([{
+                                                "breakfast": FieldValue.arrayUnion([{
                                                   "name": foodName,
                                                   "calories": foodCalories,
                                                   "fat": foodFat == "" ? "0.00" : foodFat,
@@ -204,7 +205,7 @@ class _mealSnackState extends State<mealSnack> {
                                                   "protein": foodProtein == "" ? "0.00" : foodProtein,
                                                   "sodium": foodSodium == "" ? "0" : foodSodium,
                                                   "sugar": foodSugar == "" ? "0.00" : foodSugar,
-                                                  "datetime": DateTime.now().millisecondsSinceEpoch,
+                                                  "datetime": DateTime.now(),
                                                 }]),
                                                 "caloriesEaten": totalCalories.toString(),
                                                 "fat": fat.toString(),
@@ -212,7 +213,7 @@ class _mealSnackState extends State<mealSnack> {
                                                 "protein": protein.toString(),
                                                 "sodium": sodium.toString(),
                                                 "sugar": sugar.toString(),
-                                              },SetOptions(merge: true)
+                                              },SetOptions(merge: true),
                                           );
                                         }
                                         Navigator.of(context).pop();
@@ -227,7 +228,7 @@ class _mealSnackState extends State<mealSnack> {
                               style: const TextStyle(
                                   color: Colors.blueGrey,
                                   fontWeight: FontWeight.bold,
-                              ),textScaleFactor: 1.0,
+                                  ),textScaleFactor: 1.0,
                             ),
                           ),
                         );
@@ -255,7 +256,6 @@ class _mealSnackState extends State<mealSnack> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
-
                                     TextButton(
                                       child: const Text("เลือก"),
                                       onPressed: () async{
@@ -271,15 +271,17 @@ class _mealSnackState extends State<mealSnack> {
                                         int totalCalories = int.parse(eatenCalories) + int.parse(foodCalories);
                                         int fat = int.parse("0");
                                         int sodium = int.parse("0");
+                                        int sugar = int.parse("0");
                                         int protein = int.parse("0");
                                         int carb = int.parse("0");
-                                        int sugar = int.parse("0");
-
                                         if(foodFat != ""){
                                           fat = int.parse(trackSnapshot["fat"]) + int.parse(foodFat);
                                         }
                                         if(foodCarb != ""){
                                           carb = int.parse(trackSnapshot["carb"]) + int.parse(foodCarb);
+                                        }
+                                        if(foodSugar != ""){
+                                          sugar = int.parse(trackSnapshot["sugar"]) + int.parse(foodSugar);
                                         }
                                         if(foodSodium != ""){
                                           sodium = int.parse(trackSnapshot["sodium"]) + int.parse(foodSodium);
@@ -287,14 +289,12 @@ class _mealSnackState extends State<mealSnack> {
                                         if(foodProtein != ""){
                                           protein = int.parse(trackSnapshot["protein"]) + int.parse(foodProtein);
                                         }
-                                        if(foodSugar != ""){
-                                          sugar = int.parse(trackSnapshot["sugar"]) + int.parse(foodSugar);
-                                        }
+
 
                                         if(trackSnapshot.exists){
                                           await trackCollection.doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}").set(
                                               {
-                                                "snack": FieldValue.arrayUnion([{
+                                                "breakfast": FieldValue.arrayUnion([{
                                                   "name": foodName,
                                                   "calories": foodCalories,
                                                   "fat": foodFat,
@@ -302,7 +302,7 @@ class _mealSnackState extends State<mealSnack> {
                                                   "protein": foodProtein,
                                                   "sodium": foodSodium,
                                                   "sugar": foodSugar,
-                                                  "datetime": DateTime.now().millisecondsSinceEpoch,
+                                                  "datetime": DateTime.now(),
                                                 }]),
                                                 "caloriesEaten": totalCalories.toString(),
                                                 "fat": fat.toString(),
@@ -325,7 +325,7 @@ class _mealSnackState extends State<mealSnack> {
                               style: const TextStyle(
                                   color: Colors.blueGrey,
                                   fontWeight: FontWeight.bold,
-                              ),textScaleFactor: 1.0,
+                                  ),textScaleFactor: 1.0,
                             ),
                           ),
                         );
@@ -346,4 +346,5 @@ class _mealSnackState extends State<mealSnack> {
       ),
     );
   }
+
 }

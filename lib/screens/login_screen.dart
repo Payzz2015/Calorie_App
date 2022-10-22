@@ -1,4 +1,3 @@
-import 'package:calories_counter_project/profiles/tdee.dart';
 import 'package:calories_counter_project/screens/register_screen.dart';
 import 'package:calories_counter_project/widgets/bottombar.dart';
 import 'package:firebase_auth/firebase_auth.dart';

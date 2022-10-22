@@ -50,6 +50,7 @@ dependencies:
   flutter_tflite: any
   meta: any
   flutter_barcode_scanner: ^2.0.0
+  openfoodfacts: ^1.26.1
 
 dev_dependencies:
   flutter_test:

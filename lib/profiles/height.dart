@@ -33,10 +33,6 @@ class _heightFormState extends State<heightForm> {
         height: heightController.text
     );
     if (formKey.currentState != null && formKey.currentState!.validate()) {
-      print(users.gender);
-      print(users.name);
-      print(users.age);
-      print(users.height);
       Navigator.push(
         context,
         MaterialPageRoute(

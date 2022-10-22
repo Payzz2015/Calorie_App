@@ -28,7 +28,6 @@ class _genderSelectorState extends State<genderSelector> {
         gender: userData.gender
     );
     if (formKey.currentState != null && formKey.currentState!.validate() && selectorGender != 0) {
-      print(userData.gender);
       Navigator.push(
         context,
         MaterialPageRoute(

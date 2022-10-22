@@ -43,8 +43,6 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    // Stream documentStream = FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots();
-    //final Stream<QuerySnapshot> _usersStream = firebaseFirestore.collection('users').snapshots(includeMetadataChanges: true);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF5fb27c),
@@ -61,7 +59,7 @@ class _UserProfileState extends State<UserProfile> {
         builder: (context,AsyncSnapshot snapshot) {
           if (!snapshot.hasData || !snapshot.data.exists) {
             return const Center(
-              // child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(),
             );
           }
             return SingleChildScrollView(
@@ -87,7 +85,6 @@ class _UserProfileState extends State<UserProfile> {
                               SizedBox(width: 30,),
                               Text(
                                 snapshot.data['name'],
-                                //users.name?.toString() ?? "",
                                 style: const TextStyle(
                                     color: Color(0xff02b194),
                                     fontSize: 30,
@@ -278,7 +275,6 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                               Text(
                                 "${snapshot.data['bmi']}",
-                                // bmi.toStringAsFixed(2),
                                 style: const TextStyle(
                                   fontSize: 25,
                                   color: Color(0xff43ccba),

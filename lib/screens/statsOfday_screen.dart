@@ -3,13 +3,13 @@ import 'package:calories_counter_project/helpers/dayofWeek.dart';
 import 'package:calories_counter_project/models/Day.dart';
 import 'package:calories_counter_project/profiles/gender.dart';
 import 'package:calories_counter_project/screens/history_screen.dart';
-import 'package:calories_counter_project/screens/manage_detail_food.dart';
-import 'package:calories_counter_project/screens/meal/manageMeal.dart';
-import 'package:calories_counter_project/screens/meal/meal_breakfast.dart';
-import 'package:calories_counter_project/screens/meal/meal_dinner.dart';
-import 'package:calories_counter_project/screens/meal/meal_lunch.dart';
-import 'package:calories_counter_project/screens/meal/meal_snack.dart';
-import 'package:calories_counter_project/screens/scan_photo.dart';
+import 'package:calories_counter_project/screens/details/manage_detail_food.dart';
+import 'package:calories_counter_project/screens/meals/manageMeal.dart';
+import 'package:calories_counter_project/screens/meals/meal_breakfast.dart';
+import 'package:calories_counter_project/screens/meals/meal_dinner.dart';
+import 'package:calories_counter_project/screens/meals/meal_lunch.dart';
+import 'package:calories_counter_project/screens/meals/meal_snack.dart';
+import 'package:calories_counter_project/widgets/tabbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -1154,7 +1154,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
             child: const Icon(Icons.camera_alt_rounded),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context){
-                return ScanPhoto();
+                return TabBarWidget();
               }));
             },
           ),

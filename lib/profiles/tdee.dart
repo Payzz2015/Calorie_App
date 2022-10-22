@@ -38,12 +38,6 @@ class _tdeeFormState extends State<tdeeForm> {
     );
 
     if (formKey.currentState != null && formKey.currentState!.validate() && selectorExercise != 0) {
-      print(users.gender);
-      print(users.name);
-      print(users.age);
-      print(users.height);
-      print(users.weight);
-      print(users.tdee);
       Navigator.push(
         context,
         MaterialPageRoute(

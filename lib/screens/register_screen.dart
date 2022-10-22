@@ -197,7 +197,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .then((value) => {
             collectToFirestore()
       }).catchError((e){
-        print(e!.code);
         switch (e!.code) {
           case "invalid-email":
             errorMessage = "กรุณากรอกรูปแบบอีเมลให้ถูกต้อง";

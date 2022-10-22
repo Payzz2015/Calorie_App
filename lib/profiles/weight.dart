@@ -35,11 +35,6 @@ class _weightFormState extends State<weightForm> {
       weight: weightController.text,
     );
     if (formKey.currentState != null && formKey.currentState!.validate()){
-      print(users.gender);
-      print(users.name);
-      print(users.age);
-      print(users.height);
-      print(users.weight);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -113,7 +108,6 @@ class _weightFormState extends State<weightForm> {
                       keyboardType: TextInputType.number,
                       controller: weightController,
                       textAlign: TextAlign.center,
-                      //initialValue: weightController.text,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 35,

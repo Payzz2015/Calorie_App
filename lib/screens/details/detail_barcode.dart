@@ -1,22 +1,40 @@
-import 'package:calories_counter_project/screens/record_food.dart';
+import 'package:calories_counter_project/screens/details/record_food.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class DetailFood extends StatefulWidget {
+class DetailBarcode extends StatefulWidget {
   final String name;
+  final String barcode;
   final String calories;
   final String fat;
   final String carbohydrate;
   final String protein;
   final String sugar;
   final String sodium;
-  const DetailFood({Key? key,required this.name,required this.calories, required this.fat, required this.carbohydrate, required this.protein,required this.sugar, required this.sodium}) : super(key: key);
+  const DetailBarcode({Key? key,required this.name,required this.barcode,required this.calories, required this.fat, required this.carbohydrate, required this.protein,required this.sugar, required this.sodium}) : super(key: key);
 
   @override
-  State<DetailFood> createState() => _DetailFoodState();
+  State<DetailBarcode> createState() => _DetailBarcodeState();
 }
 
-class _DetailFoodState extends State<DetailFood> {
+class _DetailBarcodeState extends State<DetailBarcode> {
+
+  String? caloriesFormat;
+  String? fatFormat;
+  String? carbohydrateFormat;
+  String? proteinFormat;
+  String? sugarFormat;
+  String? sodiumFormat;
+  @override
+  void initState() {
+   super.initState();
+   caloriesFormat = (double.parse(widget.calories)).toStringAsFixed(0);
+   fatFormat = (double.parse(widget.fat)).toStringAsFixed(2);
+   carbohydrateFormat = (double.parse(widget.carbohydrate)).toStringAsFixed(2);
+   proteinFormat = (double.parse(widget.protein)).toStringAsFixed(2);
+   sugarFormat = (double.parse(widget.sugar)).toStringAsFixed(2);
+   sodiumFormat = (((double.parse(widget.sodium)))*1000).toStringAsFixed(0);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +59,7 @@ class _DetailFoodState extends State<DetailFood> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(32),
                       child: Image.asset(
-                        "assets/icons/food_icon.jpg",
+                        "assets/icons/barcode_icon.jpg",
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,
@@ -49,15 +67,24 @@ class _DetailFoodState extends State<DetailFood> {
                     ),
                   ),
                   SizedBox(height: 5,),
-                  Text("${widget.name}",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),textScaleFactor: 1.5,),
+                  Text("${widget.name}",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),textScaleFactor: 1.0,),
                   SizedBox(height: 8,),
                   Text(
-                    "${widget.calories} kcal" ,
+                    "${caloriesFormat} kcal" ,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF5fb27c)
                     ),
-                    textScaleFactor: 1.5,
+                    textScaleFactor: 1.0,
+                  ),
+                  SizedBox(height: 5,),
+                  Text(
+                    "บาร์โค้ด : ${widget.barcode}" ,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightGreen
+                    ),
+                    textScaleFactor: 1.0,
                   ),
                 ],
               ),
@@ -106,7 +133,7 @@ class _DetailFoodState extends State<DetailFood> {
                         ),
                         SizedBox(height: 5,),
                         Text(
-                          "${widget.calories} kcal",
+                          "${caloriesFormat} kcal",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -140,9 +167,9 @@ class _DetailFoodState extends State<DetailFood> {
                           ,textScaleFactor: 1.2,
                         ),
                         SizedBox(height: 5,),
-                        Text(widget.protein == "" ?
+                        Text(proteinFormat == "" ?
                         "0 g" :
-                            "${widget.protein} g",
+                        "${proteinFormat} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -176,9 +203,9 @@ class _DetailFoodState extends State<DetailFood> {
                           ,textScaleFactor: 1.2,
                         ),
                         SizedBox(height: 5,),
-                        Text(widget.fat == "" ?
+                        Text(fatFormat == "" ?
                         "0 g" :
-                            "${widget.fat} g",
+                        "${fatFormat} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -212,9 +239,9 @@ class _DetailFoodState extends State<DetailFood> {
                           ,textScaleFactor: 1.2,
                         ),
                         SizedBox(height: 5,),
-                        Text(widget.carbohydrate == "" ?
+                        Text(carbohydrateFormat == "" ?
                         "0 g":
-                            "${widget.carbohydrate} g",
+                        "${carbohydrateFormat} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -249,8 +276,8 @@ class _DetailFoodState extends State<DetailFood> {
                         ),
                         SizedBox(height: 5,),
                         Text(
-                          widget.sodium == "" ?
-                          "0 mg" :"${widget.sodium} mg",
+                          sodiumFormat == "" ?
+                          "0 mg" :"${sodiumFormat} mg",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -285,9 +312,9 @@ class _DetailFoodState extends State<DetailFood> {
                         ),
                         SizedBox(height: 5,),
                         Text(
-                          widget.sugar == "" ?
+                          sugarFormat == "" ?
                           "0 g" :
-                          "${widget.sugar} g",
+                          "${sugarFormat} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -309,7 +336,7 @@ class _DetailFoodState extends State<DetailFood> {
                   minWidth: MediaQuery.of(context).size.width,
                   onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return RecordFood(name: widget.name, calories: widget.calories, fat: widget.fat, carbohydrate: widget.carbohydrate, protein: widget.protein, sugar: widget.sugar, sodium: widget.sodium);
+                      return RecordFood(name: widget.name, calories: caloriesFormat!, fat: widget.fat, carbohydrate: widget.carbohydrate, protein: widget.protein, sugar: widget.sugar, sodium: sodiumFormat!);
                     }));
 
                   },

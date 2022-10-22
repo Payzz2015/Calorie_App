@@ -86,7 +86,6 @@ class _confirmNewDataState extends State<confirmNewData> {
                       Fluttertoast.showToast(msg: "Fail");
                     }
                   },
-                  //signIn(emailController.text, passwordController.text);
                   child: const Text(
                     "ยืนยัน",
                     textAlign: TextAlign.center,

@@ -1,5 +1,4 @@
 import 'package:calories_counter_project/models/User.dart';
-import 'package:calories_counter_project/profiles/resetData/newHeight.dart';
 import 'package:calories_counter_project/profiles/resetData/newTDEE.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,11 +33,6 @@ class _newDataWeightState extends State<newDataWeight> {
       weight: weightController.text,
     );
     if (formKey.currentState != null && formKey.currentState!.validate()){
-      print(user.gender);
-      print(user.name);
-      print(user.age);
-      print(user.height);
-      print(users.weight);
       Navigator.push(
         context,
         MaterialPageRoute(

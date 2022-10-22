@@ -33,10 +33,6 @@ class _ageFormState extends State<ageForm> {
       age: ageController.text,
     );
     if (formKey.currentState != null && formKey.currentState!.validate()) {
-      print(users.gender);
-      print(users.name);
-      print(users.age);
-
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -64,7 +60,7 @@ class _ageFormState extends State<ageForm> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: //Text("${user.gender!}"),
+      body:
     Form(
         key: formKey,
         child: Column(

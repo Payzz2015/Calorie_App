@@ -1,23 +1,22 @@
-import 'package:calories_counter_project/screens/record_food.dart';
+import 'package:calories_counter_project/screens/details/record_food.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class DetailBarcode extends StatefulWidget {
+class DetailFood extends StatefulWidget {
   final String name;
-  final String barcode;
   final String calories;
   final String fat;
   final String carbohydrate;
   final String protein;
   final String sugar;
   final String sodium;
-  const DetailBarcode({Key? key,required this.name,required this.barcode,required this.calories, required this.fat, required this.carbohydrate, required this.protein,required this.sugar, required this.sodium}) : super(key: key);
+  const DetailFood({Key? key,required this.name,required this.calories, required this.fat, required this.carbohydrate, required this.protein,required this.sugar, required this.sodium}) : super(key: key);
 
   @override
-  State<DetailBarcode> createState() => _DetailBarcodeState();
+  State<DetailFood> createState() => _DetailFoodState();
 }
 
-class _DetailBarcodeState extends State<DetailBarcode> {
+class _DetailFoodState extends State<DetailFood> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +41,7 @@ class _DetailBarcodeState extends State<DetailBarcode> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(32),
                       child: Image.asset(
-                        "assets/icons/barcode_icon.jpg",
+                        "assets/icons/food_icon.jpg",
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,
@@ -59,15 +58,6 @@ class _DetailBarcodeState extends State<DetailBarcode> {
                         color: Color(0xFF5fb27c)
                     ),
                     textScaleFactor: 1.5,
-                  ),
-                  SizedBox(height: 5,),
-                  Text(
-                    "บาร์โค้ด : ${widget.barcode}" ,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.lightGreen
-                    ),
-                    textScaleFactor: 1.0,
                   ),
                 ],
               ),
@@ -152,7 +142,7 @@ class _DetailBarcodeState extends State<DetailBarcode> {
                         SizedBox(height: 5,),
                         Text(widget.protein == "" ?
                         "0 g" :
-                        "${widget.protein} g",
+                            "${widget.protein} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -188,7 +178,7 @@ class _DetailBarcodeState extends State<DetailBarcode> {
                         SizedBox(height: 5,),
                         Text(widget.fat == "" ?
                         "0 g" :
-                        "${widget.fat} g",
+                            "${widget.fat} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900
@@ -224,7 +214,7 @@ class _DetailBarcodeState extends State<DetailBarcode> {
                         SizedBox(height: 5,),
                         Text(widget.carbohydrate == "" ?
                         "0 g":
-                        "${widget.carbohydrate} g",
+                            "${widget.carbohydrate} g",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade900

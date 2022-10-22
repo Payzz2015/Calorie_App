@@ -2,7 +2,7 @@ import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sn
 import 'package:calories_counter_project/helpers/dayofWeek.dart';
 import 'package:calories_counter_project/models/Day.dart';
 import 'package:calories_counter_project/profiles/gender.dart';
-import 'package:calories_counter_project/screens/manage_detail_food.dart';
+import 'package:calories_counter_project/screens/details/manage_detail_food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

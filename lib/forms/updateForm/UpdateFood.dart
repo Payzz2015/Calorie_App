@@ -105,11 +105,12 @@ class _UpdateFoodState extends State<UpdateFood> {
                   ),
                 ),
               ),
-              body: Center(
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
+              body: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Form(
                       key: formKey,
                       child: Column(
@@ -130,7 +131,6 @@ class _UpdateFoodState extends State<UpdateFood> {
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                               prefixIcon: const Icon(Icons.fastfood),
-                              // hintText: "ชื่อ*",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),

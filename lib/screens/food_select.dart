@@ -1,5 +1,6 @@
+import 'package:calories_counter_project/forms/FormFood.dart';
 import 'package:calories_counter_project/forms/updateForm/UpdateFood.dart';
-import 'package:calories_counter_project/screens/detail_food.dart';
+import 'package:calories_counter_project/screens/details/detail_food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,29 @@ class _FoodSelectState extends State<FoodSelect> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Color(0xFF5fb27c),
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "อาหารของฉัน",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return const FormFood();
+                }));
+            },
+            icon: const Icon(
+              Icons.add,
+              size: 28,
+            ),
+          )
+        ],
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("foods").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {

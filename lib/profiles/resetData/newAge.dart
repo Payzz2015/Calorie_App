@@ -31,9 +31,6 @@ class _newDataAgeState extends State<newDataAge> {
       age: ageController.text,
     );
     if (formKey.currentState != null && formKey.currentState!.validate()) {
-      print(user.gender);
-      print(user.name);
-      print(users.age);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -61,7 +58,7 @@ class _newDataAgeState extends State<newDataAge> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: //Text("${user.gender!}"),
+      body:
       Form(
         key: formKey,
         child: SizedBox(
@@ -108,7 +105,6 @@ class _newDataAgeState extends State<newDataAge> {
                       keyboardType: TextInputType.number,
                       controller: ageController,
                       textAlign: TextAlign.center,
-                      //initialValue: weightController.text,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 35,

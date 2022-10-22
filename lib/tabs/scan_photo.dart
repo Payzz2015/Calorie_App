@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:calories_counter_project/screens/detail_food.dart';
+import 'package:calories_counter_project/screens/details/detail_food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
@@ -20,7 +20,7 @@ class _ScanPhotoState extends State<ScanPhoto> {
 
   String name = "";
 
-  late Stream<QuerySnapshot> collectionStream = FirebaseFirestore.instance.collection('recognition').where("name", isLessThanOrEqualTo: _result![0]["label"]).snapshots();
+  late Stream<QuerySnapshot> collectionStream = FirebaseFirestore.instance.collection('recognition').snapshots();
 
 
   @override
@@ -76,24 +76,15 @@ class _ScanPhotoState extends State<ScanPhoto> {
     setState(() {
       _loading = false;
       _result = output;
-      print(_result![0]["label"]);
       name = _result![0]["label"];
+      print(_result![0]["confidence"]);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            "เพิ่มอาหารด้วยรูปภาพ",
-            style: TextStyle(fontWeight: FontWeight.bold),
-            textScaleFactor: 1.0,
-          ),
-          backgroundColor: Color(0xFF5fb27c),
-          foregroundColor: Colors.white,
-        ),
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Container(
@@ -185,6 +176,7 @@ class _ScanPhotoState extends State<ScanPhoto> {
                                           return Container();
                                         }).toList(),
                                       ),
+                                      SizedBox(height: 150,),
                                     ],
                                   );
                               }

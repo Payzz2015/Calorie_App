@@ -1,29 +1,27 @@
 import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
-import 'package:calories_counter_project/forms/updateForm/UpdateFood.dart';
-import 'package:calories_counter_project/screens/meal/meal_breakfast.dart';
-import 'package:calories_counter_project/screens/meal/meal_dinner.dart';
+import 'package:calories_counter_project/screens/meals/meal_lunch.dart';
+import 'package:calories_counter_project/screens/meals/meal_snack.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class mealLunch extends StatefulWidget {
+class mealDinner extends StatefulWidget {
   final DateTime date;
-  const mealLunch({Key? key,required this.date}) : super(key: key);
+  const mealDinner({Key? key,required this.date}) : super(key: key);
 
   @override
-  State<mealLunch> createState() => _mealLunchState(date);
+  State<mealDinner> createState() => _mealDinnerState(date);
 }
 
-class _mealLunchState extends State<mealLunch> {
+class _mealDinnerState extends State<mealDinner> {
 
   final DateTime date;
-  _mealLunchState(this.date);
+  _mealDinnerState(this.date);
 
   final CollectionReference trackCollection =
   FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).collection("food_track");
 
   String name = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,19 +36,19 @@ class _mealLunchState extends State<mealLunch> {
               IconButton(
                   onPressed: (){
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                      return mealBreakfast(date: date,);
+                      return mealLunch(date: date,);
                     }));
                   },
                   icon: const Icon(Icons.arrow_back_ios_new_rounded)
               ),
               const Text(
-                "มื้อกลางวัน",
+                "มื้อเย็น",
                 style: TextStyle(fontWeight: FontWeight.bold),textScaleFactor: 1.0,
               ),
               IconButton(
                   onPressed: (){
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                      return mealDinner(date: date,);
+                      return mealSnack(date: date,);
                     }));
                   },
                   icon: const Icon(Icons.arrow_forward_ios_rounded)
@@ -193,7 +191,7 @@ class _mealLunchState extends State<mealLunch> {
                                         if(trackSnapshot.exists){
                                           await trackCollection.doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}").set(
                                               {
-                                                "lunch": FieldValue.arrayUnion([{
+                                                "dinner": FieldValue.arrayUnion([{
                                                   "name": foodName,
                                                   "calories": foodCalories,
                                                   "fat": foodFat == "" ? "0.00" : foodFat,
@@ -290,7 +288,7 @@ class _mealLunchState extends State<mealLunch> {
                                         if(trackSnapshot.exists){
                                           await trackCollection.doc("${date.day}-${date.month}-${date.yearInBuddhistCalendar}").set(
                                               {
-                                                "lunch": FieldValue.arrayUnion([{
+                                                "dinner": FieldValue.arrayUnion([{
                                                   "name": foodName,
                                                   "calories": foodCalories,
                                                   "fat": foodFat,
@@ -327,6 +325,7 @@ class _mealLunchState extends State<mealLunch> {
                         );
                       }
                       return Container();
+
                     }).toList(),
                   ),
                   const SizedBox(

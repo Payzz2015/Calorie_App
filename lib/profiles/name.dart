@@ -31,8 +31,6 @@ class _nameFormState extends State<nameForm> {
       name: nameController.text,
     );
     if (formKey.currentState != null && formKey.currentState!.validate()) {
-      print(users.gender);
-      print(users.name);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -58,7 +56,7 @@ class _nameFormState extends State<nameForm> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: //Text("${user.gender!}"),
+      body:
       Form(
         key: formKey,
         child: Column(
@@ -96,7 +94,6 @@ class _nameFormState extends State<nameForm> {
                     keyboardType: TextInputType.name,
                     controller: nameController,
                     textAlign: TextAlign.center,
-                    //initialValue: weightController.text,
                     style: const TextStyle(
                         color: Colors.black,
                         fontSize: 35,
@@ -104,12 +101,6 @@ class _nameFormState extends State<nameForm> {
                     ),
                     textDirection: TextDirection.rtl,
                     decoration: InputDecoration(
-                      /*suffixText: "ปี",
-                      suffixStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontWeight: FontWeight.normal
-                      ),*/
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(
                             width: 3,

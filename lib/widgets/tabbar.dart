@@ -1,7 +1,5 @@
-import 'package:calories_counter_project/forms/FormBarcode.dart';
-import 'package:calories_counter_project/forms/FormFood.dart';
-import 'package:calories_counter_project/tabs/food_barcode.dart';
-import 'package:calories_counter_project/tabs/food_select.dart';
+import 'package:calories_counter_project/tabs/scan_barcode.dart';
+import 'package:calories_counter_project/tabs/scan_photo.dart';
 import 'package:flutter/material.dart';
 
 class TabBarWidget extends StatefulWidget {
@@ -35,34 +33,10 @@ with SingleTickerProviderStateMixin
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xFF5fb27c),
-        foregroundColor: Colors.white,
+        elevation: 0,
+        foregroundColor: Color(0xFF5fb27c),
+        backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
-          "อาหารของฉัน",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              if(tabController.index == 0){
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return const FormFood();
-                }));
-              }
-              if(tabController.index == 1){
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return const FormBarcode();
-                }));
-              }
-            },
-            icon: const Icon(
-              Icons.add,
-              size: 28,
-            ),
-          )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -95,11 +69,11 @@ with SingleTickerProviderStateMixin
                         tabs: const [
                           Tab(
                             icon: Icon(Icons.add),
-                            text: "อาหาร",
+                            text: "เพิ่มอาหารด้วยรูปภาพ",
                           ),
                           Tab(
                             icon: Icon(Icons.qr_code_scanner_rounded),
-                            text: "บาร์โค้ด",
+                            text: "สแกนบาร์โค้ด",
                           ),
                         ],
                       ),
@@ -112,8 +86,8 @@ with SingleTickerProviderStateMixin
                   physics: BouncingScrollPhysics(),
                   controller: tabController,
                   children: [
-                    FoodSelect(),
-                    FoodBarcode()
+                    ScanPhoto(),
+                    ScanBarcode()
                   ],
                 ),
               )

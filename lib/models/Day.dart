@@ -1,6 +1,4 @@
-import 'package:calories_counter_project/models/Barcode.dart';
 import 'package:calories_counter_project/models/Food.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Day{
   String? day;

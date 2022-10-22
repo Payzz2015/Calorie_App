@@ -86,7 +86,6 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
                       Fluttertoast.showToast(msg: "Fail");
                     }
                   },
-                    //signIn(emailController.text, passwordController.text);
                   child: const Text(
                     "ยืนยัน",
                     textAlign: TextAlign.center,

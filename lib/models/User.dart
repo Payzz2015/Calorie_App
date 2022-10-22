@@ -1,11 +1,11 @@
 class Users{
   String? uid;
-  String? email; //อีเมล
-  String? name; //ชื่อ
-  String? gender; //เพศ
-  String? age; //อายุ
-  String? weight; //น้ำหนัก
-  String? height; //ส่วนสูง
+  String? email;
+  String? name;
+  String? gender;
+  String? age;
+  String? weight;
+  String? height;
   String? bmi;
   String? bmr;
   String? tdee;
