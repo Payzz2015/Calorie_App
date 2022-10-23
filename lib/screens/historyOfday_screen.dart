@@ -54,7 +54,7 @@ class _HistoryOfDayState extends State<HistoryOfDay> {
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   color: Colors.white
-              ),textScaleFactor: 1.5,
+              ),textScaleFactor: 1.2,
             ),
           ],
         ),

@@ -74,7 +74,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
             style: const TextStyle(
                 fontFamily: 'Open Sans',
                 fontWeight: FontWeight.w700,
-                color: Colors.white),textScaleFactor: 1.5,
+                color: Colors.white),textScaleFactor: 1.2,
           ),
           IconButton(
               icon: const Icon(Icons.arrow_right, size: 30.0),
