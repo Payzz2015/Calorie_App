@@ -183,7 +183,7 @@ class _tdeeFormState extends State<tdeeForm> {
                     onTap: () =>
                         setState(() {
                           userData = Users(
-                            tdee: "1.7",
+                            tdee: "1.725",
                           );
                           selectorExercise = 4;
                           _isButtonDisabled = false;

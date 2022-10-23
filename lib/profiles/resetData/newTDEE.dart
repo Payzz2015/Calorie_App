@@ -199,7 +199,7 @@ class _newDataTDEEState extends State<newDataTDEE> {
                     onTap: () =>
                         setState(() {
                           usersData = Users(
-                            tdee: "1.7",
+                            tdee: "1.725",
                           );
                           selectorExercise = 4;
                           _isButtonDisabled = false;
