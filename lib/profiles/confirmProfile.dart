@@ -113,12 +113,12 @@ class _confirmProfileScreenState extends State<confirmProfileScreen> {
     user.bmi = bmi.toStringAsFixed(1);
 
     if(user.gender! == "ชาย"){
-      double bmr = (10*(int.parse(user.weight!)))+(6.25*(int.parse(user.height!)))-(5*(int.parse(user.age!)))+5;
-      user.bmr = bmr.toStringAsFixed(0);
+      double bmr = (13.75*(int.parse(user.weight!)))+(5.003*(int.parse(user.height!)))-(6.755*(int.parse(user.age!)))+66.47;
+      user.bmr = bmr.toStringAsFixed(3);
     }
     else if(user.gender! == "หญิง"){
-      double bmr = (10*(int.parse(user.weight!)))+(6.25*(int.parse(user.height!)))-(5*(int.parse(user.age!)))-161;
-      user.bmr = bmr.toStringAsFixed(0);
+      double bmr = (9.563*(int.parse(user.weight!)))+(1.85*(int.parse(user.height!)))-(4.676*(int.parse(user.age!)))+665.1;
+      user.bmr = bmr.toStringAsFixed(3);
     }
 
     user.active = user.tdee!;
