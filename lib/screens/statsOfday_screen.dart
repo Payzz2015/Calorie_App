@@ -725,7 +725,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     elevation: 5,
-                                    color: Colors.green,
+                                    color: Color(0xFF5fb27c),
                                     shadowColor: Colors.black,
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
@@ -763,7 +763,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     elevation: 5,
-                                    color: Colors.green,
+                                    color: Color(0xFF5fb27c),
                                     shadowColor: Colors.black,
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
@@ -1170,9 +1170,8 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
         return AlertDialog(
           title: const Text(
             "อัพเดทน้ำหนักของฉัน",
-            style: TextStyle(
-                fontWeight: FontWeight.bold
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold),
+            textScaleFactor: 1.0,
           ),
           content: Padding(
             padding: const EdgeInsets.only(left: 30,right: 30),
@@ -1198,7 +1197,7 @@ class _StatsOfDayScreenState extends State<StatsOfDayScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  color: Colors.greenAccent,
+                  color: Colors.green,
                   onPressed: (){
                     Navigator.of(context).pop(weightController.text);
 

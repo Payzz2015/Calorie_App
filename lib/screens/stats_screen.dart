@@ -28,8 +28,8 @@ class _StatScreenState extends State<StatScreen> {
           "สถิติ",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25,
           ),
+          textScaleFactor: 1.5,
         ),
       ),
       body: Center(

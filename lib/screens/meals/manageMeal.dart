@@ -87,7 +87,7 @@ class _ManageMealState extends State<ManageMeal> {
           _dateFormatter(date),
           style: TextStyle(
               fontWeight: FontWeight.bold,
-          ),textScaleFactor: 1.5,
+          ),textScaleFactor: 1.0,
         ),
       ),
       body: StreamBuilder(

@@ -69,7 +69,7 @@ with SingleTickerProviderStateMixin
                         tabs: const [
                           Tab(
                             icon: Icon(Icons.add),
-                            text: "เพิ่มอาหารด้วยรูปภาพ",
+                            text: "ถ่ายภาพ",
                           ),
                           Tab(
                             icon: Icon(Icons.qr_code_scanner_rounded),

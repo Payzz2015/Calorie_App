@@ -43,8 +43,8 @@ class _FormFoodState extends State<FormFood> {
                   "Error",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
                   ),
+                  textScaleFactor: 1.0,
                 ),
               ),
               body: Center(
@@ -65,8 +65,8 @@ class _FormFoodState extends State<FormFood> {
                   "บันทึกข้อมูลอาหาร",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
                   ),
+                  textScaleFactor: 1.0,
                 ),
               ),
               body: SingleChildScrollView(

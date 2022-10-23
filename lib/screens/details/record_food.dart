@@ -30,6 +30,7 @@ class _RecordFoodState extends State<RecordFood> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         foregroundColor: Color(0xFF5fb27c),

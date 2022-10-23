@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          "Calories App",
+          "เข้าสู่ระบบ",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xFF5fb27c),

@@ -3,6 +3,7 @@ import 'package:calories_counter_project/screens/details/detail_barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 class ScanBarcode extends StatefulWidget {
@@ -14,6 +15,7 @@ class ScanBarcode extends StatefulWidget {
 
 class _ScanBarcodeState extends State<ScanBarcode> {
   String _scanBarcode = "Unknown";
+  String productNotFound = "";
 
   String? productName;
   String? productBarcode;
@@ -108,7 +110,14 @@ class _ScanBarcodeState extends State<ScanBarcode> {
           }));
         });
       } else {
-        throw Exception('product not found, please insert data for $_scanBarcode');
+        Fluttertoast.showToast(
+          msg: "ไม่พบรายการบาร์โค้ด\n$_scanBarcode",
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 15,
+          textColor: Colors.white,
+          backgroundColor: Colors.redAccent,
+          gravity: ToastGravity.BOTTOM_LEFT,
+        );
       }
     }
     else if(_scanBarcode != "Unknown"){
@@ -141,7 +150,14 @@ class _ScanBarcodeState extends State<ScanBarcode> {
           }));
         });
       } else {
-        throw Exception('product not found, please insert data for $_scanBarcode');
+        Fluttertoast.showToast(
+            msg: "ไม่พบรายการบาร์โค้ด\n$_scanBarcode",
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 15,
+          textColor: Colors.white,
+          backgroundColor: Colors.redAccent,
+          gravity: ToastGravity.BOTTOM_LEFT,
+        );
       }
     }
   }

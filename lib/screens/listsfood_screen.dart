@@ -35,7 +35,8 @@ class _FoodListState extends State<FoodList> {
         centerTitle: true,
         title: const Text(
           "รายการอาหาร",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          style: TextStyle(fontWeight: FontWeight.bold),
+          textScaleFactor: 1.5,
         ),
       ),
         body: StreamBuilder(

@@ -20,8 +20,15 @@ class _ScanPhotoState extends State<ScanPhoto> {
 
   String name = "";
 
-  late Stream<QuerySnapshot> collectionStream = FirebaseFirestore.instance.collection('recognition').snapshots();
+  late Stream<QuerySnapshot> collectionReadyToEatStream = FirebaseFirestore.instance.collection('list_foods').doc("Standard").collection("Mixed foods: ready-to-eat").snapshots();
 
+  late Stream<QuerySnapshot> collectionMeatStream = FirebaseFirestore.instance.collection('list_foods').doc("Standard").collection("Meat, other animals and their products").snapshots();
+
+  late Stream<QuerySnapshot> collectionFishStream = FirebaseFirestore.instance.collection('list_foods').doc("Standard").collection("Finfish, shellfish, other aquatic animals and their products").snapshots();
+
+  late Stream<QuerySnapshot> collectionEggStream = FirebaseFirestore.instance.collection('list_foods').doc("Standard").collection("Eggs and their products").snapshots();
+
+  late Stream<QuerySnapshot> collectionCerealStream = FirebaseFirestore.instance.collection('list_foods').doc("Standard").collection("Cereals and their products").snapshots();
 
   @override
   void initState(){
@@ -128,10 +135,10 @@ class _ScanPhotoState extends State<ScanPhoto> {
                                 fontWeight: FontWeight.bold),
                           ),
                           StreamBuilder(
-                              stream: collectionStream,
+                              stream: collectionReadyToEatStream,
                               builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
                                 if (!snapshot.hasData) {
-                                  return Text("Loading");
+                                  return Text("");
                                 }
                                   return Column(
                                     children: [
@@ -176,11 +183,224 @@ class _ScanPhotoState extends State<ScanPhoto> {
                                           return Container();
                                         }).toList(),
                                       ),
-                                      SizedBox(height: 150,),
                                     ],
                                   );
                               }
                           ),
+                          StreamBuilder(
+                              stream: collectionMeatStream,
+                              builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+                                if (!snapshot.hasData) {
+                                  return Text("");
+                                }
+                                return Column(
+                                  children: [
+                                    ListView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      children: snapshot.data!.docs.map((QueryDocumentSnapshot document) {
+                                        final dynamic data = document.data();
+                                        if(document["name"].toString().toLowerCase().startsWith(name.toLowerCase())){
+                                          return GestureDetector(
+                                            onTap: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                return DetailFood(name: data["name"].toString(), calories: data["calories"].toString(),sugar: data["sugars"].toString(), fat: data["fat"].toString(), carbohydrate: data["carbohydrate"].toString(), protein: data["protein"].toString(), sodium: data["sodium"].toString());
+                                              }));
+                                            },
+                                            child: Card(
+                                              elevation: 1,
+                                              child: ListTile(
+                                                title: Padding(
+                                                  padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
+                                                  child: Text(
+                                                    document["name"],
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold
+                                                    ),
+                                                    textScaleFactor: 1,
+                                                  ),
+                                                ),
+                                                trailing: Text(
+                                                  "${document["calories"]} kcal",
+                                                  style: TextStyle(
+                                                    color: Colors.blueGrey,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  textScaleFactor: 1,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return Container();
+                                      }).toList(),
+                                    ),
+                                  ],
+                                );
+                              }
+                          ),
+                          StreamBuilder(
+                              stream: collectionFishStream,
+                              builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+                                if (!snapshot.hasData) {
+                                  return Text("");
+                                }
+                                return Column(
+                                  children: [
+                                    ListView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      children: snapshot.data!.docs.map((QueryDocumentSnapshot document) {
+                                        final dynamic data = document.data();
+                                        if(document["name"].toString().toLowerCase().startsWith(name.toLowerCase())){
+                                          return GestureDetector(
+                                            onTap: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                return DetailFood(name: data["name"].toString(), calories: data["calories"].toString(),sugar: data["sugars"].toString(), fat: data["fat"].toString(), carbohydrate: data["carbohydrate"].toString(), protein: data["protein"].toString(), sodium: data["sodium"].toString());
+                                              }));
+                                            },
+                                            child: Card(
+                                              elevation: 1,
+                                              child: ListTile(
+                                                title: Padding(
+                                                  padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
+                                                  child: Text(
+                                                    document["name"],
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold
+                                                    ),
+                                                    textScaleFactor: 1,
+                                                  ),
+                                                ),
+                                                trailing: Text(
+                                                  "${document["calories"]} kcal",
+                                                  style: TextStyle(
+                                                    color: Colors.blueGrey,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  textScaleFactor: 1,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return Container();
+                                      }).toList(),
+                                    ),
+                                  ],
+                                );
+                              }
+                          ),
+                          StreamBuilder(
+                              stream: collectionEggStream,
+                              builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+                                if (!snapshot.hasData) {
+                                  return Text("");
+                                }
+                                return Column(
+                                  children: [
+                                    ListView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      children: snapshot.data!.docs.map((QueryDocumentSnapshot document) {
+                                        final dynamic data = document.data();
+                                        if(document["name"].toString().toLowerCase().startsWith(name.toLowerCase())){
+                                          return GestureDetector(
+                                            onTap: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                return DetailFood(name: data["name"].toString(), calories: data["calories"].toString(),sugar: data["sugars"].toString(), fat: data["fat"].toString(), carbohydrate: data["carbohydrate"].toString(), protein: data["protein"].toString(), sodium: data["sodium"].toString());
+                                              }));
+                                            },
+                                            child: Card(
+                                              elevation: 1,
+                                              child: ListTile(
+                                                title: Padding(
+                                                  padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
+                                                  child: Text(
+                                                    document["name"],
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold
+                                                    ),
+                                                    textScaleFactor: 1,
+                                                  ),
+                                                ),
+                                                trailing: Text(
+                                                  "${document["calories"]} kcal",
+                                                  style: TextStyle(
+                                                    color: Colors.blueGrey,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  textScaleFactor: 1,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return Container();
+                                      }).toList(),
+                                    ),
+                                  ],
+                                );
+                              }
+                          ),
+                          StreamBuilder(
+                              stream: collectionCerealStream,
+                              builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+                                if (!snapshot.hasData) {
+                                  return Text("");
+                                }
+                                return Column(
+                                  children: [
+                                    ListView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      children: snapshot.data!.docs.map((QueryDocumentSnapshot document) {
+                                        final dynamic data = document.data();
+                                        if(document["name"].toString().toLowerCase().startsWith(name.toLowerCase())){
+                                          return GestureDetector(
+                                            onTap: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                return DetailFood(name: data["name"].toString(), calories: data["calories"].toString(),sugar: data["sugars"].toString(), fat: data["fat"].toString(), carbohydrate: data["carbohydrate"].toString(), protein: data["protein"].toString(), sodium: data["sodium"].toString());
+                                              }));
+                                            },
+                                            child: Card(
+                                              elevation: 1,
+                                              child: ListTile(
+                                                title: Padding(
+                                                  padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
+                                                  child: Text(
+                                                    document["name"],
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold
+                                                    ),
+                                                    textScaleFactor: 1,
+                                                  ),
+                                                ),
+                                                trailing: Text(
+                                                  "${document["calories"]} kcal",
+                                                  style: TextStyle(
+                                                    color: Colors.blueGrey,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  textScaleFactor: 1,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return Container();
+                                      }).toList(),
+                                    ),
+
+                                  ],
+                                );
+                              }
+                          ),
+                          SizedBox(height: 150,),
                         ],
                       )
                           : Container(
@@ -190,12 +410,12 @@ class _ScanPhotoState extends State<ScanPhoto> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
-                            textScaleFactor: 1.0,
+                            textScaleFactor: 1.5,
                           ),
                         ),
                         height: 350,
                         width: MediaQuery.of(context).size.width * 0.9,
-                        color: Colors.black,
+                        color: Colors.grey.shade400,
                       ),
                     ],
                   ),

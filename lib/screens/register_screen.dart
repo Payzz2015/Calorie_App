@@ -54,9 +54,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           "สมัครสมาชิก",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 30,
-            color: Colors.green,
+            color: Color(0xFF5fb27c),
           ),
+          textScaleFactor: 1.5,
         ),
       ),
       body: Center(

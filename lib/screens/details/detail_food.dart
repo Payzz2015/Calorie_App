@@ -20,6 +20,7 @@ class _DetailFoodState extends State<DetailFood> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         foregroundColor: Color(0xFF5fb27c),
@@ -49,7 +50,7 @@ class _DetailFoodState extends State<DetailFood> {
                     ),
                   ),
                   SizedBox(height: 5,),
-                  Text("${widget.name}",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),textScaleFactor: 1.5,),
+                  Text("${widget.name}",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),textScaleFactor: 1.35,),
                   SizedBox(height: 8,),
                   Text(
                     "${widget.calories} kcal" ,
@@ -57,7 +58,7 @@ class _DetailFoodState extends State<DetailFood> {
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF5fb27c)
                     ),
-                    textScaleFactor: 1.5,
+                    textScaleFactor: 1.35,
                   ),
                 ],
               ),

@@ -51,7 +51,8 @@ class _UserProfileState extends State<UserProfile> {
         centerTitle: true,
         title: const Text(
           "ข้อมูลส่วนตัว",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          style: TextStyle(fontWeight: FontWeight.bold),
+          textScaleFactor: 1.5,
         ),
       ),
       body: StreamBuilder(
@@ -395,9 +396,9 @@ class _UserProfileState extends State<UserProfile> {
           title: const Text(
             "ต้องการตั้งข้อมูลใหม่ใช่หรือไม่",
             style: TextStyle(
-              fontSize: 18,
                 fontWeight: FontWeight.bold
             ),
+            textScaleFactor: 1.0,
           ),
           actions: [
             Row(
@@ -408,7 +409,7 @@ class _UserProfileState extends State<UserProfile> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    color: Colors.greenAccent,
+                    color: Colors.green,
                     child: const Text("ตกลง",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                     onPressed: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
@@ -445,6 +446,7 @@ class _UserProfileState extends State<UserProfile> {
             style: TextStyle(
                 fontWeight: FontWeight.bold
             ),
+            textScaleFactor: 1.0,
           ),
           content: Padding(
             padding: const EdgeInsets.only(left: 30,right: 30),
@@ -467,7 +469,7 @@ class _UserProfileState extends State<UserProfile> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  color: Colors.greenAccent,
+                  color: Colors.green,
                   onPressed: (){
                     Navigator.of(context).pop(nameController.text);
 

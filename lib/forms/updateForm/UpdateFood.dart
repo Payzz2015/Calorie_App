@@ -79,8 +79,8 @@ class _UpdateFoodState extends State<UpdateFood> {
                   "Error",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
                   ),
+                  textScaleFactor: 1.0,
                 ),
               ),
               body: Center(
@@ -101,8 +101,8 @@ class _UpdateFoodState extends State<UpdateFood> {
                   "แก้ไขข้อมูลอาหาร",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
                   ),
+                  textScaleFactor: 1.0,
                 ),
               ),
               body: SingleChildScrollView(
